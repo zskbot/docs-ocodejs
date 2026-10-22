@@ -13,6 +13,10 @@
 10. [Velclaw/Velclaw-velclaw-docs-ui-reference](https://github.com/Velclaw/Velclaw-velclaw-docs-ui-reference) — 4 file blobs, 3 Markdown-like files; design reference.
 11. [Velclaw/Velclaw-OCodejs](https://github.com/Velclaw/Velclaw-OCodejs) — 1,985 file blobs, 398 Markdown-like files; many sampled paths match VELCLAW Control Center. Verify repository identity before reuse.
 
+## Integration contracts
+
+See [INTEGRATION-MATRIX.md](INTEGRATION-MATRIX.md) for documented producer/consumer contracts, server-only credential boundaries, verification requirements and release gates.
+
 ## Audit results
 - [x] Enumerate recursive Git tree/default branch for all 11 repositories; all trees returned `truncated=false`.
 - [x] Record tree commit SHA and file counts in [SOURCE-AUDIT.md](SOURCE-AUDIT.md).
