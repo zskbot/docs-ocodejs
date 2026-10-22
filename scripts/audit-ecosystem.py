@@ -77,32 +77,51 @@ def main():
                     rel = source.relative_to(checkout)
                     if ".git" in rel.parts:
                         continue
+                    if source.is_symlink():
+                        target = os.readlink(source)
+                        target_bytes = target.encode("utf-8", errors="replace")
+                        rows.append({
+                            "repository": repo, "branch": branch, "commit": commit,
+                            "path": rel.as_posix(), "size_bytes": len(target_bytes),
+                            "sha256": hashlib.sha256(target_bytes).hexdigest(),
+                            "is_document": "false", "included_in_corpus": "false",
+                            "skip_reason": "symlink not followed",
+                        })
+                        total_files += 1
+                        repo_files += 1
+                        continue
                     try:
                         size = source.stat().st_size
                         digest = sha256_file(source)
-                        raw = source.read_bytes()
+                        with source.open("rb") as handle:
+                            head = handle.read(8192)
                     except OSError:
                         continue
                     ext = source.suffix.lower()
                     is_doc = ext in DOC_EXTENSIONS
-                    is_binary = b"\x00" in raw[:8192]
+                    is_binary = b"\x00" in head
                     if is_binary:
                         binary_files += 1
                     include, reason = False, ""
                     if is_doc and not is_binary:
                         total_docs += 1
                         repo_docs += 1
-                        if suspicious_secret(raw):
-                            reason = "secret-like content; excluded from corpus"
-                            skipped.append(repo + ":" + rel.as_posix())
+                        if size > 20 * 1024 * 1024:
+                            reason = "document exceeds 20 MiB safety limit"
                             repo_skipped += 1
                         else:
-                            destination = target_root / rel
-                            destination.parent.mkdir(parents=True, exist_ok=True)
-                            shutil.copyfile(source, destination)
-                            include = True
-                            included_docs += 1
-                            repo_included += 1
+                            raw = source.read_bytes()
+                            if suspicious_secret(raw):
+                                reason = "secret-like content; excluded from corpus"
+                                skipped.append(repo + ":" + rel.as_posix())
+                                repo_skipped += 1
+                            else:
+                                destination = target_root / rel
+                                destination.parent.mkdir(parents=True, exist_ok=True)
+                                shutil.copyfile(source, destination)
+                                include = True
+                                included_docs += 1
+                                repo_included += 1
                     rows.append({
                         "repository": repo, "branch": branch, "commit": commit,
                         "path": rel.as_posix(), "size_bytes": size, "sha256": digest,
