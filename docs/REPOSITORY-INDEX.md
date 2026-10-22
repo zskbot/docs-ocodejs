@@ -17,6 +17,8 @@
 
 See [INTEGRATION-MATRIX.md](INTEGRATION-MATRIX.md) for documented producer/consumer contracts, server-only credential boundaries, verification requirements and release gates.
 
+See [VERIFICATION-PLAN.md](VERIFICATION-PLAN.md) for the phased full-content audit, safe test execution, integration readiness and delivery criteria.
+
 ## Audit results
 - [x] Enumerate recursive Git tree/default branch for all 11 repositories; all trees returned `truncated=false`.
 - [x] Record tree commit SHA and file counts in [SOURCE-AUDIT.md](SOURCE-AUDIT.md).
