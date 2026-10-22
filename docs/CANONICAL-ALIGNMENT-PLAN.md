@@ -90,5 +90,5 @@ A green documentation CI is necessary but does not prove runtime security, produ
 - [Content review of 11 root READMEs](./CONTENT-REVIEW.md)
 - [Integration matrix](./INTEGRATION-MATRIX.md)
 - [Verification plan](./VERIFICATION-PLAN.md)
-- [Implementation findings](./IMPLEMENTATION-FINDINGS.md) — currently on the open audit PR branch until that PR is resolved.
+- [Implementation findings](https://github.com/zskbot/docs-ocodejs/blob/ops/run-safe-ecosystem-audit/docs/IMPLEMENTATION-FINDINGS.md) — currently on the open audit PR branch until that PR is resolved.
 - [Audit run](https://github.com/zskbot/docs-ocodejs/actions/runs/39871263933)
