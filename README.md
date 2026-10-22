@@ -4,6 +4,7 @@ Central index for OCode.js documentation and the related Velclaw engineering eco
 
 - **Ecosystem architecture:** [docs/ECOSYSTEM.md](docs/ECOSYSTEM.md)
 - **Source inventory and targeted findings:** [docs/SOURCE-AUDIT.md](docs/SOURCE-AUDIT.md)
+- **Integration contracts and release gates:** [docs/INTEGRATION-MATRIX.md](docs/INTEGRATION-MATRIX.md)
 - **Repository index and audit checklist:** [docs/REPOSITORY-INDEX.md](docs/REPOSITORY-INDEX.md)
 - **Brand/rebrand source document:** [OCodejs-by-Velclaw-Full-Rebrand.pdf](OCodejs-by-Velclaw-Full-Rebrand.pdf)
 - **OCode.js logo assets:** [SVG](ocodejs-logo.svg) · [Animated logo](ocodejs-animated-logo.gif) · [Black logo](ocode-logo-black.gif)
