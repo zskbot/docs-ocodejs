@@ -46,4 +46,20 @@ Variable names above are taken from repository docs. No values are included here
 - **Runtime-verified:** endpoint or workflow was actually tested and the evidence recorded.
 - **Production-ready:** all applicable security, persistence, rollback, CI and operational gates have passed.
 
+## Newly confirmed documentation conflicts
+
+### Canonical domain is unresolved
+
+- [Velclaw/VELCLAW `docs/ECOSYSTEM.md`](https://github.com/Velclaw/VELCLAW/blob/main/docs/ECOSYSTEM.md) names `https://velclaw.dev` as the canonical product domain and says DNS/OAuth/production paths still require live verification.
+- [VelclawHost README](https://github.com/Velclaw/VelclawHost/blob/main/README.md) instead describes `velclaw.site` as the primary platform namespace, with `api.velclaw.site` and `app.velclaw.site` as service surfaces.
+- These are conflicting **documentation declarations**, not proof of current DNS or deployment state. Do not rewrite DNS, OAuth callbacks, redirects, or production URLs based on either document alone. Resolve ownership and canonical-domain decisions, then verify DNS records, TLS, live endpoints, and service-to-domain mapping.
+
+### Documentation UI contract
+
+The [Docs UI Reference](https://github.com/Velclaw/Velclaw-velclaw-docs-ui-reference) explicitly defines square corners (`border-radius: 0`), dark/purple styling, compact header, keyboard-visible focus states, a mobile sidebar drawer, desktop three-column reader layout, and copyable code blocks. Treat it as the UI specification for TechDocs, not as evidence that every item is already implemented.
+
+### Evidence level
+
+The above are source-document observations. No live DNS, OAuth callback, hosting deployment, database restore, or frontend accessibility test was performed during this pass.
+
 Do not promote a row to Runtime-verified or Production-ready based only on README text, a planned integration, or a green unrelated workflow.
