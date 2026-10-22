@@ -27,6 +27,5 @@ jobs:
           path: |
             audit-output/summary.md
             audit-output/manifest.csv
-            audit-output/source-docs.zip
           if-no-files-found: error
-          retention-days: 7
+          retention-days: 3
