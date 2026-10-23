@@ -131,7 +131,10 @@ jobs:
               continue
             fi
             git commit -m "chore(sync): update OCode.js documentation snapshot"
-            git push --force origin "$branch"
+            # The clone's temporary auth header applies only to clone; authenticate push explicitly too.
+            auth_header=$(printf "x-access-token:%s" "$GH_TOKEN" | base64 -w0)
+            git -c http.extraheader="AUTHORIZATION: basic $auth_header" push --force origin "$branch"
+            unset auth_header
             existing=$(gh pr list --repo "$repo" --head "$branch" --state open --json url --jq '.[0].url // empty')
             if [ -z "$existing" ]; then
               gh pr create --repo "$repo" --base "$base" --head "$branch" \
