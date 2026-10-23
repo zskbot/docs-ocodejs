@@ -47,6 +47,78 @@ header,main,footer{margin-left:var(--sidebar-width)}
 @media(min-width:901px){.side-toggle{display:none}}
 @media(prefers-reduced-motion:reduce){.sidebar,.sidebar-overlay{transition:none}}
 
+
+/* OCODE_DOCS_UI_REFRESH_2026 */
+:root{--sidebar-width:248px;--max:1180px;--line:#202633}
+body{background:radial-gradient(ellipse 70% 440px at 55% -170px,rgba(43,95,190,.2),transparent 76%),#000}
+.sidebar{width:var(--sidebar-width);padding:24px 16px;background:rgba(3,4,7,.97);border-right-color:#1b2230}
+.side-brand{padding:4px 10px 22px}
+.side-nav a{min-height:40px;border-radius:3px}
+.side-nav a.active{background:linear-gradient(90deg,rgba(73,126,221,.14),rgba(15,19,28,.7));border-color:#28364d;box-shadow:inset 2px 0 #6da5ff}
+header{background:rgba(0,0,0,.88);border-bottom-color:#1b2230}
+.nav{height:72px}
+.logo-mark{width:40px;height:40px;flex-basis:40px}
+.hero{padding-top:108px;padding-bottom:92px}
+.hero:before{width:min(900px,100%);height:500px;background:radial-gradient(ellipse at center,rgba(57,111,235,.18),rgba(73,64,180,.06) 43%,transparent 72%)}
+.eyebrow{border-color:#293246;border-radius:999px;padding:7px 13px}
+.status-dot{border-radius:50%}
+h1{max-width:900px;font-size:clamp(44px,7vw,82px);letter-spacing:-.072em}
+.lead{max-width:720px;color:#aab2c0}
+.btn,.nav-cta,.copy{border-radius:4px}
+.btn-primary{box-shadow:0 5px 24px rgba(255,255,255,.06)}
+.terminal,.codebox,.form-demo,.closing,.card,.road-item,.table-wrap{border-radius:5px}
+.terminal{border-color:#293142;box-shadow:0 26px 100px rgba(0,0,0,.45)}
+.term-top{height:42px}
+section{padding:82px 0;border-top-color:#171b23}
+.section-head{margin-bottom:32px}
+.kicker{color:#8cb8ff}
+.card{min-height:172px;padding:23px;background:linear-gradient(145deg,rgba(13,16,23,.96),rgba(4,5,8,.98))}
+.card-icon{border-radius:4px}
+.card h3{font-size:16px}
+.card p,.section-desc{line-height:1.8}
+.road-item{padding:20px}
+.codebox pre{tab-size:2}
+.form-demo{max-width:780px}
+.field input,.field select,.field textarea{border-radius:4px}
+.closing{padding:76px 24px}
+footer{border-top-color:#1b2230}
+.side-toggle{border-radius:4px}
+a,button,input,select,textarea{ -webkit-tap-highlight-color:transparent}
+@media(min-width:901px){
+ .sidebar{width:var(--sidebar-width)}
+ header,main,footer{margin-left:var(--sidebar-width)}
+ .container{width:min(var(--max),calc(100% - 56px))}
+ .hero{padding-top:112px}
+}
+@media(max-width:900px){
+ :root{--sidebar-width:50vw}
+ .sidebar{width:50vw;min-width:260px;max-width:360px;padding:20px 14px}
+ body.sidebar-open{overflow:hidden}
+ .nav{height:64px}
+ .hero{padding:72px 0 62px}
+ section{padding:60px 0}
+ .side-toggle{display:inline-flex;flex:0 0 36px;width:36px;height:36px;margin-right:4px;border-radius:4px}
+ .navlinks{gap:8px}
+ .nav-cta{font-size:12px}
+}
+@media(max-width:440px){
+ .container{width:calc(100% - 28px)}
+ .sidebar{width:50vw;min-width:0;max-width:none;padding:18px 10px}
+ .side-brand{gap:7px;padding-inline:5px;font-size:14px}
+ .side-brand-mark{width:30px;height:30px;flex-basis:30px}
+ .side-nav a{padding:10px 7px;gap:8px;font-size:11px}
+ .side-caption{padding-left:7px}
+ .nav{gap:8px}
+ .logo{gap:5px;font-size:16px}
+ .logo-mark{width:30px;height:30px;flex-basis:30px}
+ .nav-cta{padding:7px 8px;font-size:11px}
+ h1{font-size:clamp(39px,12vw,54px)}
+ .hero{padding-top:60px}
+ .terminal{margin-top:28px}
+ .card{padding:18px;min-height:unset}
+ .closing{padding:48px 18px}
+}
+
 </style>
 </head>
 <body>
