@@ -19,10 +19,58 @@ section{padding:72px 0;border-top:1px solid rgba(255,255,255,.075)}.section-head
 .closing{text-align:center;padding:65px 24px;border:1px solid #222a38;background:radial-gradient(ellipse at 50% 0,rgba(52,100,210,.14),transparent 68%),#050609}.closing p{max-width:540px;margin:0 auto;color:var(--muted);font-size:14px}.closing .actions{margin-top:22px}footer{padding:26px 0;border-top:1px solid rgba(255,255,255,.08);color:#818997;font-size:12px}.foot{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}.footlinks{display:flex;gap:18px;flex-wrap:wrap}:focus-visible{outline:2px solid #78aaff;outline-offset:4px}::selection{background:rgba(59,130,246,.35);color:#fff}
 @media(max-width:760px){.container{width:min(var(--max),calc(100% - 30px))}.nav{height:62px}.navlinks{gap:12px}.navlinks a:not(.nav-cta){display:none}.hero{padding:72px 0 62px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.split{grid-template-columns:1fr;gap:15px}.road{grid-template-columns:1fr}section{padding:58px 0}.card{min-height:140px}}@media(max-width:440px){.grid{grid-template-columns:1fr}.hero{padding-top:60px}.lead{font-size:15px}.nav-cta{padding:7px 10px}.logo{font-size:18px}.terminal{margin-top:32px}.term-body{padding:14px;font-size:11px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.form-demo{padding:16px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+
+:root{--sidebar-width:236px}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar-width);z-index:40;display:flex;flex-direction:column;padding:22px 14px;background:rgba(5,6,9,.96);backdrop-filter:blur(18px);border-right:1px solid #222832;transform:translateX(0);transition:transform .22s ease}
+.side-brand{display:flex;align-items:center;gap:10px;padding:4px 9px 24px;margin-bottom:13px;border-bottom:1px solid #222832;font-size:16px;font-weight:720;letter-spacing:-.04em}
+.side-brand-mark{display:grid;place-items:center;width:32px;height:32px;border:1px solid #35435d;background:linear-gradient(140deg,#14284a,#11101f);color:#a8caff;font:13px ui-monospace,monospace}
+.side-caption{padding:12px 10px 8px;color:#697487;font:10px ui-monospace,monospace;letter-spacing:.15em;text-transform:uppercase}
+.side-nav{display:grid;gap:4px}
+.side-nav a{display:flex;align-items:center;gap:11px;padding:10px 11px;border:1px solid transparent;color:#9ca6b7;font-size:12px;transition:background .15s,border-color .15s,color .15s}
+.side-nav a:hover,.side-nav a.active{color:#f5f7fa;background:#10141d;border-color:#252d3b}
+.side-nav .side-icon{width:17px;text-align:center;color:#8abaff;font:13px ui-monospace,monospace}
+.side-bottom{margin-top:auto;padding:16px 10px 0;border-top:1px solid #222832;color:#697487;font-size:10px;line-height:1.7}
+.side-bottom strong{display:block;color:#b8c6dc;font-weight:550}
+.side-toggle{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;margin-right:2px;border:1px solid #343a46;background:#080a0e;color:#e9edf5;font-size:18px;line-height:1}
+header,main,footer{margin-left:var(--sidebar-width)}
+.nav{justify-content:flex-start}
+.navlinks{margin-left:auto}
+.sidebar-overlay{display:none}
+@media(max-width:900px){
+ .sidebar{transform:translateX(-105%);box-shadow:none}
+ body.sidebar-open .sidebar{transform:translateX(0);box-shadow:20px 0 70px #000b}
+ .sidebar-overlay{display:block;position:fixed;inset:0;z-index:35;background:rgba(0,0,0,.65);opacity:0;pointer-events:none;transition:opacity .2s}
+ body.sidebar-open .sidebar-overlay{opacity:1;pointer-events:auto}
+ header,main,footer{margin-left:0}
+ .side-toggle{display:inline-flex}
+}
+@media(min-width:901px){.side-toggle{display:none}}
+@media(prefers-reduced-motion:reduce){.sidebar,.sidebar-overlay{transition:none}}
+
 </style>
 </head>
 <body>
+
+<aside class="sidebar" id="docsSidebar" aria-label="Điều hướng tài liệu">
+ <a class="side-brand" href="#top"><span class="side-brand-mark">{ }</span><span>OCode<span class="dot">.js</span><small style="display:block;color:#7c8492;font-size:10px;font-weight:500;letter-spacing:.08em;margin-top:2px">DOCUMENTATION</small></span></a>
+ <div class="side-caption">Tài liệu</div>
+ <nav class="side-nav" aria-label="Mục tài liệu">
+  <a class="active" href="#top"><span class="side-icon">⌂</span>Tổng quan</a>
+  <a href="#guide"><span class="side-icon">⌘</span>Hướng dẫn bắt đầu</a>
+  <a href="#architecture"><span class="side-icon">◈</span>Kiến trúc</a>
+  <a href="#api"><span class="side-icon">{ }</span>API reference</a>
+  <a href="#forms"><span class="side-icon">▤</span>Forms & components</a>
+ </nav>
+ <div class="side-caption">Tài nguyên</div>
+ <nav class="side-nav" aria-label="Liên kết dự án">
+  <a href="OCodejs-by-Velclaw-Full-Rebrand.pdf" target="_blank" rel="noreferrer"><span class="side-icon">↗</span>Brand brief PDF</a>
+  <a href="https://github.com/Velclaw/OCodejs" target="_blank" rel="noreferrer"><span class="side-icon">⌘</span>GitHub repository</a>
+ </nav>
+ <div class="side-bottom"><strong>OCode.js · Velclaw</strong>Small tools. Solid foundations.</div>
+</aside>
+<div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
 <header><div class="container nav">
+<button class="side-toggle" id="sidebarToggle" aria-label="Mở điều hướng" aria-expanded="false">☰</button>
 <a class="logo" href="#top" aria-label="OCode.js docs"><span class="logo-mark">{ }</span><span>OCode<span class="dot">.js</span> <span style="color:#7c8492;font-size:12px;font-weight:500">Docs</span></span></a>
 <nav class="navlinks" aria-label="Điều hướng chính"><a href="#guide">Hướng dẫn</a><a href="#architecture">Kiến trúc</a><a href="#api">API</a><a href="#forms">Forms</a><a class="nav-cta" href="https://github.com/Velclaw/OCodejs" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
 </div></header>
@@ -86,6 +134,30 @@ section{padding:72px 0;border-top:1px solid rgba(255,255,255,.075)}.section-head
 <footer><div class="container foot"><a class="logo" href="#top"><span class="logo-mark">{ }</span><span>OCode<span class="dot">.js</span></span></a><div>Documentation · Velclaw</div><nav class="footlinks"><a href="https://github.com/Velclaw/OCodejs" target="_blank" rel="noreferrer">GitHub ↗</a><a href="OCodejs-by-Velclaw-Full-Rebrand.pdf" target="_blank" rel="noreferrer">Brand PDF</a></nav></div></footer>
 <script>
 (() => {
+
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+const closeSidebar = () => { document.body.classList.remove('sidebar-open'); sidebarToggle?.setAttribute('aria-expanded','false'); };
+sidebarToggle?.addEventListener('click', () => {
+ const open = document.body.classList.toggle('sidebar-open');
+ sidebarToggle.setAttribute('aria-expanded', String(open));
+});
+sidebarOverlay?.addEventListener('click', closeSidebar);
+document.addEventListener('keydown', event => { if (event.key === 'Escape') closeSidebar(); });
+document.querySelectorAll('.side-nav a[href^="#"]').forEach(link => link.addEventListener('click', () => {
+ document.querySelectorAll('.side-nav a[href^="#"]').forEach(item => item.classList.toggle('active', item === link));
+ closeSidebar();
+}));
+if ('IntersectionObserver' in window) {
+ const targets = [...document.querySelectorAll('main[id], main section[id]')];
+ const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+  if (entry.isIntersecting) {
+   document.querySelectorAll('.side-nav a[href^="#"]').forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id));
+  }
+ }), {rootMargin:'-18% 0px -68% 0px'});
+ targets.forEach(target => observer.observe(target));
+}
+
 document.querySelectorAll('[data-copy]').forEach(button => button.addEventListener('click', async () => {
   const original = button.textContent;
   try { await navigator.clipboard.writeText(button.dataset.copy); button.textContent = 'Đã sao chép'; }
