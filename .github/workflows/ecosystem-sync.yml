@@ -139,7 +139,7 @@ jobs:
             if [ -z "$existing" ]; then
               gh pr create --repo "$repo" --base "$base" --head "$branch" \
                 --title "chore(sync): OCode.js documentation snapshot" \
-                --body "Automated documentation snapshot from [zskbot/docs-ocodejs](https://github.com/zskbot/docs-ocodejs) at commit $SOURCE_SHA.\n\nOnly the isolated path `$dest/` is updated. Existing application files and production deployments are not changed by this workflow."
+                --body "Automated documentation snapshot from https://github.com/zskbot/docs-ocodejs at commit $SOURCE_SHA. Only the isolated path $dest/ is updated. Existing application files and production deployments are not changed by this workflow."
             else
               echo "Updated existing sync PR: $existing"
             fi
