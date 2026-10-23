@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "source": "zskbot/docs-ocodejs",
+  "source_branch": "main",
+  "targets": [
+    {
+      "repository": "zskbot/docs",
+      "destination": "ecosystem/ocodejs",
+      "include": ["docs", "content", "README.md", "index.html"]
+    },
+    {
+      "repository": "Velclaw/OCodejs",
+      "destination": "docs/ecosystem/central",
+      "include": ["docs", "content", "README.md"]
+    },
+    {
+      "repository": "Velclaw/VelclawHost",
+      "destination": "docs/ocodejs-ecosystem",
+      "include": ["docs", "content", "README.md"]
+    }
+  ]
+}

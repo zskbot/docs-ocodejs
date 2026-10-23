@@ -1,0 +1,135 @@
+name: OCode.js Ecosystem Sync
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - ".github/workflows/ecosystem-sync.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ocodejs-ecosystem-sync
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    name: Validate sync configuration
+    runs-on: ubuntu-latest
+    outputs:
+      source_sha: ${{ steps.meta.outputs.source_sha }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Validate registry and source paths
+        id: meta
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const registry = JSON.parse(fs.readFileSync('.sync/targets.json', 'utf8'));
+          if (registry.version !== 1 || !Array.isArray(registry.targets) || registry.targets.length === 0) {
+            throw new Error('Invalid .sync/targets.json registry');
+          }
+          for (const target of registry.targets) {
+            if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(target.repository)) throw new Error('Invalid repository: ' + target.repository);
+            if (!/^[A-Za-z0-9._/-]+$/.test(target.destination) || target.destination.startsWith('/') || target.destination.split('/').includes('..')) throw new Error('Unsafe destination: ' + target.destination);
+            if (!Array.isArray(target.include) || target.include.some(p => !['docs', 'content', 'README.md', 'index.html'].includes(p))) throw new Error('Unsupported source include for ' + target.repository);
+          }
+          console.log('Registry valid:', registry.targets.length, 'targets');
+          NODE
+          echo "source_sha=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+      - name: Check source files
+        run: |
+          test -d docs
+          test -d content
+          test -f README.md
+          test -f index.html
+
+  create-sync-pull-requests:
+    name: Prepare sync PRs
+    needs: prepare
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout canonical docs
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          path: canonical
+      - name: Verify cross-repository token
+        env:
+          SYNC_TOKEN: ${{ secrets.OCODEJS_SYNC_TOKEN }}
+        run: |
+          if [ -z "$SYNC_TOKEN" ]; then
+            echo "::error::Missing OCODEJS_SYNC_TOKEN. Add a fine-grained token or GitHub App token with Contents: read/write and Pull requests: read/write on the three target repositories."
+            exit 1
+          fi
+      - name: Create isolated target branches and PRs
+        env:
+          GH_TOKEN: ${{ secrets.OCODEJS_SYNC_TOKEN }}
+          SOURCE_SHA: ${{ needs.prepare.outputs.source_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          registry="canonical/.sync/targets.json"
+          count=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$registry','utf8')).targets.length)")
+          for ((i=0; i<count; i++)); do
+            repo=$(node -e "const c=JSON.parse(require('fs').readFileSync('$registry','utf8')); console.log(c.targets[$i].repository)")
+            dest=$(node -e "const c=JSON.parse(require('fs').readFileSync('$registry','utf8')); console.log(c.targets[$i].destination)")
+            include=$(node -e "const c=JSON.parse(require('fs').readFileSync('$registry','utf8')); console.log(c.targets[$i].include.join('\n'))")
+            base=$(gh repo view "$repo" --json defaultBranchRef --jq '.defaultBranchRef.name')
+            branch="sync/ocodejs-docs-${SOURCE_SHA:0:8}"
+            work="target-$i"
+            auth_header=$(printf "x-access-token:%s" "$GH_TOKEN" | base64 -w0)
+            git -c http.extraheader="AUTHORIZATION: basic $auth_header" clone --depth 1 --branch "$base" "https://github.com/$repo.git" "$work"
+            unset auth_header
+            cd "$work"
+            git config user.name "ocodejs-ecosystem-sync[bot]"
+            git config user.email "208982+github-actions[bot]@users.noreply.github.com"
+            git checkout -b "$branch"
+            mkdir -p "$dest"
+            while IFS= read -r source; do
+              [ -n "$source" ] || continue
+              if [ -d "../canonical/$source" ]; then
+                mkdir -p "$dest/$source"
+                cp -R "../canonical/$source/." "$dest/$source/"
+              elif [ -f "../canonical/$source" ]; then
+                case "$source" in
+                  README.md) cp "../canonical/$source" "$dest/README.source.md" ;;
+                  index.html) cp "../canonical/$source" "$dest/index.source.html" ;;
+                esac
+              else
+                echo "::error::Configured source path not found: $source"
+                exit 1
+              fi
+            done <<< "$include"
+            cat > "$dest/SYNC-METADATA.md" <<EOF
+          # OCode.js canonical documentation snapshot
+
+          - Source repository: https://github.com/zskbot/docs-ocodejs
+          - Source commit: $SOURCE_SHA
+          - Target repository: $repo
+          - Generated by: OCode.js Ecosystem Sync
+
+          This directory is an isolated snapshot. It does not overwrite the target repository's existing application files.
+          EOF
+            git add "$dest"
+            if git diff --cached --quiet; then
+              echo "No changes for $repo; skipping PR."
+              cd ..
+              continue
+            fi
+            git commit -m "chore(sync): update OCode.js documentation snapshot"
+            git push --force origin "$branch"
+            existing=$(gh pr list --repo "$repo" --head "$branch" --state open --json url --jq '.[0].url // empty')
+            if [ -z "$existing" ]; then
+              gh pr create --repo "$repo" --base "$base" --head "$branch" \
+                --title "chore(sync): OCode.js documentation snapshot" \
+                --body "Automated documentation snapshot from [zskbot/docs-ocodejs](https://github.com/zskbot/docs-ocodejs) at commit $SOURCE_SHA.\n\nOnly the isolated path `$dest/` is updated. Existing application files and production deployments are not changed by this workflow."
+            else
+              echo "Updated existing sync PR: $existing"
+            fi
+            cd ..
+          done
