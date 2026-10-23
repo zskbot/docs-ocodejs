@@ -68,11 +68,20 @@ jobs:
           fi
       - name: Create isolated target branches and PRs
         env:
-          GH_TOKEN: ${{ secrets.OCODEJS_SYNC_TOKEN }}
+          SYNC_TOKEN: ${{ secrets.OCODEJS_SYNC_TOKEN }}
           SOURCE_SHA: ${{ needs.prepare.outputs.source_sha }}
         shell: bash
         run: |
           set -euo pipefail
+          # GitHub tokens must not contain CR/LF or whitespace in HTTP Authorization headers.
+          SYNC_TOKEN="$(printf '%s' "$SYNC_TOKEN" | tr -d '\r\n')"
+          if [ -z "$SYNC_TOKEN" ] || [[ "$SYNC_TOKEN" =~ [[:space:]] ]]; then
+            echo "::error::OCODEJS_SYNC_TOKEN is empty or contains whitespace. Recreate the token and save it without spaces or newlines."
+            exit 1
+          fi
+          echo "::add-mask::$SYNC_TOKEN"
+          export GH_TOKEN="$SYNC_TOKEN"
+          unset SYNC_TOKEN
           registry="canonical/.sync/targets.json"
           count=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$registry','utf8')).targets.length)")
           for ((i=0; i<count; i++)); do
