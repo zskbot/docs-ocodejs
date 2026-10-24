@@ -408,6 +408,61 @@ html body .hero .hero-wordmark.hero-logo-image img {
 </style>
 </style>
 
+
+<style id="ocode-tight-hero-spacing">
+/* Keep the hero content compact from the navbar downward. */
+html body main .container.hero {
+  min-height: 0 !important;
+  height: auto !important;
+  padding-top: 30px !important;
+  padding-bottom: 44px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: 0 !important;
+}
+html body main .hero .eyebrow {
+  margin-top: 0 !important;
+  margin-bottom: 12px !important;
+}
+html body main .hero .hero-wordmark.hero-logo-image {
+  margin-top: 0 !important;
+  margin-bottom: 18px !important;
+}
+html body main .hero h1 {
+  margin-top: 0 !important;
+  margin-bottom: 18px !important;
+}
+html body main .hero .lead {
+  margin-top: 0 !important;
+}
+html body main .hero .actions {
+  margin-top: 24px !important;
+}
+@media (max-width: 900px) {
+  html body main .container.hero {
+    padding-top: 22px !important;
+    padding-bottom: 34px !important;
+  }
+}
+@media (max-width: 600px) {
+  html body main .container.hero {
+    padding-top: 14px !important;
+    padding-bottom: 28px !important;
+  }
+  html body main .hero .eyebrow {
+    margin-bottom: 10px !important;
+  }
+  html body main .hero .hero-wordmark.hero-logo-image {
+    margin-bottom: 14px !important;
+  }
+  html body main .hero h1 {
+    margin-bottom: 14px !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
