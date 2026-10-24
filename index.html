@@ -23,7 +23,19 @@ section{padding:72px 0;border-top:1px solid rgba(255,255,255,.075)}.section-head
 :root{--sidebar-width:236px}
 .sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar-width);z-index:40;display:flex;flex-direction:column;padding:22px 14px;background:rgba(5,6,9,.96);backdrop-filter:blur(18px);border-right:1px solid #222832;transform:translateX(0);transition:transform .22s ease}
 .side-brand{display:flex;align-items:center;gap:10px;padding:4px 9px 24px;margin-bottom:13px;border-bottom:1px solid #222832;font-size:16px;font-weight:720;letter-spacing:-.04em}
-.side-brand-mark{display:block;width:34px;height:34px;object-fit:contain;flex:0 0 34px;background:transparent;border:0;mix-blend-mode:screen}
+.side-brand-mark{display:block;width:34px;height:34px;flex:0 0 34px;color:#f7f8fa}
+.brand-symbol{display:inline-flex;align-items:center;gap:10px;white-space:nowrap}
+.brand-symbol svg{display:block;width:34px;height:34px;flex:none}
+.brand-word{font-weight:780;letter-spacing:-.045em;color:#f7f8fa}
+.brand-word .brand-js{font-size:.72em;letter-spacing:-.03em;color:#d5d9e1}
+.logo .brand-symbol{gap:9px}
+.logo .brand-symbol svg{width:30px;height:30px}
+.logo .brand-slash{color:#737985;font-weight:300;font-size:1.5em;margin:0 2px}
+.hero-wordmark{margin:0 0 16px;overflow:hidden;font-size:clamp(48px,10vw,112px);font-weight:850;line-height:.9;letter-spacing:-.055em;color:transparent;-webkit-text-stroke:1.4px transparent;background:linear-gradient(115deg,#6eaefb,#8a77d8 68%,#b36be9);background-clip:text;-webkit-background-clip:text;position:relative}
+.hero-wordmark span{display:inline-block;color:transparent;-webkit-text-stroke:1.5px #6489c8;background:none}
+.hero-wordmark small{font-size:.22em;letter-spacing:-.02em;-webkit-text-stroke:0;color:#a8b0bf;vertical-align:baseline;margin-left:5px}
+.hero .eyebrow{letter-spacing:.13em}
+@media(max-width:600px){.hero-wordmark{font-size:clamp(42px,13vw,76px);margin-bottom:20px}}
 .side-caption{padding:12px 10px 8px;color:#697487;font:10px ui-monospace,monospace;letter-spacing:.15em;text-transform:uppercase}
 .side-nav{display:grid;gap:4px}
 .side-nav a{display:flex;align-items:center;gap:11px;padding:10px 11px;border:1px solid transparent;color:#9ca6b7;font-size:12px;transition:background .15s,border-color .15s,color .15s}
@@ -154,7 +166,7 @@ header{background:rgba(5,5,5,.82);border-bottom-color:#252529}
 <body>
 
 <aside class="sidebar" id="docsSidebar" aria-label="Điều hướng tài liệu">
- <a class="side-brand" href="#top"><img class="side-brand-mark" src="https://raw.githubusercontent.com/zskbot/pages_logo/main/OCode.js/ocode-logo.gif" alt="OCode.js logo"><span>OCode<span class="dot">.js</span><small style="display:block;color:#7c8492;font-size:10px;font-weight:500;letter-spacing:.08em;margin-top:2px">DOCUMENTATION</small></span></a>
+ <a class="side-brand" href="#top"><svg class="side-brand-mark" viewBox="0 0 40 40" role="img" aria-label="OCode.js mark"><path d="M20 3 38 36H2Z" fill="currentColor"/></svg><span><span class="brand-word">OCODE<span class="brand-js">.js</span></span><small style="display:block;color:#7c8492;font-size:10px;font-weight:500;letter-spacing:.08em;margin-top:2px">DOCUMENTATION</small></span></a>
  <div class="side-caption">Workspace</div>
  <nav class="side-nav" aria-label="Mục tài liệu">
   <a class="active" href="#top"><span class="side-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg></span>Tổng quan</a>
@@ -173,12 +185,13 @@ header{background:rgba(5,5,5,.82);border-bottom-color:#252529}
 <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
 <header><div class="container nav">
 <button class="side-toggle" id="sidebarToggle" aria-label="Mở điều hướng" aria-expanded="false">☰</button>
-<a class="logo" href="#top" aria-label="OCode.js docs"><img class="logo-mark" src="https://raw.githubusercontent.com/zskbot/pages_logo/main/OCode.js/ocode-logo.gif" alt="OCode.js logo"><span>OCode<span class="dot">.js</span> <span style="color:#7c8492;font-size:12px;font-weight:500">Docs</span></span></a>
+<a class="logo" href="#top" aria-label="OCode.js docs"><span class="brand-symbol"><svg viewBox="0 0 40 40" role="img" aria-label="OCode.js mark"><path d="M20 3 38 36H2Z" fill="currentColor"/></svg><span class="brand-slash">/</span><span class="brand-word">OCODE<span class="brand-js">.js</span></span></span><span style="color:#7c8492;font-size:12px;font-weight:500;margin-left:8px">Docs</span></a>
 <nav class="navlinks" aria-label="Điều hướng chính"><a href="#guide">Hướng dẫn</a><a href="#architecture">Kiến trúc</a><a href="#api">API</a><a href="#forms">Forms</a><a class="nav-cta" href="https://github.com/Velclaw/OCodejs" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
 </div></header>
 <main id="top">
 <div class="container hero">
 <div class="eyebrow"><span class="status-dot"></span> OCODE.JS DOCUMENTATION · BY VELCLAW</div>
+<div class="hero-wordmark" aria-label="OCODE.js"><span>OCODE</span><small>.js</small></div>
 <h1>Build with OCode.js.<br><span class="gradient">Keep it precise.</span></h1>
 <p class="lead">Tài liệu OCode.js với cùng ngôn ngữ giao diện của repository chính: nền đen sâu, đường viền mảnh, khung terminal vuông góc, nút rõ ràng và biểu mẫu tối giản.</p>
 <div class="actions"><a class="btn btn-primary" href="#guide">Bắt đầu đọc <span>↗</span></a><a class="btn" href="OCodejs-by-Velclaw-Full-Rebrand.pdf" target="_blank" rel="noreferrer">Xem brand brief PDF</a><a class="btn" href="https://github.com/Velclaw/OCodejs" target="_blank" rel="noreferrer">Mã nguồn ↗</a></div>
