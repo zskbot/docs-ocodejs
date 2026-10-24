@@ -28,3 +28,4 @@ Make documentation changes on a branch and submit a pull request. Preserve sourc
 
 
 - **Machine-readable repository inventory:** [ecosystem/repositories.json](ecosystem/repositories.json) · [validation script](scripts/validate-ecosystem.py)
+- **Operations and release gates:** [docs/OPERATIONS-AND-RELEASE-GATES.md](docs/OPERATIONS-AND-RELEASE-GATES.md)
