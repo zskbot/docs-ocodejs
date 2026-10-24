@@ -260,6 +260,35 @@ html body .hero .terminal {
 }
 </style>
 
+<style id="ocode-install-command-centering">
+/* Keep the install command independent from .copy, which aligns terminal copy buttons to the right. */
+html body .hero .actions > .install-command {
+  display: flex;
+  position: static;
+  float: none;
+  margin: 0 auto !important;
+  justify-content: center;
+  align-items: center;
+  width: max-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  align-self: center;
+  transform: none;
+}
+html body .hero .actions > a.btn {
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  margin: 0 auto !important;
+  justify-content: center;
+  box-sizing: border-box;
+}
+html body .hero .actions {
+  width: 100%;
+  align-items: center;
+}
+</style>
+
 </head>
 <body>
 
@@ -292,7 +321,7 @@ html body .hero .terminal {
 <div class="hero-wordmark" aria-label="OCODE.js"><span>OCODE</span></div>
 <h1>The AI Framework<br><span class="gradient">for Chatbot Development</span></h1>
 <p class="lead">OCode.js helps you build high-quality AI chatbots and agents with a modular JavaScript framework and reusable components.</p>
-<div class="actions"><button class="btn btn-primary copy" data-copy="npm install ocodejs@latest" type="button"><span style="color:#8c8c92;font-family:ui-monospace,monospace">$</span> npm install ocodejs@latest <span aria-hidden="true">▢</span></button><a class="btn" href="#guide">Explore documentation ↗</a></div>
+<div class="actions"><button class="btn btn-primary install-command" data-copy="npm install ocodejs@latest" type="button"><span style="color:#8c8c92;font-family:ui-monospace,monospace">$</span> npm install ocodejs@latest <span aria-hidden="true">▢</span></button><a class="btn" href="#guide">Explore documentation ↗</a></div>
 <div class="terminal"><div class="term-top"><span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span><span class="term-title">quick start / terminal</span><button class="copy" data-copy="git clone https://github.com/Velclaw/OCodejs.git&#10;cd OCodejs&#10;npm install">Sao chép</button></div><div class="term-body"><div><span class="prompt">$</span>git clone https://github.com/Velclaw/OCodejs.git</div><div><span class="prompt">$</span>cd OCodejs</div><div><span class="prompt">$</span>npm install</div><div class="comment"># Kiểm tra scripts và README trước khi chạy test/build</div></div></div>
 </div>
 <section id="guide"><div class="container">
