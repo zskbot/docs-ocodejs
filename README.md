@@ -29,3 +29,6 @@ Make documentation changes on a branch and submit a pull request. Preserve sourc
 
 - **Machine-readable repository inventory:** [ecosystem/repositories.json](ecosystem/repositories.json) · [validation script](scripts/validate-ecosystem.py)
 - **Operations and release gates:** [docs/OPERATIONS-AND-RELEASE-GATES.md](docs/OPERATIONS-AND-RELEASE-GATES.md)
+- **Implementation roadmap:** [docs/ROADMAP.md](docs/ROADMAP.md)
+- **Documentation, testing and change-control standard:** [docs/DOCUMENTATION-AND-QUALITY-GATES.md](docs/DOCUMENTATION-AND-QUALITY-GATES.md)
+- **Protected canonical UI rules:** [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)
