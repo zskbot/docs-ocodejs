@@ -25,3 +25,6 @@ The recursive inventory and targeted source findings are documented in [SOURCE-A
 ## Contributing
 
 Make documentation changes on a branch and submit a pull request. Preserve source links, licensing, and attribution; never commit credentials or populated environment files.
+
+
+- **Machine-readable repository inventory:** [ecosystem/repositories.json](ecosystem/repositories.json) · [validation script](scripts/validate-ecosystem.py)
