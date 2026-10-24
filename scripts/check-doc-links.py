@@ -10,6 +10,9 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 DOC_EXTENSIONS = {".md", ".mdx"}
+# Imported source corpora are preserved snapshots, not documentation authored by this hub.
+# Validate first-party docs instead of treating upstream-root-relative links as local paths.
+EXCLUDED_DOC_TREES = {"content", "files", ".agents", "skills", "canonical"}
 LINK_RE = re.compile(r"!?(?:\[[^\]]*\])\((<[^>]+>|[^)]+)\)")
 HEADING_RE = re.compile(r"^#{1,6}\s+(.+?)\s*#*\s*$")
 HTML_ID_RE = re.compile(r'\bid=["\']([^"\']+)["\']', re.I)
@@ -48,6 +51,7 @@ def main() -> int:
         p for p in ROOT.rglob("*")
         if p.is_file() and p.suffix.lower() in DOC_EXTENSIONS
         and not any(part in {".git", "node_modules"} for part in p.parts)
+        and (p.relative_to(ROOT).parts[0] not in EXCLUDED_DOC_TREES)
     )
     for source in docs:
         try:

@@ -8,6 +8,7 @@ Central index for OCode.js documentation and the related Velclaw engineering eco
 - **Canonical alignment and remediation plan:** [docs/CANONICAL-ALIGNMENT-PLAN.md](docs/CANONICAL-ALIGNMENT-PLAN.md)
 - **Integration contracts and release gates:** [docs/INTEGRATION-MATRIX.md](docs/INTEGRATION-MATRIX.md)
 - **Phased verification plan:** [docs/VERIFICATION-PLAN.md](docs/VERIFICATION-PLAN.md)
+- **Ecosystem development roadmap:** [docs/ECOSYSTEM-ROADMAP-2026-10.md](docs/ECOSYSTEM-ROADMAP-2026-10.md)
 - **Repository index and audit checklist:** [docs/REPOSITORY-INDEX.md](docs/REPOSITORY-INDEX.md)
 - **Ecosystem audit results:** [docs/AUDIT-RUN-2026-10-23.md](docs/AUDIT-RUN-2026-10-23.md)
 - **Source-level implementation findings:** [docs/IMPLEMENTATION-FINDINGS.md](docs/IMPLEMENTATION-FINDINGS.md)
