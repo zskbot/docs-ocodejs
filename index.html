@@ -203,6 +203,33 @@ header{background:rgba(5,5,5,.82);border-bottom-color:#252529}
 /* OCODE_SQUARE_CONTROLS: sharp-corner UI requested for mobile */
 .btn,.copy,.terminal,.nav-cta,.side-toggle,.hero .btn-primary,.hero .btn:not(.btn-primary){border-radius:0!important}
 </style>
+<style id="ocode-square-ui-final">
+/* Final square-corner override: load after every existing stylesheet */
+html body .btn,
+html body a.btn,
+html body button.btn,
+html body .copy,
+html body button.copy,
+html body .terminal,
+html body .term-top,
+html body .nav-cta,
+html body .side-toggle,
+html body .hero .btn-primary,
+html body .hero .btn:not(.btn-primary),
+html body .sidebar,
+html body .side-brand,
+html body .navlinks a,
+html body .eyebrow,
+html body .code-block,
+html body pre,
+html body code,
+html body input,
+html body select,
+html body textarea {
+  border-radius: 0 !important;
+}
+</style>
+
 </head>
 <body>
 
