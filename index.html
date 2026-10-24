@@ -388,6 +388,28 @@ html body .hero .hero-wordmark.hero-logo-image img {
   border-radius: 0 !important;
   background: transparent !important;
 }
+
+
+<style id="ocode-hero-wordmark-visible">
+html body .hero .hero-wordmark.hero-logo-image {
+  display:flex!important; justify-content:center!important; align-items:center!important;
+  width:100%!important; min-height:0!important; height:auto!important;
+  margin:0 auto 26px!important; padding:0!important; overflow:visible!important;
+  background:none!important; -webkit-text-stroke:0!important; filter:none!important;
+  line-height:1!important; font-size:clamp(64px,14vw,142px)!important;
+  font-weight:850!important; letter-spacing:-.075em!important; color:#fff!important;
+}
+html body .hero .hero-wordmark-main {
+  display:inline-block!important; color:#f7f8fa!important;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+  font-weight:850!important; letter-spacing:-.075em!important;
+  text-shadow:0 0 36px rgba(115,145,255,.18);
+}
+html body .hero .hero-wordmark-js {
+  color:#9ca9c2!important; font-size:.36em!important; letter-spacing:-.025em!important;
+  vertical-align:baseline!important; margin-left:5px!important;
+}
+</style>
 </style>
 
 </head>
@@ -419,7 +441,7 @@ html body .hero .hero-wordmark.hero-logo-image img {
 <main id="top">
 <div class="container hero">
 <div class="eyebrow"><span class="status-dot"></span> OPEN-SOURCE AI FRAMEWORK · BY VELCLAW</div>
-<div class="hero-wordmark hero-logo-image" aria-label="OCODE.js"><img src="https://raw.githubusercontent.com/zskbot/pages_logo/main/OCode.js/ocode-logo.gif" alt="OCODE.js logo" fetchpriority="high"></div>
+<div class="hero-wordmark hero-logo-image" role="img" aria-label="OCODE.js"><span class="hero-wordmark-main">OCODE<span class="hero-wordmark-js">.js</span></span></div>
 <h1>The AI Framework<br><span class="gradient">for Chatbot Development</span></h1>
 <p class="lead">OCode.js helps you build high-quality AI chatbots and agents with a modular JavaScript framework and reusable components.</p>
 <div class="actions"><button class="btn btn-primary install-command" data-copy="npm install ocodejs@latest" type="button"><span style="color:#8c8c92;font-family:ui-monospace,monospace">$</span> npm install ocodejs@latest <span aria-hidden="true">▢</span></button><a class="btn" href="#guide">Explore documentation ↗</a></div>
