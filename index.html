@@ -439,6 +439,35 @@ html body main .hero .actions {
 }
 </style>
 
+<style id="ocode-thin-bright-borders">
+/* Owner-requested refinement: thinner, brighter neutral borders. */
+:root { --line: #3a3a3a !important; }
+html body header,
+html body .sidebar,
+html body .side-brand,
+html body .eyebrow,
+html body .nav-cta,
+html body .btn,
+html body .terminal,
+html body .term-top,
+html body .copy,
+html body .card,
+html body .closing,
+html body .field input,
+html body .field select,
+html body .field textarea,
+html body table,
+html body th,
+html body td,
+html body .side-nav a {
+  border-width: 1px !important;
+  border-color: rgba(255,255,255,.28) !important;
+}
+html body header { border-bottom-color: rgba(255,255,255,.3) !important; }
+html body .btn-primary { border-color: rgba(255,255,255,.85) !important; }
+html body .term-top { border-bottom-color: rgba(255,255,255,.22) !important; }
+</style>
+
 <!-- CANONICAL UI POLICY: This OCode.js interface is the protected default design for the Velclaw/zskbot ecosystem. Do not alter layout, colors, logo, spacing, typography, navigation, or responsive behavior without an explicit owner request. See DESIGN_SYSTEM.md. -->
 <meta name="design-system" content="OCode.js canonical default; protected against unrequested UI changes; see DESIGN_SYSTEM.md">
 </head>
