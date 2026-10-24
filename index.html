@@ -326,6 +326,41 @@ html body .hero .actions > a.btn {
 }
 </style>
 
+<style id="ocode-mobile-inline-actions-final">
+/* Mobile: keep both hero actions on one row by sizing each to half the container. */
+@media (max-width: 600px) {
+  html body main#top.container.hero > .actions {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  html body main#top.container.hero > .actions > .install-command,
+  html body main#top.container.hero > .actions > a.btn {
+    display: flex !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    min-height: 52px !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 8px 6px !important;
+    box-sizing: border-box !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    text-align: center !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 4px !important;
+    font-size: clamp(10px, 2.8vw, 13px) !important;
+    line-height: 1.35 !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
