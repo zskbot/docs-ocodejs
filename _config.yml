@@ -1,6 +1,11 @@
 # GitHub Pages / Jekyll configuration for the static documentation hub.
-# `content/` is an imported upstream documentation snapshot containing
-# GitHub Docs Liquid tags such as `{% data ... %}`. It is source material,
-# not part of the rendered hub, so exclude it from Jekyll's build.
+# Imported upstream snapshots contain template tags and files that are not
+# part of the rendered hub. Exclude them from Jekyll's content pipeline.
 exclude:
   - content
+  - files
+  - .agents
+  - skills
+  - canonical
+  - node_modules
+  - vendor
