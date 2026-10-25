@@ -63,7 +63,7 @@ jobs:
           SYNC_TOKEN: ${{ secrets.OCODEJS_SYNC_TOKEN }}
         run: |
           if [ -z "$SYNC_TOKEN" ]; then
-            echo "::error::Missing OCODEJS_SYNC_TOKEN. Add a fine-grained token or GitHub App token with Contents: read/write and Pull requests: read/write on the three target repositories."
+            echo "::error::Missing OCODEJS_SYNC_TOKEN. Add a fine-grained token or GitHub App token with Contents: read/write and Pull requests: read/write on every configured target repository."
             exit 1
           fi
       - name: Create isolated target branches and PRs
