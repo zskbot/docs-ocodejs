@@ -14,6 +14,11 @@
       "include": ["docs", "content", "README.md"]
     },
     {
+      "repository": "OCodejs/OCodejs",
+      "destination": "docs/ecosystem/canonical",
+      "include": ["docs", "content", "README.md"]
+    },
+    {
       "repository": "Velclaw/VelclawHost",
       "destination": "docs/ocodejs-ecosystem",
       "include": ["docs", "content", "README.md"]
