@@ -9,7 +9,7 @@ on:
       - "scripts/check-doc-html.py"
       - "scripts/check-doc-links.py"
       - "scripts/audit-ecosystem.py"
-      - ".github/workflows/docs-validation.yml"
+      - ".github/workflows/**"
   push:
     branches:
       - main
@@ -20,7 +20,7 @@ on:
       - "scripts/check-doc-html.py"
       - "scripts/check-doc-links.py"
       - "scripts/audit-ecosystem.py"
-      - ".github/workflows/docs-validation.yml"
+      - ".github/workflows/**"
   workflow_dispatch:
 
 permissions:
