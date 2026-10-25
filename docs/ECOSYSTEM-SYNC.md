@@ -9,7 +9,7 @@ This repository is the canonical documentation source for the OCode.js ecosystem
 - Creates one isolated snapshot directory and pull request per configured target.
 - Never deletes target files, mirrors with destructive flags, merges pull requests, or deploys production.
 - Source README and HTML are renamed to `README.source.md` and `index.source.html` inside snapshots so they cannot replace a target's root website.
-- Only allowlisted source paths are accepted. Each destination is a dedicated documentation subdirectory; target application code and root pages are out of scope.
+- Only allowlisted source paths are accepted. Each destination is a dedicated documentation subdirectory; target application code and root pages are out of scope. The accidental `docs/sercevis` prompt artifact is excluded from generated snapshots.
 - A successful sync run means snapshot PRs were prepared, not that those target websites consume the snapshot or that a Pages deployment succeeded.
 
 ## Configured targets
@@ -48,7 +48,8 @@ The sync job authenticates the token once, then checks each configured target in
 
 | Log symptom | Meaning | Required check |
 |---|---|---|
-| `Cross-repository token authenticated as ...` followed by HTTP 403 on push | The credential is valid, but cannot write to that repository or branch | Confirm the token owner has repository write access and the token includes **Contents: write** for that exact repository |
+| `Cross-repository token authenticated as ...` followed by `has no effective push permission` | The token is valid but GitHub reports no push permission for this target | Grant the token access to that exact repository with **Contents: write**; organization policy may also restrict access |
+| HTTP 403 on push after a successful permission preflight | Git transport push is still blocked despite the REST permission check | Check fine-grained token repository selection, organization token policy, SSO authorization, and branch/ruleset restrictions |
 | `Resource not accessible by personal access token` when creating a PR | The token cannot create pull requests in that target | Confirm **Pull requests: write** and that organization policy permits the token |
 | `Could not resolve to a Repository` | The token cannot see the repository, or the configured owner/name is wrong | Verify the exact repository URL and that it is included in the token's repository access selection |
 | Clone failure followed by missing-directory errors | A downstream error from continuing after clone failed | The workflow must stop that target immediately after clone failure |
