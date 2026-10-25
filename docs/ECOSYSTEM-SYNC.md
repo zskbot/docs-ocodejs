@@ -42,6 +42,19 @@ https://github.com/zskbot/docs-ocodejs/settings/secrets/actions/new
 
 Do not commit the token or put it in source files. Prefer a GitHub App token or short-lived fine-grained token over a classic PAT. Earlier sync attempts reported HTTP 403 for `Velclaw/OCodejs`; re-check the token's repository selection and Contents/Pull requests permissions before expecting all targets to pass. Never paste the token into chat, an issue, or a committed file.
 
+## Failure diagnostics
+
+The sync job authenticates the token once, then checks each configured target independently. A failure for one target must stop work for that target before any clone-dependent copy or Git command runs; the job continues to collect failures from the remaining targets and exits non-zero if any target fails.
+
+| Log symptom | Meaning | Required check |
+|---|---|---|
+| `Cross-repository token authenticated as ...` followed by HTTP 403 on push | The credential is valid, but cannot write to that repository or branch | Confirm the token owner has repository write access and the token includes **Contents: write** for that exact repository |
+| `Resource not accessible by personal access token` when creating a PR | The token cannot create pull requests in that target | Confirm **Pull requests: write** and that organization policy permits the token |
+| `Could not resolve to a Repository` | The token cannot see the repository, or the configured owner/name is wrong | Verify the exact repository URL and that it is included in the token's repository access selection |
+| Clone failure followed by missing-directory errors | A downstream error from continuing after clone failed | The workflow must stop that target immediately after clone failure |
+
+A successful `gh api user` check proves authentication only; it does not prove access to every target repository. Never print the token or place it in repository files. Once permissions or repository names are corrected, use **Actions → OCode.js Ecosystem Sync → Run workflow** on `main`. Confirm the resulting run's logs and PR links; a green validation/CI run alone does not establish successful cross-repository sync.
+
 ## Important limitation
 
 This workflow creates and updates pull requests only. It deliberately does not auto-merge them or deploy Pages. To publish a target website, that repository's build must explicitly consume the synced path or a maintainer must merge the relevant PR. Automatic PR preparation requires no per-change confirmation after the secret and permissions are configured.
