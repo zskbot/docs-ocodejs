@@ -15,7 +15,10 @@ on:
     paths:
       - "**.md"
       - "**.mdx"
+      - "index.html"
+      - "scripts/check-doc-html.py"
       - "scripts/check-doc-links.py"
+      - "scripts/audit-ecosystem.py"
       - ".github/workflows/docs-validation.yml"
   workflow_dispatch:
 
