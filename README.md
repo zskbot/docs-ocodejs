@@ -11,6 +11,7 @@ Central index for OCode.js documentation and the related Velclaw engineering eco
 - **Repository index and audit checklist:** [docs/REPOSITORY-INDEX.md](docs/REPOSITORY-INDEX.md)
 - **Ecosystem audit results:** [docs/AUDIT-RUN-2026-10-23.md](docs/AUDIT-RUN-2026-10-23.md)
 - **Source-level implementation findings:** [docs/IMPLEMENTATION-FINDINGS.md](docs/IMPLEMENTATION-FINDINGS.md)
+- **Ecosystem sync registry and access requirements:** [docs/ECOSYSTEM-SYNC.md](docs/ECOSYSTEM-SYNC.md)
 - **Brand/rebrand source document:** [OCodejs-by-Velclaw-Full-Rebrand.pdf](OCodejs-by-Velclaw-Full-Rebrand.pdf)
 - **OCode.js logo assets:** [SVG](ocodejs-logo.svg) · [Animated logo](ocodejs-animated-logo.gif) · [Black logo](ocode-logo-black.gif)
 
@@ -20,12 +21,11 @@ This hub indexes the following projects without merging their codebases: [VelCli
 
 ## Status
 
-The recursive inventory and targeted source findings are documented in [SOURCE-AUDIT.md](docs/SOURCE-AUDIT.md), with audit limits and implementation findings linked above. The content-level review and alignment plan identify product naming, runtime, domain, licensing and verification gaps that must be resolved before any documentation is treated as authoritative. This does **not** mean every file's contents have been read or every repository archive extracted. No production deployment, merge, secret migration, or database modification is performed by this change.
+The recursive inventory and targeted source findings are documented in [SOURCE-AUDIT.md](docs/SOURCE-AUDIT.md), with audit limits and implementation findings linked above. The content-level review and alignment plan identify product naming, runtime, domain, licensing and verification gaps that must be resolved before any documentation is treated as authoritative. This does **not** mean every file's contents have been read or every repository archive extracted. No production deployment, secret migration, or database modification is performed by this change.
 
 ## Contributing
 
 Make documentation changes on a branch and submit a pull request. Preserve source links, licensing, and attribution; never commit credentials or populated environment files.
-
 
 - **Machine-readable repository inventory:** [ecosystem/repositories.json](ecosystem/repositories.json) · [validation script](scripts/validate-ecosystem.py)
 - **Operations and release gates:** [docs/OPERATIONS-AND-RELEASE-GATES.md](docs/OPERATIONS-AND-RELEASE-GATES.md)
