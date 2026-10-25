@@ -2,10 +2,10 @@
 
 Read-only remote MCP server for the public [zskbot/docs-ocodejs](https://github.com/zskbot/docs-ocodejs) repository.
 
-## Endpoint
+## Live endpoint
 
-- MCP Streamable HTTP: `https://ocodejs-docs-mcp.<your-subdomain>.workers.dev/mcp`
-- Health: `https://ocodejs-docs-mcp.<your-subdomain>.workers.dev/health`
+- MCP Streamable HTTP: `https://ocodejs-docs-mcp.velclaw.workers.dev/mcp`
+- Health: `https://ocodejs-docs-mcp.velclaw.workers.dev/health`
 
 ## Tools
 
@@ -20,4 +20,4 @@ This server only reads public text files from the repository's `main` branch. It
 
 ## Connect
 
-Configure an MCP client with the deployed `/mcp` endpoint and Streamable HTTP transport. Verify the live endpoint using `/health` before connecting a client.
+Configure an MCP client with the live `/mcp` URL using Streamable HTTP transport. Verify the health endpoint before connecting a client.
