@@ -1,0 +1,6 @@
+# GitHub Pages / Jekyll configuration for the static documentation hub.
+# `content/` is an imported upstream documentation snapshot containing
+# GitHub Docs Liquid tags such as `{% data ... %}`. It is source material,
+# not part of the rendered hub, so exclude it from Jekyll's build.
+exclude:
+  - content
