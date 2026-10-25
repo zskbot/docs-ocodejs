@@ -491,6 +491,7 @@ html body .term-top { border-bottom-color: rgba(255,255,255,.22) !important; }
   <a href="#architecture"><span class="side-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></svg></span>Kiến trúc</a>
   <a href="#api"><span class="side-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4H6a2 2 0 0 0-2 2v3a3 3 0 0 1-2 3 3 3 0 0 1 2 3v3a2 2 0 0 0 2 2h2M16 4h2a2 2 0 0 1 2 2v3a3 3 0 0 0 2 3 3 3 0 0 0-2 3v3a2 2 0 0 1-2 2h-2"/></svg></span>API reference</a>
   <a href="#agent-skills"><span class="side-icon" aria-hidden="true">✳</span>Agent Skills Directory</a>
+  <a href="#openai-plugins"><span class="side-icon" aria-hidden="true">⌘</span>ChatGPT &amp; Codex Plugins</a>
   <a href="#forms"><span class="side-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 8h8M8 12h5M8 16h8"/></svg></span>Forms & components</a>
  </nav>
  <div class="side-caption">Liên kết</div>
@@ -597,6 +598,48 @@ html body .term-top { border-bottom-color: rgba(255,255,255,.22) !important; }
    </article>
   </div>
   <div class="skills-notice"><strong>Lưu ý an toàn:</strong> Skills có thể chứa chỉ dẫn và script từ bên thứ ba. Trước khi cài, hãy xem repository nguồn, đọc tệp <code>SKILL.md</code>, kiểm tra quyền truy cập và các lệnh được thực thi. Chỉ cài từ nguồn bạn tin cậy. Danh sách nền tảng/skill ở đây là danh mục tham khảo, không phải xác nhận kiểm thử tương thích của dự án OCode.js.</div>
+ </div>
+</section>
+
+<section id="openai-plugins">
+ <div class="container">
+  <div class="section-head">
+   <div class="kicker">05 / Plugin development</div>
+   <h2>Plugin Development for ChatGPT &amp; Codex</h2>
+   <p class="section-desc">Hướng dẫn kiến trúc và quy trình xây dựng plugin kết hợp Skills, MCP server và giao diện tùy chọn để kết nối ChatGPT/Codex với công cụ, dữ liệu và dịch vụ bên ngoài.</p>
+  </div>
+  <div class="grid">
+   <article class="card">
+    <div class="card-icon" aria-hidden="true">01</div>
+    <h3>Plan — Thiết kế use case</h3>
+    <p>Xác định workflow, ví dụ prompts, tool cần có, quyền truy cập và tiêu chí thành công trước khi viết mã.</p>
+    <div class="pill-row"><span class="pill">Use cases</span><span class="pill">Tool schemas</span></div>
+   </article>
+   <article class="card">
+    <div class="card-icon" aria-hidden="true">02</div>
+    <h3>Build — Skills + MCP</h3>
+    <p>Skills hướng dẫn quy trình; MCP server cung cấp tools và kết nối dịch vụ. UI chỉ thêm khi thực sự hữu ích.</p>
+    <div class="pill-row"><span class="pill">Skills</span><span class="pill">MCP</span><span class="pill">Optional UI</span></div>
+   </article>
+   <article class="card">
+    <div class="card-icon" aria-hidden="true">03</div>
+    <h3>Secure — Auth &amp; privacy</h3>
+    <p>Áp dụng xác thực/phân quyền theo nhu cầu, xác minh token phía server, giới hạn dữ liệu và bảo vệ secrets.</p>
+    <div class="pill-row"><span class="pill">OAuth 2.1</span><span class="pill">Least privilege</span></div>
+   </article>
+   <article class="card">
+    <div class="card-icon" aria-hidden="true">04</div>
+    <h3>Test &amp; publish</h3>
+    <p>Kiểm thử tool, lỗi, quyền và UI trên các bề mặt hỗ trợ; rà soát metadata, gửi duyệt và theo dõi sau phát hành.</p>
+    <div class="pill-row"><span class="pill">Validation</span><span class="pill">Review</span><span class="pill">Maintenance</span></div>
+   </article>
+  </div>
+  <div class="road" style="margin-top:12px">
+   <div class="road-item"><strong>Plugin examples</strong><span>Computer Use · Chrome Control · Spreadsheets · Presentations · Data Analytics · GitHub triage</span></div>
+   <div class="road-item"><strong>Developer standards</strong><span>Plugin guidelines · UI guidelines · Metadata · Security &amp; privacy · Authentication</span></div>
+  </div>
+  <div class="skills-notice"><strong>Quan trọng:</strong> UI là tùy chọn; không phải plugin nào cũng cần MCP server. Chỉ yêu cầu quyền tối thiểu, xác minh quyền ở phía server và rà soát kỹ mã/script bên thứ ba trước khi chạy.</div>
+  <p class="section-desc" style="margin-top:16px"><a class="text-link" href="docs/OPENAI-PLUGIN-DEVELOPMENT.md">Đọc hướng dẫn phát triển Plugin đầy đủ ↗</a> · <a class="text-link" href="https://developers.openai.com/plugins" target="_blank" rel="noopener noreferrer">OpenAI Developers ↗</a></p>
  </div>
 </section>
 
