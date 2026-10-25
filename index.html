@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#000000">
-<meta name="description" content="OCode.js documentation — tài liệu, API và kiến trúc dự án của Velclaw.">
+<meta name="description" content="Tài liệu OCode.js: thư viện tiện ích JavaScript/TypeScript, API và hướng dẫn sử dụng.">
 <title>OCode.js Docs — Small tools. Solid foundations.</title>
 <style>
 :root{color-scheme:dark;--bg:#000;--panel:#080a0e;--panel2:#0c1018;--fg:#f7f8fa;--muted:#969eac;--line:#222832;--blue:#5b9dff;--violet:#8b7bff;--max:1120px}
@@ -498,11 +498,11 @@ html body .term-top { border-bottom-color: rgba(255,255,255,.22) !important; }
 </div></header>
 <main id="top">
 <div class="container hero">
-<div class="eyebrow"><span class="status-dot"></span> OPEN-SOURCE AI FRAMEWORK · BY VELCLAW</div>
-<div class="hero-wordmark hero-logo-image" aria-label="OCODE.js"><img src="https://raw.githubusercontent.com/zskbot/pages_logo/main/OCode.js/ocode-js-logo-animated.gif?v=3" alt="OCODE.js animated logo" width="760" height="24" fetchpriority="high"></div>
-<h1>The AI Framework<br><span class="gradient">for Chatbot Development</span></h1>
-<p class="lead">OCode.js helps you build high-quality AI chatbots and agents with a modular JavaScript framework and reusable components.</p>
-<div class="actions"><button class="btn btn-primary install-command" data-copy="npm install ocodejs@latest" type="button"><span style="color:#8c8c92;font-family:ui-monospace,monospace">$</span> npm install ocodejs@latest <span aria-hidden="true">▢</span></button><a class="btn" href="#guide">Explore documentation ↗</a></div>
+<div class="eyebrow"><span class="status-dot"></span> JAVASCRIPT / TYPESCRIPT UTILITIES · BY VELCLAW</div>
+<div class="hero-wordmark hero-logo-image" aria-label="OCODE.js"><img src="https://raw.githubusercontent.com/zskbot/pages_logo/refs/heads/main/OCode.js/ocode-logo.gif" alt="OCODE.js animated logo" width="760" height="24" fetchpriority="high"></div>
+<h1>Small tools.<br><span class="gradient">Solid foundations.</span></h1>
+<p class="lead">Tài liệu tập trung vào tiện ích JavaScript/TypeScript, API công khai và ví dụ có thể đối chiếu với mã nguồn. Các khả năng framework như router, rendering và API handlers vẫn là đề xuất cho đến khi được triển khai và kiểm thử.</p>
+<div class="actions"><button class="btn btn-primary install-command" data-copy="npm install ocode-js" type="button"><span style="color:#8c8c92;font-family:ui-monospace,monospace">$</span> npm install ocodejs@latest <span aria-hidden="true">▢</span></button><a class="btn" href="#guide">Explore documentation ↗</a></div>
 <div class="terminal"><div class="term-top"><span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span><span class="term-title">quick start / terminal</span><button class="copy" data-copy="git clone https://github.com/Velclaw/OCodejs.git&#10;cd OCodejs&#10;npm install">Sao chép</button></div><div class="term-body"><div><span class="prompt">$</span>git clone https://github.com/Velclaw/OCodejs.git</div><div><span class="prompt">$</span>cd OCodejs</div><div><span class="prompt">$</span>npm install</div><div class="comment"># Kiểm tra scripts và README trước khi chạy test/build</div></div></div>
 </div>
 <section id="guide"><div class="container">
@@ -516,7 +516,7 @@ html body .term-top { border-bottom-color: rgba(255,255,255,.22) !important; }
 <article class="card"><div class="card-icon">↗</div><h3>Đóng góp</h3><p>Nhánh riêng, thay đổi có phạm vi rõ, CI và pull request để review.</p></article>
 </div></div></section>
 <section id="architecture"><div class="container">
-<div class="section-head"><div class="kicker">02 / Architecture</div><h2>Khung kiến trúc tham chiếu.</h2><p class="section-desc">Sơ đồ này là bản đồ tài liệu, không phải cam kết mọi lớp đã hoàn tất trong phiên bản hiện tại.</p></div>
+<div class="section-head"><div class="kicker">02 / Architecture</div><h2>Lộ trình kiến trúc tham chiếu.</h2><p class="section-desc">Sơ đồ này chỉ mô tả hướng nghiên cứu. Router, layouts, API handlers và rendering chưa được coi là tính năng đã phát hành nếu chưa có mã nguồn và kiểm thử xác nhận.</p></div>
 <div class="split"><div class="codebox"><div class="code-head">Application layers</div><pre><span class="code-muted"># conceptual architecture</span>
 <span class="code-blue">Application</span>
   ├─ Routes / Pages
@@ -549,12 +549,12 @@ html body .term-top { border-bottom-color: rgba(255,255,255,.22) !important; }
 <div class="field full"><label for="message">Nội dung góp ý</label><textarea id="message" name="message" placeholder="Mô tả đề xuất hoặc vấn đề cần làm rõ..."></textarea></div>
 </div>
 <div class="actions" style="justify-content:flex-start;margin-top:18px"><button class="btn btn-primary" type="submit">Xem bản xem trước <span>→</span></button><button class="btn" type="reset">Xóa nội dung</button></div>
-<p class="form-note" id="formNote" aria-live="polite">Demo chỉ hiển thị bản xem trước trong trình duyệt; không gửi hoặc lưu thông tin.</p>
+<p class="form-note" id="formNote" aria-live="polite">Demo chỉ hiển thị bản xem trước trong trình duyệt; không gửi hoặc lưu thông tin. Lệnh cài đặt ở trên là gợi ý cần xác nhận với package registry trước khi phát hành.</p>
 </form>
 </div></section>
 <section><div class="container"><div class="closing"><div class="kicker">OCode.js · Velclaw</div><h2>Tối giản ở giao diện.<br><span class="gradient">Chính xác trong tài liệu.</span></h2><p>Mở repository để xem implementation mới nhất và đối chiếu mọi ví dụ với mã nguồn thực tế.</p><div class="actions"><a class="btn btn-primary" href="https://github.com/Velclaw/OCodejs" target="_blank" rel="noreferrer">Mở repository ↗</a><a class="btn" href="OCodejs-by-Velclaw-Full-Rebrand.pdf" target="_blank" rel="noreferrer">Full Rebrand PDF</a></div></div></div></section>
 </main>
-<footer><div class="container foot"><a class="logo" href="#top"><img class="logo-mark" src="https://raw.githubusercontent.com/zskbot/pages_logo/main/OCode.js/ocode-js-logo-animated.gif" alt="OCode.js logo"><span>OCode<span class="dot">.js</span></span></a><div>Documentation · Velclaw</div><nav class="footlinks"><a href="https://github.com/Velclaw/OCodejs" target="_blank" rel="noreferrer">GitHub ↗</a><a href="OCodejs-by-Velclaw-Full-Rebrand.pdf" target="_blank" rel="noreferrer">Brand PDF</a></nav></div></footer>
+<footer><div class="container foot"><a class="logo" href="#top"><img class="logo-mark" src="https://raw.githubusercontent.com/zskbot/pages_logo/refs/heads/main/OCode.js/ocode-logo.gif" alt="OCode.js logo"><span>OCode<span class="dot">.js</span></span></a><div>Documentation · Velclaw</div><nav class="footlinks"><a href="https://github.com/Velclaw/OCodejs" target="_blank" rel="noreferrer">GitHub ↗</a><a href="OCodejs-by-Velclaw-Full-Rebrand.pdf" target="_blank" rel="noreferrer">Brand PDF</a></nav></div></footer>
 <script>
 (() => {
 
