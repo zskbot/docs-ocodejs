@@ -1,4 +1,10 @@
-# OCode.js Documentation Hub
+<p align="center">
+  <img src="https://raw.githubusercontent.com/zskbot/pages_logo/main/OCode.js/ocode-js-logo-animated.gif?v=3" alt="OCode.js animated primary logo" width="420">
+</p>
+
+<h1 align="center">OCode.js Documentation Hub</h1>
+
+<p align="center">Small tools. Solid foundations.</p>
 
 A standalone documentation hub for OCode.js and selected Velclaw engineering projects. This repository organizes documentation, design references, source audits, and implementation plans; it does not merge application codebases or automatically write to other repositories.
 
@@ -21,7 +27,8 @@ A standalone documentation hub for OCode.js and selected Velclaw engineering pro
 ## Brand assets
 
 - [OCode.js SVG logo](ocodejs-logo.svg)
-- [Animated logo](ocodejs-animated-logo.gif)
+- [Primary animated logo (original GIF)](https://raw.githubusercontent.com/zskbot/pages_logo/main/OCode.js/ocode-js-logo-animated.gif?v=3)
+- [Repository copy of animated logo](ocodejs-animated-logo.gif)
 - [Black logo](ocode-logo-black.gif)
 
 ## Indexed source projects
