@@ -1,7 +1,7 @@
-# OCode.js & Velclaw Ecosystem — Roadmap
+# OCode.js Documentation Hub — Roadmap
 
-**Status:** working roadmap, not a promise that listed features already exist.  
-**Last reviewed:** 2026-10-24  
+**Status:** working roadmap; planned work is not a claim that a feature already exists.  
+**Last reviewed:** 2026-10-25  
 **Canonical UI:** [OCode.js Design System](../DESIGN_SYSTEM.md)
 
 ## Principles
@@ -9,77 +9,79 @@
 - Keep OCode.js utility-library claims separate from the broader Velclaw workspace and from any proposed full-stack framework.
 - Prefer small, testable changes with reproducible checks.
 - Do not run production deploys, migrate databases, or change secrets as part of documentation work.
-- The canonical OCode.js interface is protected. Feature and documentation work must not redesign it without explicit owner approval.
-- State the evidence level for every important claim: documented, source-observed, test-verified, or runtime-verified.
+- Preserve the existing canonical interface unless a design change is explicitly approved.
+- Label evidence accurately: documented, source-observed, test-verified, or runtime-verified.
+- Keep this repository focused on its own documentation site. Cross-repository synchronization is discontinued.
 
 ## Phase 1 — Documentation baseline
 
 - [x] Maintain a central repository inventory and source audit.
 - [x] Publish canonical UI preservation rules.
-- [ ] Ensure README, docs navigation and API links resolve to real files.
-- [ ] Identify stale, duplicated, conflicting or unlicensed content before synchronizing it.
-- [ ] Record source repository and revision for each cross-project claim.
+- [ ] Check internal links and navigation targets across Markdown and HTML.
+- [ ] Identify stale, duplicated, conflicting, or unlicensed content before presenting it as authoritative.
+- [ ] Record source repository and revision for cross-project claims where available.
+- [ ] Verify the published site matches the reviewed source.
 
-**Exit gate:** broken-link review completed; no unsupported runtime or release claims; UI remains unchanged.
+**Exit gate:** link checks pass, unsupported runtime/release claims are clearly marked, and the canonical UI remains intact.
 
-## Phase 2 — OCode.js library quality
+## Phase 2 — Documentation site quality
 
-- [ ] Review package metadata, supported Node.js versions, module format and public exports against source code.
-- [ ] Add or complete HTTP timeout, abort, network failure and response parsing tests where the implementation supports them.
-- [ ] Add tests for URL normalization, validation edge cases, string/object helpers and async error paths.
-- [ ] Confirm TypeScript strict checks and documented examples match actual signatures.
-- [ ] Generate coverage reports and record the actual threshold; do not claim coverage without CI evidence.
+- [ ] Review the homepage navigation and every card/link destination.
+- [ ] Test mobile layouts, keyboard navigation, focus visibility, and reduced-motion behavior.
+- [ ] Add accessible labels and meaningful alternative text to interactive controls and logo assets.
+- [ ] Check page metadata, heading hierarchy, language declaration, and external-link behavior.
+- [ ] Keep the site static and compatible with GitHub Pages; do not introduce a paid dependency or server requirement without approval.
+- [ ] Add automated checks for broken internal links and malformed inventory JSON.
+
+**Exit gate:** static validation passes and the primary pages remain usable on mobile and desktop.
+
+## Phase 3 — OCode.js library documentation
+
+- [ ] Review package metadata, supported Node.js versions, module format, and public exports against source code.
+- [ ] Document HTTP timeout, abort, network failure, and response parsing behavior only where implementation evidence exists.
+- [ ] Cover URL normalization, validation edge cases, string/object helpers, and async error paths.
+- [ ] Confirm TypeScript examples match actual signatures.
+- [ ] Report test and coverage results only when backed by CI evidence.
 - [ ] Review package contents and licensing before publishing.
 
-**Exit gate:** clean install, tests, type checks and package dry-run pass on a clean runner; API docs match exports.
+**Exit gate:** API documentation matches the actual exports and examples are reproducible on a clean environment.
 
-## Phase 3 — Architecture decisions
+## Phase 4 — Architecture decisions
 
-- [ ] Decide whether router, layout, rendering and API handlers belong in OCode.js itself or in a separately named framework project.
-- [ ] Document the decision, module boundaries, compatibility policy and migration strategy before implementation.
+- [ ] Decide whether router, layout, rendering, and API handlers belong in OCode.js itself or in a separately named framework project.
+- [ ] Document module boundaries, compatibility policy, and migration strategy before implementation.
 - [ ] Define SSR/SSG/CSR and routing requirements only if the owner approves the full-stack framework scope.
-- [ ] Build a minimal proof of concept behind tests; do not advertise it as supported until the exit gate passes.
+- [ ] Keep proposed capabilities clearly separated from supported features.
 
-**Exit gate:** approved architecture record, explicit support matrix, tests, examples and a compatibility review.
+**Exit gate:** approved architecture record, explicit support matrix, examples, and compatibility review.
 
-## Phase 4 — Ecosystem integrations
+## Phase 5 — Reference and integration accuracy
 
-- [ ] Keep VelCli, X-BO, VelclawHost, OAuth and deployment-console responsibilities distinct.
-- [ ] Define versioned contracts for provider adapters, OAuth callbacks, deployment requests and shared docs.
-- [ ] Verify authentication, authorization, secret redaction, rate limits, timeout handling and audit logging in isolated staging.
-- [ ] Preserve each source repository's license and attribution; never assume public visibility grants redistribution rights.
+- [ ] Keep VelCli, X-BO, VelclawHost, OAuth, and deployment-console responsibilities distinct.
+- [ ] Verify source links and last-reviewed dates for project-specific statements.
+- [ ] Preserve each source repository's license and attribution; public visibility alone does not grant redistribution rights.
+- [ ] Do not imply that links in this hub mean codebases are merged, synchronized, or deployed.
 
-**Exit gate:** contract tests pass in staging; security and ownership review is recorded; no production change is implied.
-
-## Phase 5 — Documentation automation
-
-- [ ] Validate inventory JSON and link targets in CI.
-- [ ] Detect accidental changes to canonical UI files separately from content updates.
-- [ ] Require explicit owner approval for any intended change to the canonical interface.
-- [ ] Make sync jobs idempotent, scoped, auditable and safe to rerun.
-- [ ] Fail closed when required tokens are missing; never print token values.
-- [ ] Produce a report of skipped repositories and reasons instead of silently claiming full synchronization.
-
-**Exit gate:** validation succeeds on a test branch; a second run produces no unintended diff; secrets are absent from logs and artifacts.
+**Exit gate:** each material cross-project claim has a source and an evidence status.
 
 ## Phase 6 — Release and operations
 
 - [ ] Use a branch and pull request for source changes where practical.
-- [ ] Require build, tests, security checks and documentation validation before release.
-- [ ] Keep staging separate from production and record rollback steps.
+- [ ] Require documentation validation and relevant checks before release.
+- [ ] Keep staging separate from production and record rollback steps for any deployment change.
 - [ ] Verify actual deployment status before saying a site or feature is live.
-- [ ] Maintain a release note with commit, checks, limitations and follow-up items.
+- [ ] Maintain release notes with commit, checks, limitations, and follow-up items.
 
-**Exit gate:** all required checks have recorded results, rollback is documented, and the owner approves release.
+**Exit gate:** checks have recorded results, changes are reviewable, and the owner approves release.
 
 ## Priority order
 
-1. Resolve documentation conflicts and links.
-2. Test the existing OCode.js API; do not invent exports.
-3. Decide framework scope before adding router/rendering promises.
-4. Verify security-sensitive ecosystem integrations in staging.
-5. Enforce safe documentation sync and release gates.
+1. Validate homepage navigation and internal links.
+2. Improve accessibility and mobile behavior without redesigning the approved visual direction.
+3. Align OCode.js API documentation with verified source exports.
+4. Clarify architecture decisions before documenting new framework features.
+5. Keep the repository's own checks reliable and avoid cross-repository write automation.
 
 ## Progress tracking
 
-Mark an item complete only after its evidence is linked (commit, passing check, test report, or approved decision). A planned task is not a completed feature.
+Mark an item complete only when its evidence is linked (commit, passing check, test report, or approved decision). A planned task is not a completed feature.
