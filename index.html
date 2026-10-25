@@ -570,7 +570,23 @@ sidebarToggle?.addEventListener('click', () => {
 });
 sidebarOverlay?.addEventListener('click', () => closeSidebar(true));
 document.addEventListener('keydown', event => {
- if (event.key === 'Escape') closeSidebar(true);
+ if (event.key === 'Escape') {
+  closeSidebar(true);
+  return;
+ }
+ if (event.key !== 'Tab' || !isMobileSidebar() || !document.body.classList.contains('sidebar-open')) return;
+ const focusable = [...(sidebar?.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])') || [])]
+  .filter(element => !element.hasAttribute('hidden') && element.getAttribute('aria-hidden') !== 'true');
+ if (!focusable.length) return;
+ const first = focusable[0];
+ const last = focusable[focusable.length - 1];
+ if (event.shiftKey && document.activeElement === first) {
+  event.preventDefault();
+  last.focus();
+ } else if (!event.shiftKey && document.activeElement === last) {
+  event.preventDefault();
+  first.focus();
+ }
 });
 window.addEventListener('resize', () => {
  if (!isMobileSidebar()) closeSidebar(false);
