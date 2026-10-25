@@ -9,3 +9,4 @@ exclude:
   - canonical
   - node_modules
   - vendor
+  - _site-validation-output
