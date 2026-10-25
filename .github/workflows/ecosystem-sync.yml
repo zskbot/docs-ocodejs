@@ -82,6 +82,14 @@ jobs:
           echo "::add-mask::$SYNC_TOKEN"
           export GH_TOKEN="$SYNC_TOKEN"
           unset SYNC_TOKEN
+          # Validate the credential once before touching any target repository.
+          # A 401 here means the secret contains an expired, revoked, malformed, or otherwise invalid token.
+          if ! gh api user --jq '.login' >/tmp/ocodejs-sync-token-user.txt 2>/tmp/ocodejs-sync-token-error.txt; then
+            echo "::error::OCODEJS_SYNC_TOKEN was rejected by GitHub (HTTP 401/403). Replace the Actions secret with a valid token; do not paste it into logs or source files."
+            cat /tmp/ocodejs-sync-token-error.txt
+            exit 1
+          fi
+          echo "Cross-repository token authenticated as $(cat /tmp/ocodejs-sync-token-user.txt)."
           registry="canonical/.sync/targets.json"
           count=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$registry','utf8')).targets.length)")
           failed=0
