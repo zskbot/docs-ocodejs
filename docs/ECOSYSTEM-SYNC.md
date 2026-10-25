@@ -14,12 +14,13 @@ This repository is the canonical documentation source for the OCode.js ecosystem
 
 ## Configured targets
 
-The registry currently includes these 11 repositories:
+The registry currently includes these 12 repositories:
 
 | Repository | Snapshot destination |
 |---|---|
 | `zskbot/docs` | `ecosystem/ocodejs` |
 | `Velclaw/OCodejs` | `docs/ecosystem/central` |
+| `OCodejs/OCodejs` | `docs/ecosystem/canonical` |
 | `Velclaw/VelclawHost` | `docs/ocodejs-ecosystem` |
 | `Velclaw/VelCli` | `docs/ecosystem/ocodejs` |
 | `zskbot/X-BO` | `docs/ecosystem/ocodejs` |
@@ -30,7 +31,7 @@ The registry currently includes these 11 repositories:
 | `Velclaw/Velclaw-velclaw-docs-ui-reference` | `docs/ecosystem/ocodejs` |
 | `Velclaw/Velclaw-OCodejs` | `docs/ecosystem/ocodejs` |
 
-`OCodejs/OCodejs` is intentionally not yet enabled: the connected GitHub integration returned HTTP 403 (resource not accessible by integration) during the access check. Add it only after repository access and write permissions are explicitly verified. Do not interpret its absence as a successful sync.
+The connected GitHub integration can currently read and write all 12 target repositories, including `OCodejs/OCodejs`. This confirms access for the connected integration only; it does **not** prove that the separate Actions secret below has the same repository selection or permissions.
 
 ## One-time authorization
 
