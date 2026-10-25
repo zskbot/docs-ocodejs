@@ -487,7 +487,7 @@ html body .term-top { border-bottom-color: rgba(255,255,255,.22) !important; }
 </aside>
 <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
 <header><div class="container nav">
-<button class="side-toggle" id="sidebarToggle" aria-label="Mở điều hướng" aria-expanded="false">☰</button>
+<button class="side-toggle" id="sidebarToggle" aria-label="Mở điều hướng" aria-expanded="false" aria-controls="docsSidebar">☰</button>
 <a class="logo" href="#top" aria-label="OCode.js docs"><span class="brand-symbol"><svg viewBox="0 0 40 40" role="img" aria-label="OCode.js mark"><path d="M20 3 38 36H2Z" fill="currentColor"/></svg><span class="brand-slash">/</span><span class="brand-word">OCODE<span class="brand-js">.js</span></span></span><span style="color:#7c8492;font-size:12px;font-weight:500;margin-left:8px">Docs</span></a>
 <nav class="navlinks" aria-label="Điều hướng chính"><a href="#guide">Hướng dẫn</a><a href="#architecture">Kiến trúc</a><a href="#api">API</a><a href="#forms">Forms</a><a class="nav-cta" href="https://github.com/Velclaw/OCodejs" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
 </div></header>
@@ -554,17 +554,30 @@ html body .term-top { border-bottom-color: rgba(255,255,255,.22) !important; }
 (() => {
 
 const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebar = document.getElementById('docsSidebar');
 const sidebarOverlay = document.getElementById('sidebarOverlay');
-const closeSidebar = () => { document.body.classList.remove('sidebar-open'); sidebarToggle?.setAttribute('aria-expanded','false'); };
+const isMobileSidebar = () => window.matchMedia('(max-width: 900px)').matches;
+const closeSidebar = (restoreFocus = false) => {
+ const wasOpen = document.body.classList.contains('sidebar-open');
+ document.body.classList.remove('sidebar-open');
+ sidebarToggle?.setAttribute('aria-expanded', 'false');
+ if (restoreFocus && wasOpen && isMobileSidebar()) sidebarToggle?.focus();
+};
 sidebarToggle?.addEventListener('click', () => {
  const open = document.body.classList.toggle('sidebar-open');
  sidebarToggle.setAttribute('aria-expanded', String(open));
+ if (open && isMobileSidebar()) sidebar?.querySelector('a[href^="#"]')?.focus();
 });
-sidebarOverlay?.addEventListener('click', closeSidebar);
-document.addEventListener('keydown', event => { if (event.key === 'Escape') closeSidebar(); });
+sidebarOverlay?.addEventListener('click', () => closeSidebar(true));
+document.addEventListener('keydown', event => {
+ if (event.key === 'Escape') closeSidebar(true);
+});
+window.addEventListener('resize', () => {
+ if (!isMobileSidebar()) closeSidebar(false);
+});
 document.querySelectorAll('.side-nav a[href^="#"]').forEach(link => link.addEventListener('click', () => {
  document.querySelectorAll('.side-nav a[href^="#"]').forEach(item => item.classList.toggle('active', item === link));
- closeSidebar();
+ closeSidebar(false);
 }));
 if ('IntersectionObserver' in window) {
  const targets = [...document.querySelectorAll('main[id], main section[id]')];
