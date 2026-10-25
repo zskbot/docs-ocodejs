@@ -14,6 +14,7 @@ A standalone documentation hub for OCode.js and selected Velclaw engineering pro
 - **OCode.js implementation roadmap:** [docs/ROADMAP.md](docs/ROADMAP.md)
 - **Agent Skills Directory:** [docs/AGENT-SKILLS-DIRECTORY.md](docs/AGENT-SKILLS-DIRECTORY.md) — curated skill categories, installation command, platform notes, and safety checklist.
 - **Plugin development for ChatGPT and Codex:** [docs/OPENAI-PLUGIN-DEVELOPMENT.md](docs/OPENAI-PLUGIN-DEVELOPMENT.md) — plugin architecture, Skills, MCP, authentication, testing, publishing, metadata, UI, and security.
+- **x-bo by OCODE.js product/design blueprint:** [docs/X-BO-BY-OCODEJS-BLUEPRINT.md](docs/X-BO-BY-OCODEJS-BLUEPRINT.md) — target architecture, UX workflow, design system, GitHub/release gates, security, and staged implementation.
 - **Source inventory and audit findings:** [docs/SOURCE-AUDIT.md](docs/SOURCE-AUDIT.md)
 - **Content review:** [docs/CONTENT-REVIEW.md](docs/CONTENT-REVIEW.md)
 - **Canonical alignment plan:** [docs/CANONICAL-ALIGNMENT-PLAN.md](docs/CANONICAL-ALIGNMENT-PLAN.md)
