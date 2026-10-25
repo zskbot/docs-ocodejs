@@ -492,6 +492,7 @@ html body .term-top { border-bottom-color: rgba(255,255,255,.22) !important; }
   <a href="#api"><span class="side-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4H6a2 2 0 0 0-2 2v3a3 3 0 0 1-2 3 3 3 0 0 1 2 3v3a2 2 0 0 0 2 2h2M16 4h2a2 2 0 0 1 2 2v3a3 3 0 0 0 2 3 3 3 0 0 0-2 3v3a2 2 0 0 1-2 2h-2"/></svg></span>API reference</a>
   <a href="#agent-skills"><span class="side-icon" aria-hidden="true">✳</span>Agent Skills Directory</a>
   <a href="#openai-plugins"><span class="side-icon" aria-hidden="true">⌘</span>ChatGPT &amp; Codex Plugins</a>
+  <a href="#x-bo"><span class="side-icon" aria-hidden="true">XB</span>x-bo by OCODE.js</a>
   <a href="#forms"><span class="side-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 8h8M8 12h5M8 16h8"/></svg></span>Forms & components</a>
  </nav>
  <div class="side-caption">Liên kết</div>
@@ -505,7 +506,7 @@ html body .term-top { border-bottom-color: rgba(255,255,255,.22) !important; }
 <header><div class="container nav">
 <button class="side-toggle" id="sidebarToggle" aria-label="Mở điều hướng" aria-expanded="false">☰</button>
 <a class="logo" href="#top" aria-label="OCode.js docs"><span class="brand-symbol"><img src="https://raw.githubusercontent.com/zskbot/pages_logo/main/OCode.js/ocode-js-logo-animated.gif?v=3" alt="OCode.js animated logo" width="35" height="35"><span class="brand-slash">/</span><span class="brand-word">OCODE<span class="brand-js">.js</span></span></span><span style="color:#7c8492;font-size:12px;font-weight:500;margin-left:8px">Docs</span></a>
-<nav class="navlinks" aria-label="Điều hướng chính"><a href="#guide">Hướng dẫn</a><a href="#architecture">Kiến trúc</a><a href="#api">API</a><a href="#agent-skills">Skills</a><a href="#forms">Forms</a><a class="nav-cta" href="https://github.com/Velclaw/OCodejs" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
+<nav class="navlinks" aria-label="Điều hướng chính"><a href="#guide">Hướng dẫn</a><a href="#architecture">Kiến trúc</a><a href="#api">API</a><a href="#agent-skills">Skills</a><a href="#x-bo">x-bo</a><a href="#forms">Forms</a><a class="nav-cta" href="https://github.com/Velclaw/OCodejs" target="_blank" rel="noreferrer">GitHub ↗</a></nav>
 </div></header>
 <main id="top">
 <div class="container hero">
@@ -640,6 +641,54 @@ html body .term-top { border-bottom-color: rgba(255,255,255,.22) !important; }
   </div>
   <div class="skills-notice"><strong>Quan trọng:</strong> UI là tùy chọn; không phải plugin nào cũng cần MCP server. Chỉ yêu cầu quyền tối thiểu, xác minh quyền ở phía server và rà soát kỹ mã/script bên thứ ba trước khi chạy.</div>
   <p class="section-desc" style="margin-top:16px"><a class="text-link" href="docs/OPENAI-PLUGIN-DEVELOPMENT.md">Đọc hướng dẫn phát triển Plugin đầy đủ ↗</a> · <a class="text-link" href="https://developers.openai.com/plugins" target="_blank" rel="noopener noreferrer">OpenAI Developers ↗</a></p>
+ </div>
+</section>
+
+
+<section id="x-bo">
+ <div class="container">
+  <div class="section-head">
+   <div class="kicker">06 / AI product workspace</div>
+   <h2>x-bo by OCODE.js</h2>
+   <p class="section-desc">Bản thiết kế sản phẩm cho AI web builder: chuyển prompt hoặc hình tham khảo thành mã nguồn có thể xem xét, preview, kiểm thử và đồng bộ qua GitHub — theo quy trình có kiểm soát.</p>
+  </div>
+  <div class="skills-command">
+   <div><div class="kicker">PRODUCT BLUEPRINT</div><code>Prompt → Plan → Generate → Preview → Test → Pull Request</code></div>
+   <a class="btn btn-primary" href="docs/X-BO-BY-OCODEJS-BLUEPRINT.md">Mở thiết kế chi tiết ↗</a>
+  </div>
+  <div class="grid">
+   <article class="card">
+    <div class="card-icon" aria-hidden="true">01</div>
+    <h3>Prompt &amp; Assets</h3>
+    <p>Nhập mô tả, thêm hình tham khảo và chọn template. Mỗi yêu cầu được chuyển thành mục tiêu và tiêu chí nghiệm thu.</p>
+    <div class="pill-row"><span class="pill">Chat</span><span class="pill">Images</span><span class="pill">Templates</span></div>
+   </article>
+   <article class="card">
+    <div class="card-icon" aria-hidden="true">02</div>
+    <h3>AI Planner &amp; Codegen</h3>
+    <p>Chia việc thành task, sinh component/file theo diff, tạo test và báo rõ phần nào đã chạy hoặc còn chờ.</p>
+    <div class="pill-row"><span class="pill">Tasks</span><span class="pill">Code</span><span class="pill">Tests</span></div>
+   </article>
+   <article class="card">
+    <div class="card-icon" aria-hidden="true">03</div>
+    <h3>Preview &amp; Design Mode</h3>
+    <p>Xem bố cục responsive, tinh chỉnh design tokens và kiểm tra mã trong workspace cô lập trước khi đồng bộ.</p>
+    <div class="pill-row"><span class="pill">Responsive</span><span class="pill">Inspector</span><span class="pill">Diff</span></div>
+   </article>
+   <article class="card">
+    <div class="card-icon" aria-hidden="true">04</div>
+    <h3>GitHub &amp; Release Gates</h3>
+    <p>Mặc định tạo branch/PR, chạy checks và xác minh staging. Production chỉ sau khi được phê duyệt rõ ràng.</p>
+    <div class="pill-row"><span class="pill">Branch / PR</span><span class="pill">CI</span><span class="pill">Approval</span></div>
+   </article>
+  </div>
+  <div class="road" style="margin-top:12px">
+   <div class="road-item"><strong>1 · Input</strong><span>Prompt, hình tham khảo, template và design tokens</span></div>
+   <div class="road-item"><strong>2 · Workspace</strong><span>Tasks, preview, Design Mode, Code Mode và test results</span></div>
+   <div class="road-item"><strong>3 · Delivery</strong><span>Diff có thể review, GitHub PR, staging và release gates</span></div>
+  </div>
+  <div class="skills-notice"><strong>Trạng thái trung thực:</strong> đây là blueprint/lộ trình thiết kế, không phải tuyên bố rằng tất cả tính năng đã có trong X-BO. Figma import, iOS app, one-click deploy và các tích hợp bên ngoài cần được xây dựng, kiểm thử và xác minh riêng.</div>
+  <p class="section-desc" style="margin-top:16px"><a class="text-link" href="https://github.com/zskbot/X-BO" target="_blank" rel="noopener noreferrer">Xem repository X-BO ↗</a> · <a class="text-link" href="https://github.com/Velclaw/OCodejs" target="_blank" rel="noopener noreferrer">OCode.js ↗</a></p>
  </div>
 </section>
 
