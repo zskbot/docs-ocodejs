@@ -15,10 +15,12 @@ EXCLUDED_DOC_TREES = {"content", "files", ".agents", "skills", "canonical", "nod
 LINK_RE = re.compile(r"!?(?:\[[^\]]*\])\((<[^>]+>|[^)]+)\)")
 HEADING_RE = re.compile(r"^#{1,6}\s+(.+?)\s*#*\s*$")
 HTML_ID_RE = re.compile(r'\bid=["\']([^"\']+)["\']', re.I)
+FRONTMATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*(?:\n|\Z)", re.S)
+CANONICAL_URL_RE = re.compile(r"(?m)^canonical_url:\s*[\"']?(https?://[^\s\"']+)")
 
 
 def slugify(heading: str) -> str:
-    heading = re.sub(r"`([^\`]+)`", r"\1", heading)
+    heading = re.sub(r"`([^`]+)`", r"\1", heading)
     heading = re.sub(r"[*_~]", "", heading).strip().lower()
     heading = unicodedata.normalize("NFKD", heading)
     heading = "".join(ch for ch in heading if not unicodedata.combining(ch))
@@ -44,6 +46,18 @@ def anchors(path: Path) -> set[str]:
     return found
 
 
+def external_canonical_source(content: str) -> bool:
+    """Detect imported documents whose leading-slash links belong to their upstream site."""
+    frontmatter = FRONTMATTER_RE.match(content)
+    if not frontmatter:
+        return False
+    match = CANONICAL_URL_RE.search(frontmatter.group(1))
+    if not match:
+        return False
+    host = (urlsplit(match.group(1)).hostname or "").lower()
+    return bool(host and host not in {"github.com", "raw.githubusercontent.com"})
+
+
 def main() -> int:
     issues: list[str] = []
     docs = sorted(
@@ -57,6 +71,7 @@ def main() -> int:
             content = source.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):
             continue
+        external_source = external_canonical_source(content)
         # Avoid interpreting Markdown examples inside fenced code blocks as links.
         content = re.sub(r"(?ms)^\s*```.*?^\s*```\s*$", "", content)
         content = re.sub(r"(?ms)^\s*~~~.*?^\s*~~~\s*$", "", content)
@@ -67,6 +82,10 @@ def main() -> int:
             destination = raw.split(maxsplit=1)[0].strip()
             parsed = urlsplit(destination)
             if parsed.scheme or destination.startswith("//"):
+                continue
+            # In imported pages, a leading slash points to the upstream site's root,
+            # not to the documentation hub repository root.
+            if external_source and parsed.path.startswith("/"):
                 continue
             path_part = unquote(parsed.path)
             fragment = unquote(parsed.fragment)
