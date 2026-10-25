@@ -32,4 +32,4 @@ jobs:
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
-          destination: ./_site
+          destination: ./_site-validation-output
