@@ -756,5 +756,42 @@ form.addEventListener('submit', event => {
 });
 })();
 </script>
+
+<style id="ocodejs-chatbot-integration">
+#ocode-chat-launcher{position:fixed;right:22px;bottom:22px;z-index:1000;width:58px;height:58px;border:1px solid #91baff;background:#f4f7ff;color:#07090d;display:grid;place-items:center;box-shadow:0 12px 36px #0009;cursor:pointer;border-radius:0;font:700 22px/1 ui-sans-serif,system-ui}
+#ocode-chat-launcher:hover{background:#dce8ff;transform:translateY(-2px)}
+#ocode-chat-panel{position:fixed;right:22px;bottom:92px;z-index:1000;width:min(360px,calc(100vw - 28px));padding:20px;border:1px solid #303b50;background:#080b12;color:#f7f8fa;box-shadow:0 24px 80px #000b;display:none}
+#ocode-chat-panel[aria-hidden="false"]{display:block}
+#ocode-chat-panel h2{font-size:18px;margin:0 0 8px;letter-spacing:-.03em}
+#ocode-chat-panel p{font-size:13px;line-height:1.7;color:#aab4c5;margin:0 0 16px}
+#ocode-chat-panel .ocode-chat-actions{display:flex;gap:8px;flex-wrap:wrap}
+#ocode-chat-panel a,#ocode-chat-panel button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 12px;border:1px solid #343e51;background:#0c111b;color:#fff;font-size:12px;font-weight:650;border-radius:0;cursor:pointer}
+#ocode-chat-panel a.primary{background:#e9f0ff;color:#080b12;border-color:#e9f0ff}
+#ocode-chat-panel .ocode-chat-status{font-size:11px;color:#7e8ba0;margin-top:12px}
+@media(max-width:600px){#ocode-chat-launcher{right:14px;bottom:14px;width:54px;height:54px}#ocode-chat-panel{right:14px;bottom:78px}}
+</style>
+<button id="ocode-chat-launcher" type="button" aria-label="Mở trợ lý OCode.js" aria-expanded="false" aria-controls="ocode-chat-panel"><svg aria-hidden="true" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l-1-4.5A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8 10h8M8 14h5"/></svg></button>
+<section id="ocode-chat-panel" aria-label="Trợ lý OCode.js" aria-hidden="true">
+  <h2>Trợ lý OCode.js</h2>
+  <p>Hỏi đáp về tài liệu, API và cách sử dụng OCode.js. Mở giao diện chatbot riêng để bắt đầu cuộc trò chuyện.</p>
+  <div class="ocode-chat-actions"><a class="primary" href="./chatbot.html">Mở chatbot <span aria-hidden="true"> ↗</span></a><button id="ocode-chat-close" type="button">Đóng</button></div>
+  <div class="ocode-chat-status" id="ocode-chat-status">Đang kiểm tra cấu hình chatbot…</div>
+</section>
+<script src="./chatbot-config.js"></script>
+<script>
+(() => {
+ const launcher=document.getElementById('ocode-chat-launcher');
+ const panel=document.getElementById('ocode-chat-panel');
+ const close=document.getElementById('ocode-chat-close');
+ const status=document.getElementById('ocode-chat-status');
+ const url=String(window.OCODEJS_CHATBOT_URL||'').trim();
+ const setOpen=open=>{panel.setAttribute('aria-hidden',String(!open));launcher.setAttribute('aria-expanded',String(open));};
+ launcher.addEventListener('click',()=>setOpen(panel.getAttribute('aria-hidden')!=='false'));
+ close.addEventListener('click',()=>setOpen(false));
+ document.addEventListener('keydown',event=>{if(event.key==='Escape')setOpen(false)});
+ status.textContent=url?'Chatbot đã có địa chỉ cấu hình.':'Chatbot đang chờ URL triển khai Vercel; giao diện tài liệu vẫn hoạt động bình thường.';
+})();
+</script>
+
 </body>
 </html>

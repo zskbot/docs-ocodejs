@@ -52,6 +52,16 @@ This hub links to projects for reference and audit purposes only. They remain in
 
 Repository links are references, not evidence that every source file has been inspected or that a project is production-ready. Product claims must be supported by source code, tests, or an explicit architecture decision.
 
+## Chatbot integration
+
+The documentation site now has a floating assistant launcher and a standalone `chatbot.html` page. The chatbot runtime remains a separate Next.js application in [OCodejs/chatbot](https://github.com/OCodejs/chatbot); it must be deployed independently on Vercel because GitHub Pages serves static files only.
+
+- Public endpoint configuration: [chatbot-config.js](chatbot-config.js) — set `window.OCODEJS_CHATBOT_URL` to the HTTPS Vercel deployment URL after deployment.
+- Standalone page: [chatbot.html](chatbot.html).
+- Integration notes and environment checklist: [docs/CHATBOT-INTEGRATION.md](docs/CHATBOT-INTEGRATION.md).
+
+Do not put API keys, database URLs, authentication secrets, or populated `.env` files in this repository. Configure `AUTH_SECRET`, `POSTGRES_URL`, `REDIS_URL`, and any required Blob/AI Gateway credentials in Vercel Project Settings or the relevant Vercel integrations. The Vercel project creation request for `OCodejs/chatbot` was blocked by a 403 permission error, so the live endpoint has not yet been verified and the public URL is intentionally unset.
+
 ## Development status
 
 The current priority is to improve this repository itself: navigation, link integrity, mobile usability, accessibility, content accuracy, and repeatable documentation checks. Cross-repository synchronization has been discontinued; this project will not push documentation snapshots into other repositories.
