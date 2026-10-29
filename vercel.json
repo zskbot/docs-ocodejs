@@ -1,17 +1,10 @@
+
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "services": {
     "app": {
       "root": ".",
       "framework": "jekyll"
-    },
-    "cloud-agent": {
-      "root": "apps/cloud-agent",
-      "framework": "nextjs"
-    },
-    "core": {
-      "root": "framework/packages/core",
-      "runtime": "node"
     }
   },
   "rewrites": [
