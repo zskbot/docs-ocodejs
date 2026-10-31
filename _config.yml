@@ -1,0 +1,12 @@
+# GitHub Pages / Jekyll configuration for the static documentation hub.
+# Imported upstream snapshots contain template tags and files that are not
+# part of the rendered hub. Exclude them from Jekyll's content pipeline.
+exclude:
+  - content
+  - files
+  - .agents
+  - skills
+  - canonical
+  - node_modules
+  - vendor
+  - _site-validation-output
