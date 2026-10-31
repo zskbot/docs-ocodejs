@@ -19,24 +19,13 @@ A standalone documentation hub for OCode.js and selected Velclaw engineering pro
 - **Content review:** [docs/CONTENT-REVIEW.md](docs/CONTENT-REVIEW.md)
 - **Canonical alignment plan:** [docs/CANONICAL-ALIGNMENT-PLAN.md](docs/CANONICAL-ALIGNMENT-PLAN.md)
 - **Integration contracts and release gates:** [docs/INTEGRATION-MATRIX.md](docs/INTEGRATION-MATRIX.md)
-- **Verification plan:** [docs/VERIFICATION-PLAN.md](docs/VERIFICATION-PLAN.md)
-- **Repository index:** [docs/REPOSITORY-INDEX.md](docs/REPOSITORY-INDEX.md)
-- **Implementation findings:** [docs/IMPLEMENTATION-FINDINGS.md](docs/IMPLEMENTATION-FINDINGS.md)
-- **Operations and release gates:** [docs/OPERATIONS-AND-RELEASE-GATES.md](docs/OPERATIONS-AND-RELEASE-GATES.md)
-- **Documentation quality gates:** [docs/DOCUMENTATION-AND-QUALITY-GATES.md](docs/DOCUMENTATION-AND-QUALITY-GATES.md)
-- **Design system:** [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)
-- **Brand/rebrand reference:** [OCodejs-by-Velclaw-Full-Rebrand.pdf](OCodejs-by-Velclaw-Full-Rebrand.pdf)
-
-## Brand assets
-
-- [OCode.js SVG logo](ocodejs-logo.svg)
-- [Primary animated logo (original GIF)](https://raw.githubusercontent.com/zskbot/pages_logo/main/OCode.js/ocode-js-logo-animated.gif?v=3)
-- [Repository copy of animated logo](ocodejs-animated-logo.gif)
-- [Black logo](ocode-logo-black.gif)
-
-## Indexed source projects
-
-This hub links to projects for reference and audit purposes only. They remain independent repositories:
+- **Phased verification plan:** [docs/VERIFICATION-PLAN.md](docs/VERIFICATION-PLAN.md)
+- **Ecosystem development roadmap:** [docs/ECOSYSTEM-ROADMAP-2026-10.md](docs/ECOSYSTEM-ROADMAP-2026-10.md)
+- **Repository index and audit checklist:** [docs/REPOSITORY-INDEX.md](docs/REPOSITORY-INDEX.md)
+- **Ecosystem audit results:** [docs/AUDIT-RUN-2026-10-23.md](docs/AUDIT-RUN-2026-10-23.md)
+- **Source-level implementation findings:** [docs/IMPLEMENTATION-FINDINGS.md](docs/IMPLEMENTATION-FINDINGS.md)
+- **Brand/rebrand source document:** [OCodejs-by-Velclaw-Full-Rebrand.pdf](OCodejs-by-Velclaw-Full-Rebrand.pdf)
+- **OCode.js logo assets:** [SVG](ocodejs-logo.svg) · [Animated logo](ocodejs-animated-logo.gif) · [Black logo](ocode-logo-black.gif)
 
 - [OCodejs/OCodejs](https://github.com/OCodejs/OCodejs)
 - [Velclaw/OCodejs](https://github.com/Velclaw/OCodejs)

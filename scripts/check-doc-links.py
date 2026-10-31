@@ -10,8 +10,9 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 DOC_EXTENSIONS = {".md", ".mdx"}
-# Imported source trees are preserved snapshots; their upstream-root-relative links are not hub links.
-EXCLUDED_DOC_TREES = {"content", "files", ".agents", "skills", "canonical", "node_modules", "vendor"}
+# Imported source corpora are preserved snapshots, not documentation authored by this hub.
+# Validate first-party docs instead of treating upstream-root-relative links as local paths.
+EXCLUDED_DOC_TREES = {"content", "files", ".agents", "skills", "canonical"}
 LINK_RE = re.compile(r"!?(?:\[[^\]]*\])\((<[^>]+>|[^)]+)\)")
 HEADING_RE = re.compile(r"^#{1,6}\s+(.+?)\s*#*\s*$")
 HTML_ID_RE = re.compile(r'\bid=["\']([^"\']+)["\']', re.I)
