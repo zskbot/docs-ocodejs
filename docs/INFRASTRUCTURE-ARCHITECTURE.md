@@ -41,11 +41,11 @@ This document separates verified repository facts from deployment claims that st
 
 | Component | Responsibility | Evidence on 2026-11-01 | Remaining verification |
 |---|---|---|---|
-| Documentation source | Canonical public docs and infrastructure records | Repository `zskbot/docs-ocodejs`; main SHA `5645479f4bd45df12dd3cfd08b334a75c36edd86` | Content review and link validation |
-| Static documentation delivery | Publish static files | GitHub Actions Pages workflow succeeded for the recorded main SHA | Open the canonical Pages URL and test browser rendering, assets, mobile navigation |
+| Documentation source | Canonical public docs and infrastructure records | Repository `zskbot/docs-ocodejs`; main SHA `32d914c2c4255a3cdd85dff9966134bb3a8dbfe4` | Content review and link validation |
+| Static documentation delivery | Publish static files | PR #48 merged to main at `32d914c2c4255a3cdd85dff9966134bb3a8dbfe4`; post-merge Pages deployment URL and browser smoke test not independently verified | Open the canonical Pages URL and test browser rendering, assets, mobile navigation |
 | Documentation MCP | Read-only search/list/read tools for public docs | Cloudflare API confirms the Worker script exists, workers.dev is enabled, and 100% traffic is assigned to deployment 09409259-93c1-43e4-a8f7-0e1f2a9c209c | Direct HTTP health check, MCP initialize, tools/list, tool calls, CORS and rate-limit behavior |
 | Chatbot | Interactive AI assistant, independent server runtime | Integration page and launcher/config exist; PR #44 records Vercel project creation blocked with HTTP 403 | Create/authorize a separate Vercel project, configure required services, deploy Preview, smoke-test |
-| CI and quality gates | Validate docs, inventory, HTML and deployment workflow | Core CI and Pages succeeded on recorded SHA; Crystal CI failed because `shard.yml` is absent | Keep repository-relevant checks green and unrelated templates non-blocking |
+| CI and quality gates | Validate docs, inventory, HTML and deployment workflow | PR #48 CI, documentation, service inventory, infrastructure validation and security checks passed on head SHA `1b9effd186d0ee950cafee8da6161a038b1f1a0b`; post-merge Pages deployment remains unverified. Crystal CI is unrelated and fails because `shard.yml` is absent | Keep repository-relevant checks green and unrelated templates non-blocking |
 
 Evidence labels are intentionally conservative. A successful Pages workflow is not the same as a browser smoke test. A Worker health response is not proof that its GitHub upstream is reachable. A README endpoint is not proof of a live deployment.
 
