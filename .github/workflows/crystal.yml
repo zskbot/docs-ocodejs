@@ -1,22 +1,18 @@
-name: Crystal CI
+name: Crystal CI (manual template)
 
+# This repository has no Crystal shard.yml or Crystal source tree.
+# Keep the sample workflow available for deliberate manual use only.
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     container:
       image: crystallang/crystal
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Install dependencies
-      run: shards install
-    - name: Run tests
-      run: crystal spec
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: shards install
+      - name: Run tests
+        run: crystal spec
