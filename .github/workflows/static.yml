@@ -40,3 +40,24 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5
+      - name: Smoke test published Pages
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          test -n "$PAGE_URL"
+          check_url() {
+            local path="$1"
+            local url="${PAGE_URL%/}$path"
+            echo "Checking $url"
+            curl --fail --silent --show-error --location \
+              --retry 5 --retry-all-errors --retry-delay 3 --max-time 20 \
+              "$url" -o /dev/null
+          }
+          check_url "/"
+          check_url "/infra/"
+          registry_url="${PAGE_URL%/}/ecosystem/services.json"
+          echo "Validating $registry_url"
+          curl --fail --silent --show-error --location \
+            --retry 5 --retry-all-errors --retry-delay 3 --max-time 20 \
+            "$registry_url" | python -c 'import json,sys; data=json.load(sys.stdin); assert isinstance(data.get("services"), list)'
