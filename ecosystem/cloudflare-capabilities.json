@@ -6,7 +6,7 @@
   "resources": {
     "workers": {
       "status": "available",
-      "listedCount": 12,
+      "listedCount": 11,
       "namedScripts": [
         "autoship-control-plane",
         "autoship-control-plane-gateway",
@@ -20,7 +20,7 @@
         "velclawhost-app",
         "velclawhost-edge"
       ],
-      "note": "The API returned 12 scripts; the name list is intentionally a short inventory and does not include generated/internal scripts unless named above."
+      "note": "11 Worker scripts were returned by the account API; names are listed explicitly below."
     },
     "workersKv": {
       "status": "empty",
