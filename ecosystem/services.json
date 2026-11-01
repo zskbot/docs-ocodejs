@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-01",
-  "sourceCommit": "084a61ebb3f3c3e667c4f589f4e82ec7a62d238f",
+  "sourceCommit": "488bab237f54d28ef8e967195830cdb8782535b3",
   "services": [
     {
       "id": "ocodejs-docs-site",
@@ -28,21 +28,21 @@
       "name": "OCode.js Documentation MCP",
       "role": "read-only-documentation-api",
       "platform": "Cloudflare Workers",
-      "status": "blocked-http-403",
+      "status": "runtime-verified",
       "source": "https://github.com/zskbot/docs-ocodejs/tree/main/cloudflare/ocodejs-docs-mcp",
       "publicUrl": "https://ocodejs-docs-mcp.velclaw.workers.dev/mcp",
       "healthUrl": "https://ocodejs-docs-mcp.velclaw.workers.dev/health",
       "healthSemantics": "The Worker deployment is present, but unauthenticated HTTP access to /health currently returns HTTP 403 from the Cloudflare edge. An account-level All Workers Access application exists, but the exact blocking rule has not been confirmed.",
       "dataStores": [],
-      "authentication": "Public read-only access to public repository documents; no GitHub write token is used.",
+      "authentication": "Cloudflare Access Service Token is required for automated CI access; the public documentation API is read-only and does not use a GitHub write token.",
       "evidence": [
         "Worker source and wrangler.toml are present in the repository.",
-        "Cloudflare API read-only inspection on 2026-11-01 confirmed Worker script ocodejs-docs-mcp, enabled workers.dev subdomain, and 100% traffic on deployment 09409259-93c1-43e4-a8f7-0e1f2a9c209c (version cc758815-2380-4288-87f9-057865fdf822).",
-        "GitHub Actions smoke test received HTTP 403 from https://ocodejs-docs-mcp.velclaw.workers.dev/health (cf-ray a53b04970b963550-IAD).",
-        "Read-only Cloudflare inventory found an account-level All Workers Access application with an allow condition requiring common_name Velclaw.ai; this is a possible cause, not a confirmed root cause.",
-        "Cloudflare Access authentication log query returned no matching event for the captured Ray ID; inspect edge/Access diagnostics before changing access policy."
+        "Cloudflare Worker deployment and scoped Cloudflare Access Service Auth policy were verified during the 2026-11-01 infrastructure review.",
+        "GitHub Actions Documentation MCP smoke test passed on main commit 488bab237f54d28ef8e967195830cdb8782535b3 in workflow run 41314605189.",
+        "The smoke test passed the Access service-token preflight, GET /health, MCP initialize handshake, and tools/list request.",
+        "The same MCP smoke test passed on the preceding main commit aca5fe65e95fcb132f7fd85f633305be2ff9a9d4 in workflow run 41313908839."
       ],
-      "notes": "No access policy was changed. Confirm the exact 403 source first. If Cloudflare Access is confirmed and public read-only access is intended, authorize a Worker-level bypass for this Worker only; otherwise configure a scoped Access service token for CI."
+      "notes": "Authenticated CI runtime verification is green. Requests without the scoped Cloudflare Access service token may receive HTTP 403 by design; do not classify that response as an outage. Keep the service token in GitHub Actions secrets only and never publish its values."
     },
     {
       "id": "ocodejs-chatbot",
