@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-01",
+  "sourceCommit": "5645479f4bd45df12dd3cfd08b334a75c36edd86",
+  "services": [
+    {
+      "id": "ocodejs-docs-site",
+      "name": "OCode.js Documentation Site",
+      "role": "public-static-documentation",
+      "platform": "GitHub Pages",
+      "status": "workflow-passed-not-live-verified",
+      "source": "https://github.com/zskbot/docs-ocodejs",
+      "publicUrl": null,
+      "healthUrl": null,
+      "healthSemantics": "No runtime health endpoint is defined; validate the published page and static assets with a browser smoke test.",
+      "dataStores": [],
+      "authentication": "Public read-only documentation; no user session is required.",
+      "evidence": [
+        "GitHub Pages workflow succeeded on main commit 5645479f4bd45df12dd3cfd08b334a75c36edd86.",
+        "Canonical public URL and browser rendering were not independently verified."
+      ],
+      "notes": "Do not infer the canonical Pages URL from the repository name."
+    },
+    {
+      "id": "ocodejs-docs-mcp",
+      "name": "OCode.js Documentation MCP",
+      "role": "read-only-documentation-api",
+      "platform": "Cloudflare Workers",
+      "status": "deployment-reported-not-live-verified",
+      "source": "https://github.com/zskbot/docs-ocodejs/tree/main/cloudflare/ocodejs-docs-mcp",
+      "publicUrl": "https://ocodejs-docs-mcp.velclaw.workers.dev/mcp",
+      "healthUrl": "https://ocodejs-docs-mcp.velclaw.workers.dev/health",
+      "healthSemantics": "The handler returns static Worker metadata; it does not prove GitHub upstream availability.",
+      "dataStores": [],
+      "authentication": "Public read-only access to public repository documents; no GitHub write token is used.",
+      "evidence": [
+        "Worker source and wrangler.toml are present in the repository.",
+        "PR #43 records a successful Worker upload and enabled workers.dev subdomain.",
+        "Live health, MCP handshake and tool-call tests remain outstanding."
+      ],
+      "notes": "Keep this service stateless and read-only. Add rate and upstream resource limits before broad public exposure."
+    },
+    {
+      "id": "ocodejs-chatbot",
+      "name": "OCode.js Chatbot",
+      "role": "interactive-ai-chat-application",
+      "platform": "Vercel",
+      "status": "blocked-before-project-creation",
+      "source": "https://github.com/OCodejs/chatbot",
+      "publicUrl": null,
+      "healthUrl": null,
+      "healthSemantics": "No verified deployment or health endpoint is available.",
+      "dataStores": [
+        "PostgreSQL (documented requirement; provisioning not verified)",
+        "Redis (documented requirement; provisioning not verified)"
+      ],
+      "authentication": "Application authentication is documented; provider configuration and end-to-end login are not verified.",
+      "evidence": [
+        "Documentation integration guide describes a separate Next.js/Vercel deployment.",
+        "PR #44 records HTTP 403 when attempting to create the Vercel project.",
+        "chatbot-config.js intentionally has no public URL configured."
+      ],
+      "notes": "Do not expose the launcher to a public runtime until a Preview deployment and required dependencies are verified."
+    }
+  ]
+}
