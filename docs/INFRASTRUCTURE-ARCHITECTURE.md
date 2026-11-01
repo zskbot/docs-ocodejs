@@ -43,7 +43,7 @@ This document separates verified repository facts from deployment claims that st
 |---|---|---|---|
 | Documentation source | Canonical public docs and infrastructure records | Repository `zskbot/docs-ocodejs`; main SHA `5645479f4bd45df12dd3cfd08b334a75c36edd86` | Content review and link validation |
 | Static documentation delivery | Publish static files | GitHub Actions Pages workflow succeeded for the recorded main SHA | Open the canonical Pages URL and test browser rendering, assets, mobile navigation |
-| Documentation MCP | Read-only search/list/read tools for public docs | Worker source and Wrangler config exist; PR #43 records a deployment | Live health check, MCP initialize, tools/list, tool calls, CORS and rate-limit behavior |
+| Documentation MCP | Read-only search/list/read tools for public docs | Cloudflare API confirms the Worker script exists, workers.dev is enabled, and 100% traffic is assigned to deployment 09409259-93c1-43e4-a8f7-0e1f2a9c209c | Direct HTTP health check, MCP initialize, tools/list, tool calls, CORS and rate-limit behavior |
 | Chatbot | Interactive AI assistant, independent server runtime | Integration page and launcher/config exist; PR #44 records Vercel project creation blocked with HTTP 403 | Create/authorize a separate Vercel project, configure required services, deploy Preview, smoke-test |
 | CI and quality gates | Validate docs, inventory, HTML and deployment workflow | Core CI and Pages succeeded on recorded SHA; Crystal CI failed because `shard.yml` is absent | Keep repository-relevant checks green and unrelated templates non-blocking |
 
@@ -59,6 +59,7 @@ Evidence labels are intentionally conservative. A successful Pages workflow is n
 ### Documentation MCP
 - The documented Worker endpoint is `https://ocodejs-docs-mcp.velclaw.workers.dev/mcp`.
 - The intended data source is the public `main` branch of `zskbot/docs-ocodejs`.
+- Cloudflare API inspection on 2026-11-01 confirmed deployment `09409259-93c1-43e4-a8f7-0e1f2a9c209c` with version `cc758815-2380-4288-87f9-057865fdf822` receiving 100% of traffic and the workers.dev subdomain enabled.
 - The MCP tools are read-only: search, list paths, read one document, and return a project overview.
 - The Worker must not receive a GitHub write token for this use case.
 - Its `/health` response reports Worker metadata. It must not be described as an upstream dependency check.
