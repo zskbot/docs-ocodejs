@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-11-01",
+  "source": "Cloudflare API read-only inventory",
+  "scope": "Account capability snapshot; not a deployment manifest",
+  "resources": {
+    "workers": {
+      "status": "available",
+      "listedCount": 12,
+      "namedScripts": [
+        "autoship-control-plane",
+        "autoship-control-plane-gateway",
+        "docs-velclaw-ai",
+        "dynamic-workers-playground",
+        "git",
+        "ocodejs-docs-mcp",
+        "server",
+        "velclaw-mcp",
+        "velclawhost",
+        "velclawhost-app",
+        "velclawhost-edge"
+      ],
+      "note": "The API returned 12 scripts; the name list is intentionally a short inventory and does not include generated/internal scripts unless named above."
+    },
+    "workersKv": {
+      "status": "empty",
+      "namespaceCount": 0
+    },
+    "d1": {
+      "status": "existing-unrelated-resource",
+      "databases": [
+        {
+          "name": "autoship",
+          "tableCount": 0
+        }
+      ],
+      "note": "Do not attach or modify this database for docs infrastructure."
+    },
+    "r2": {
+      "status": "not-enabled",
+      "apiErrorCode": 10042,
+      "note": "Cloudflare API explicitly requested enabling R2 in the dashboard; no bucket was created."
+    },
+    "pages": {
+      "status": "account-project-not-matched",
+      "note": "A Pages project was returned but its repository source was not zskbot/docs-ocodejs. It is excluded from this service registry."
+    }
+  }
+}
