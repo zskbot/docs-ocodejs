@@ -7,7 +7,7 @@
 
 | Service | Source of truth | Runtime owner | Current operational note |
 |---|---|---|---|
-| Documentation site | `zskbot/docs-ocodejs` | GitHub Pages workflow | Pages workflow passed on main SHA `174e4cd1f7495414e7a90569de0599d533d94ff5`; dashboard browser smoke test remains pending |
+| Documentation site | `zskbot/docs-ocodejs` | GitHub Pages workflow | PR #48 merged to main at `32d914c2c4255a3cdd85dff9966134bb3a8dbfe4`; post-merge Pages deployment and browser smoke test remain unverified |
 | Documentation MCP | `cloudflare/ocodejs-docs-mcp` | Cloudflare Worker | Cloudflare API confirms deployment `09409259-93c1-43e4-a8f7-0e1f2a9c209c` at 100% traffic; direct HTTP/MCP verification remains outstanding |
 | Chatbot | `OCodejs/chatbot` | Separate Vercel project | Vercel project listing for `OCodejs/chatbot` returned no connected project; earlier create attempt returned HTTP 403; no public URL is configured |
 
@@ -37,9 +37,9 @@
 
 ### Known baseline findings (2026-11-01)
 
-- Baseline main commit at this review: `174e4cd1f7495414e7a90569de0599d533d94ff5`.
-- Core `CI`: PASS for that SHA.
-- `Deploy static content to Pages`: PASS for that SHA.
+- Current main commit at this review: `32d914c2c4255a3cdd85dff9966134bb3a8dbfe4`.
+- PR #48 head SHA `1b9effd186d0ee950cafee8da6161a038b1f1a0b`: core `CI`, documentation validation, ecosystem inventory validation, service inventory validation, infrastructure validation and Socket Security checks all PASS.
+- `Deploy static content to Pages`: post-merge run and published URL have not yet been independently verified.
 - `Crystal CI`: FAIL because the workflow runs `shards install` but this repository has no `shard.yml`. The repository is a static documentation hub with Python validation scripts, not a Crystal application. Keep the sample Crystal workflow manually invokable only unless Crystal source and a shard manifest are intentionally introduced.
 - A documentation-validation run on the preceding SHA `e6cbc1b47167395de1ecffb99420d96c9fed741e` failed because the checker treated upstream-root-relative links in vendored documentation snapshots as links inside this repository. Exclude only those imported corpora from first-party link validation; preserve their source files.
 
