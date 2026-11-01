@@ -18,9 +18,40 @@ EXPECTED_TOOLS = {
 }
 
 
-def request_json(url: str, payload: dict | None = None) -> tuple[int, dict]:
+def access_headers() -> dict[str, str]:
+    """Return Cloudflare Access service-token headers without exposing values."""
+    client_id = os.environ.get("CF_ACCESS_CLIENT_ID", "").strip()
+    client_secret = os.environ.get("CF_ACCESS_CLIENT_SECRET", "").strip()
+    if bool(client_id) != bool(client_secret):
+        raise RuntimeError(
+            "Cloudflare Access configuration is incomplete: set both "
+            "CF_ACCESS_CLIENT_ID and CF_ACCESS_CLIENT_SECRET."
+        )
+    if not client_id and os.environ.get("REQUIRE_ACCESS_TOKEN", "").lower() == "true":
+        raise RuntimeError(
+            "Cloudflare Access service token is required for CI. Configure the "
+            "CF_ACCESS_CLIENT_ID and CF_ACCESS_CLIENT_SECRET GitHub Actions secrets."
+        )
+    if not client_id:
+        print("NOTICE: no Cloudflare Access service token supplied; using unauthenticated mode.")
+        return {}
+    return {
+        "CF-Access-Client-Id": client_id,
+        "CF-Access-Client-Secret": client_secret,
+    }
+
+
+def request_json(
+    url: str,
+    payload: dict | None = None,
+    auth_headers: dict[str, str] | None = None,
+) -> tuple[int, dict]:
     body = None if payload is None else json.dumps(payload).encode("utf-8")
-    headers = {"Accept": "application/json", "User-Agent": "OCodejs-MCP-Smoke-Test"}
+    headers = {
+        "Accept": "application/json",
+        "User-Agent": "OCodejs-MCP-Smoke-Test",
+        **(auth_headers or {}),
+    }
     if body is not None:
         headers["Content-Type"] = "application/json"
     request = Request(url, data=body, headers=headers, method="GET" if body is None else "POST")
@@ -41,7 +72,13 @@ def request_json(url: str, payload: dict | None = None) -> tuple[int, dict]:
                     ray = exc.headers.get("cf-ray", "not-provided")
                     raise RuntimeError(
                         f"{url} returned HTTP 403 (server={server}, cf-ray={ray}); "
-                        "request may be blocked by Cloudflare Access/WAF. No automatic bypass is attempted."
+                        "verify the exact Access application/policy and service-token "
+                        "authorization. No automatic bypass is attempted."
+                    ) from exc
+                if exc.code in (401,):
+                    raise RuntimeError(
+                        f"{url} returned HTTP {exc.code}; the Access service token "
+                        "may be invalid, expired, or not authorized for this application."
                     ) from exc
                 raise RuntimeError(f"{url} returned HTTP {exc.code}") from exc
         except (URLError, TimeoutError, json.JSONDecodeError) as exc:
@@ -57,7 +94,8 @@ def main() -> int:
     if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
         raise ValueError("MCP_URL must be a credential-free HTTPS origin")
 
-    status, health = request_json(f"{base}/health")
+    auth = access_headers()
+    status, health = request_json(f"{base}/health", auth_headers=auth)
     assert 200 <= status < 300, status
     assert health.get("name") == "ocodejs-docs-mcp", health
     assert health.get("status") == "ok", health
@@ -76,6 +114,7 @@ def main() -> int:
                 "clientInfo": {"name": "ocodejs-mcp-smoke-test", "version": "1.0"},
             },
         },
+        auth_headers=auth,
     )
     result = initialized.get("result", {})
     assert 200 <= status < 300, status
@@ -88,6 +127,7 @@ def main() -> int:
     status, listed = request_json(
         f"{base}/mcp",
         {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}},
+        auth_headers=auth,
     )
     tools = listed.get("result", {}).get("tools", [])
     names = {item.get("name") for item in tools}

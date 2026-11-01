@@ -7,8 +7,8 @@
 
 | Service | Source of truth | Runtime owner | Current operational note |
 |---|---|---|---|
-| Documentation site | `zskbot/docs-ocodejs` | GitHub Pages workflow | Public URL `https://zskbot.github.io/docs-ocodejs/`; run #122 on `084a61ebb3f3c3e667c4f589f4e82ec7a62d238f` deployed Pages and passed all static HTTP checks; the combined job later failed only in the MCP step, now isolated |
-| Documentation MCP | `cloudflare/ocodejs-docs-mcp` | Cloudflare Worker | Cloudflare API confirms deployment `09409259-93c1-43e4-a8f7-0e1f2a9c209c` at 100% traffic; GitHub Actions PR #51 received HTTP 403 on `/health`; account-level `All Workers` Access policy is a likely blocker |
+| Documentation site | `zskbot/docs-ocodejs` | GitHub Pages workflow | Public URL `https://zskbot.github.io/docs-ocodejs/`; run #122 on `084a61ebb3f3c3e667c4f589f4e82ec7a62d238f` deployed Pages and passed all static HTTP checks; the MCP smoke test is isolated |
+| Documentation MCP | `cloudflare/ocodejs-docs-mcp` | Cloudflare Worker | Deployment `09409259-93c1-43e4-a8f7-0e1f2a9c209c` at 100% traffic; unauthenticated GitHub Actions requests returned HTTP 403; CI is being prepared for scoped Access service-token authentication |
 | Chatbot | `OCodejs/chatbot` | Separate Vercel project | Vercel project listing for `OCodejs/chatbot` returned no connected project; earlier create attempt returned HTTP 403; no public URL is configured |
 
 ## Pre-change checklist
@@ -25,35 +25,25 @@
 
 1. Identify the exact workflow run, commit SHA, failed job and failed step.
 2. Read the job log before changing workflow configuration.
-3. Classify the failure:
-   - product regression;
-   - validator defect;
-   - missing repository configuration;
-   - unrelated template workflow;
-   - external provider or permission blocker.
+3. Classify the failure: product regression, validator defect, missing repository configuration, unrelated template workflow, or external provider/permission blocker.
 4. Fix the narrowest cause and add a regression check where practical.
 5. Re-run the affected workflow and inspect all required checks on the PR head SHA.
 6. Do not claim success based on a different commit or an unrelated green workflow.
 
 ### Latest verified baseline (2026-11-01)
 
+- PR #52 was merged as `50f464f964d96919d0a5b3e871126e141c12ba41`.
 - Main commit deployed by Pages workflow run #122: `084a61ebb3f3c3e667c4f589f4e82ec7a62d238f`.
 - GitHub Pages deployment and static post-deploy checks PASS: `/`, `/infra/`, and `/ecosystem/services.json` returned successful HTTP responses; registry JSON parsed with a `services` array. Published URL: `https://zskbot.github.io/docs-ocodejs/`.
 - The combined workflow run #122 was marked failed only because the separate MCP endpoint check returned HTTP 403. The Pages deploy and static checks themselves passed.
-- Maintained workflows now use Node.js 24-compatible action releases. The legacy Jekyll validation was changed to manual-only after it failed on an imported API reference document containing unsupported Liquid `{% data %}` syntax; it is not the Pages deployment pipeline.
+- Maintained workflows use Node.js 24-compatible action releases. The legacy Jekyll validation is manual-only because imported API reference Markdown contains Liquid-like tags unsupported by Jekyll; it is not the Pages deployment pipeline.
 
 ### Access-policy blocker found (2026-11-01)
 
-- PR #51's read-only MCP smoke test received HTTP 403 from `https://ocodejs-docs-mcp.velclaw.workers.dev/health`.
-- Read-only Cloudflare inventory shows an account-level Access application named `All Workers` with an allow condition requiring client certificate common name `Velclaw.ai`. This is a likely cause of the unauthenticated GitHub Actions request being denied; confirm via request logs before changing policy.
-- Do not disable the account-wide policy. If the MCP endpoint is intentionally public and read-only, use a Worker-level bypass scoped only to `ocodejs-docs-mcp`, with explicit approval. Otherwise, use a dedicated Access service token for the CI smoke-test client.
-
-### Historical baseline findings (2026-11-01)
-
-- Earlier main commit at the start of the infrastructure review: `32d914c2c4255a3cdd85dff9966134bb3a8dbfe4`.
-- PR #48 head SHA `1b9effd186d0ee950cafee8da6161a038b1f1a0b`: core `CI`, documentation validation, ecosystem inventory validation, service inventory validation, infrastructure validation and Socket Security checks all PASS.
-- `Crystal CI`: FAIL because the workflow runs `shards install` but this repository has no `shard.yml`. The repository is a static documentation hub with Python validation scripts, not a Crystal application. Keep the sample Crystal workflow manually invokable only unless Crystal source and a shard manifest are intentionally introduced.
-- A documentation-validation run on the preceding SHA `e6cbc1b47167395de1ecffb99420d96c9fed741e` failed because the checker treated upstream-root-relative links in vendored documentation snapshots as links inside this repository. Exclude only those imported corpora from first-party link validation; preserve their source files.
+- GitHub Actions received HTTP 403 from `https://ocodejs-docs-mcp.velclaw.workers.dev/health`.
+- Read-only Cloudflare inventory shows an account-level Access application named `All Workers` with an allow condition requiring client certificate common name `Velclaw.ai`. This is a possible cause, not a proven root cause; no matching Access authentication event was found for the captured Ray ID.
+- Do not disable, weaken, or add a service-token rule to the account-wide `All Workers` application. That could unintentionally affect every Worker protected by the application.
+- The chosen CI direction is private authenticated access using a dedicated service token, not public access or an Access bypass.
 
 ## Control Center
 
@@ -73,14 +63,50 @@ The automated Pages workflow checks HTTP success for `/` and `/infra/` and valid
 
 ## Documentation MCP smoke test
 
-The dedicated `.github/workflows/mcp-smoke-test.yml` runs on relevant pull requests and pushes. It invokes `scripts/smoke-test-mcp.py` and verifies:
+The dedicated `.github/workflows/mcp-smoke-test.yml` invokes `scripts/smoke-test-mcp.py` and verifies:
 1. GET `/health`: service identity, `ok` status and the four expected read-only tools.
 2. POST MCP `initialize` using protocol version `2025-03-26`.
 3. POST `tools/list`: exact read-only tool inventory and object input schemas.
 
-Current result: GitHub Actions receives HTTP 403 from `/health`. Cloudflare's read-only account inventory shows an account-level `All Workers` Access application with an allow condition requiring client certificate common name `Velclaw.ai`; this is a likely blocker for unauthenticated CI requests. Do not disable the account-wide policy. If the MCP endpoint is intentionally public, authorize a Worker-level bypass scoped only to `ocodejs-docs-mcp`; otherwise configure a dedicated Access service token for CI.
+The smoke-test client supports Cloudflare Access service-token headers. In CI, it requires both repository secrets and fails early with a clear message if either is missing. Secret values are never printed.
 
-These protocol checks do not prove GitHub upstream document fetch availability. After access is resolved, manually call `list_ocodejs_docs`, `get_ocodejs_document` for `README.md`, and `search_ocodejs_docs`; also confirm malformed paths are rejected and no write tool is exposed.
+### One-time secure setup for CI
+
+This setup intentionally keeps the MCP endpoint private. Complete these steps in the provider dashboards; do not paste credentials into chat, source files, workflow YAML, issues, or logs.
+
+1. **Cloudflare Access — scope the authorization**
+   - Open the Cloudflare Zero Trust dashboard and inspect the existing Access application covering `ocodejs-docs-mcp.velclaw.workers.dev`.
+   - Do not disable or edit the account-wide `All Workers` policy.
+   - Ensure the MCP hostname has a narrowly scoped Access application/policy that permits the dedicated service token using a **Service Auth** policy and an include rule for that token.
+   - The policy must cover only `ocodejs-docs-mcp.velclaw.workers.dev`. Do not add the token to a wildcard or account-wide application.
+   - If Cloudflare reports that the hostname overlaps with the existing `All Workers` application, stop; do not force the change. Resolve the application-scope design first without weakening the existing policy.
+
+2. **Cloudflare Access — create the CI service token**
+   - In Zero Trust, open **Access → Service Auth → Service Tokens** (menu wording may vary).
+   - Create a token named `docs-ocodejs-github-actions`, with a finite expiration (recommended: 1 year or less).
+   - Copy the client ID and client secret at creation time. The secret is shown only once; store it directly in GitHub, not in chat.
+   - Attach this token to the MCP-only Service Auth policy from step 1.
+
+3. **GitHub — add repository Actions secrets**
+   - Open `https://github.com/zskbot/docs-ocodejs/settings/secrets/actions`.
+   - Choose **New repository secret** and create:
+     - `CF_ACCESS_CLIENT_ID` = Cloudflare service-token Client ID.
+     - `CF_ACCESS_CLIENT_SECRET` = Cloudflare service-token Client Secret.
+   - Do not create similarly named plaintext variables. Use Actions **Secrets**.
+   - Limit repository administration access to trusted maintainers.
+
+4. **Verify**
+   - Re-run the `Documentation MCP smoke test` workflow from Actions, or push the follow-up PR after both secrets and the scoped policy exist.
+   - Confirm all three checks pass: `/health`, `initialize`, and `tools/list`.
+   - Then manually test `list_ocodejs_docs`, `get_ocodejs_document` for `README.md`, and `search_ocodejs_docs`; also confirm malformed paths are rejected and no write tool is exposed.
+   - Record the workflow URL, tested commit SHA, UTC timestamp, and service-token expiry date. Never record the token values.
+
+5. **Rotation and incident handling**
+   - Rotate the Cloudflare service token before expiry and update the two GitHub secrets together.
+   - Re-run the smoke test after rotation; revoke the old token only after the new token passes.
+   - If a token is exposed, revoke/rotate it immediately and inspect Access logs. Do not create a public bypass as a workaround.
+
+Until steps 1–3 are complete, the MCP runtime status remains **BLOCKED / NOT VERIFIED**. A code change that merely supports token headers is not proof of successful authentication.
 
 ## Chatbot Preview smoke test
 
