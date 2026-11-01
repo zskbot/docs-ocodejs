@@ -1,21 +1,30 @@
-name: Daily repository health monitor
+name: Repository health monitor
 
 on:
   schedule:
     - cron: "0 2 * * *"
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - CI
+      - Documentation validation
+      - Deploy static content to Pages
+      - Documentation MCP smoke test
+    types: [completed]
+    branches: [main]
 
 permissions:
   actions: read
   contents: read
+  issues: write
 
 concurrency:
-  group: daily-repository-health-monitor
+  group: repository-health-monitor
   cancel-in-progress: false
 
 jobs:
   monitor:
-    name: Audit main workflows
+    name: Audit main workflows and report failures
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -26,39 +35,41 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          api="https://api.github.com/repos/${REPOSITORY}/actions/runs?branch=main&per_page=100"
-          runs="$(curl --fail --silent --show-error \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${GH_TOKEN}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "${api}")"
+          api="https://api.github.com/repos/${REPOSITORY}"
+          headers=(-H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${GH_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28")
+          runs="$(curl --fail --silent --show-error "${headers[@]}" "${api}/actions/runs?branch=main&per_page=100")"
 
-          echo "## Daily repository health" >> "$GITHUB_STEP_SUMMARY"
+          echo "## Repository health" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "| Workflow | Latest run | Result |" >> "$GITHUB_STEP_SUMMARY"
           echo "|---|---|---|" >> "$GITHUB_STEP_SUMMARY"
 
           blocking_failure=0
+          failure_count=0
+          failure_details=""
           for workflow in "CI" "Documentation validation" "Deploy static content to Pages" "Documentation MCP smoke test"; do
             row="$(jq -r --arg name "$workflow" '
               [.workflow_runs[] | select(.name == $name and .head_branch == "main")]
               | sort_by(.created_at) | last
-              | if . == null then "MISSING|unknown|"
-                else "\(.id)|\(.conclusion // .status)|\(.html_url)"
+              | if . == null then "MISSING|missing|unknown|"
+                else "\(.id)|\(.status)|\(.conclusion // "pending")|\(.html_url)"
                 end
             ' <<< "$runs")"
-            IFS='|' read -r run_id result run_url <<< "$row"
+            IFS='|' read -r run_id status result run_url <<< "$row"
+
             if [[ "$result" == "success" ]]; then
               label="PASS"
-            elif [[ "$workflow" == "Documentation MCP smoke test" && "$result" == "failure" ]]; then
-              label="BLOCKED/FAIL — inspect Access secrets and scoped policy"
-            elif [[ "$result" == "MISSING" ]]; then
-              label="MISSING"
-              blocking_failure=1
+            elif [[ "$status" != "completed" && "$result" != "missing" ]]; then
+              label="RUNNING — ${status}"
             else
               label="FAIL — ${result}"
-              blocking_failure=1
+              failure_count=$((failure_count + 1))
+              failure_details+="\n- **${workflow}**: ${result} — ${run_url:-no run URL}"
+              if [[ "$workflow" != "Documentation MCP smoke test" ]]; then
+                blocking_failure=1
+              fi
             fi
+
             if [[ -n "${run_url:-}" ]]; then
               echo "| ${workflow} | [#${run_id}](${run_url}) | ${label} |" >> "$GITHUB_STEP_SUMMARY"
             else
@@ -66,10 +77,42 @@ jobs:
             fi
           done
 
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "MCP smoke-test failures are reported separately because Access policy and repository secrets require protected configuration. This monitor never reads secret values, changes Cloudflare policies, modifies Workers, or deploys production." >> "$GITHUB_STEP_SUMMARY"
+          alert_title="[Automation] Repository health alert"
+          marker="<!-- repository-health-monitor -->"
+          issues="$(curl --fail --silent --show-error "${headers[@]}" "${api}/issues?state=open&per_page=100")"
+          alert_number="$(jq -r --arg title "$alert_title" --arg marker "$marker" '
+            [.[] | select((has("pull_request") | not) and .title == $title and (.body // "" | contains($marker)))]
+            | first | .number // empty
+          ' <<< "$issues")"
+
+          if [[ "$failure_count" -gt 0 ]]; then
+            body="$(printf '%s\n\n%s\n\n%s\n\n%s' "$marker" "The repository health monitor detected failed or missing workflow runs on `main`:" "$failure_details" "This issue is maintained automatically. It is updated rather than duplicated on subsequent checks. MCP failures are tracked separately from core CI/Pages failures. The monitor does not read secret values, modify Cloudflare Access policies, change Workers, or deploy production.")"
+            payload="$(jq -n --arg title "$alert_title" --arg body "$body" '{title:$title,body:$body}')"
+            if [[ -n "$alert_number" ]]; then
+              curl --fail --silent --show-error -X PATCH "${headers[@]}" -H "Content-Type: application/json" -d "$payload" "${api}/issues/${alert_number}" >/dev/null
+              echo "" >> "$GITHUB_STEP_SUMMARY"
+              echo "Updated existing automated alert issue #${alert_number}." >> "$GITHUB_STEP_SUMMARY"
+            else
+              created="$(curl --fail --silent --show-error -X POST "${headers[@]}" -H "Content-Type: application/json" -d "$payload" "${api}/issues")"
+              alert_number="$(jq -r '.number' <<< "$created")"
+              echo "" >> "$GITHUB_STEP_SUMMARY"
+              echo "Created automated alert issue #${alert_number}." >> "$GITHUB_STEP_SUMMARY"
+            fi
+          elif [[ -n "$alert_number" ]]; then
+            close_body="$(printf '%s\n\n%s' "$marker" "All monitored workflows are healthy again. Automatically closing this alert after recovery verification.")"
+            payload="$(jq -n --arg body "$close_body" '{state:"closed",body:$body}')"
+            curl --fail --silent --show-error -X PATCH "${headers[@]}" -H "Content-Type: application/json" -d "$payload" "${api}/issues/${alert_number}" >/dev/null
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Closed recovered automated alert issue #${alert_number}." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "No failures detected; no alert issue is open." >> "$GITHUB_STEP_SUMMARY"
+          fi
 
           if [[ "$blocking_failure" -ne 0 ]]; then
             echo "::error::One or more core repository workflows are missing or failing."
             exit 1
+          fi
+          if [[ "$failure_count" -gt 0 ]]; then
+            echo "::warning::One or more monitored workflows failed; see the automated issue alert."
           fi
