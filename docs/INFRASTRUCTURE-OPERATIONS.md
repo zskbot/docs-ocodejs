@@ -7,9 +7,9 @@
 
 | Service | Source of truth | Runtime owner | Current operational note |
 |---|---|---|---|
-| Documentation site | `zskbot/docs-ocodejs` | GitHub Pages workflow | Latest recorded Pages workflow passed; browser smoke test still required |
-| Documentation MCP | `cloudflare/ocodejs-docs-mcp` | Cloudflare Worker | Deployment is reported in PR #43; live MCP verification remains outstanding |
-| Chatbot | `OCodejs/chatbot` | Separate Vercel project | Project creation previously returned HTTP 403; no verified public URL is configured |
+| Documentation site | `zskbot/docs-ocodejs` | GitHub Pages workflow | Pages workflow passed on main SHA `174e4cd1f7495414e7a90569de0599d533d94ff5`; dashboard browser smoke test remains pending |
+| Documentation MCP | `cloudflare/ocodejs-docs-mcp` | Cloudflare Worker | Cloudflare API confirms deployment `09409259-93c1-43e4-a8f7-0e1f2a9c209c` at 100% traffic; direct HTTP/MCP verification remains outstanding |
+| Chatbot | `OCodejs/chatbot` | Separate Vercel project | Vercel project listing for `OCodejs/chatbot` returned no connected project; earlier create attempt returned HTTP 403; no public URL is configured |
 
 ## Pre-change checklist
 
@@ -37,11 +37,15 @@
 
 ### Known baseline findings (2026-11-01)
 
-- Main commit: `5645479f4bd45df12dd3cfd08b334a75c36edd86`.
+- Baseline main commit at this review: `174e4cd1f7495414e7a90569de0599d533d94ff5`.
 - Core `CI`: PASS for that SHA.
 - `Deploy static content to Pages`: PASS for that SHA.
 - `Crystal CI`: FAIL because the workflow runs `shards install` but this repository has no `shard.yml`. The repository is a static documentation hub with Python validation scripts, not a Crystal application. Keep the sample Crystal workflow manually invokable only unless Crystal source and a shard manifest are intentionally introduced.
 - A documentation-validation run on the preceding SHA `e6cbc1b47167395de1ecffb99420d96c9fed741e` failed because the checker treated upstream-root-relative links in vendored documentation snapshots as links inside this repository. Exclude only those imported corpora from first-party link validation; preserve their source files.
+
+## Control Center
+
+The read-only dashboard is published from `infra/index.html` at `/infra/` after the Pages workflow deploys a merged commit. It loads the service registry and attempts a browser-side MCP health request. A CORS/network failure is **not** proof that the Worker is down. See [Control Center User Guide](CONTROL-CENTER-USER-GUIDE.md).
 
 ## Static site smoke test
 

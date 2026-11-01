@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-01",
-  "sourceCommit": "5645479f4bd45df12dd3cfd08b334a75c36edd86",
+  "sourceCommit": "174e4cd1f7495414e7a90569de0599d533d94ff5",
   "services": [
     {
       "id": "ocodejs-docs-site",
@@ -16,8 +16,9 @@
       "dataStores": [],
       "authentication": "Public read-only documentation; no user session is required.",
       "evidence": [
-        "GitHub Pages workflow succeeded on main commit 5645479f4bd45df12dd3cfd08b334a75c36edd86.",
-        "Canonical public URL and browser rendering were not independently verified."
+        "GitHub Pages workflow succeeded on main commit 174e4cd1f7495414e7a90569de0599d533d94ff5.",
+        "The new Control Center is on PR #48; the PR has green CI but has not yet been deployed to Pages.",
+        "Canonical public URL and browser rendering have not been independently verified."
       ],
       "notes": "Do not infer the canonical Pages URL from the repository name."
     },
@@ -35,8 +36,6 @@
       "authentication": "Public read-only access to public repository documents; no GitHub write token is used.",
       "evidence": [
         "Worker source and wrangler.toml are present in the repository.",
-        "PR #43 records a successful Worker upload and enabled workers.dev subdomain.",
-        "Live health, MCP handshake and tool-call tests remain outstanding.",
         "Cloudflare API read-only inspection on 2026-11-01 confirmed Worker script ocodejs-docs-mcp, enabled workers.dev subdomain, and 100% traffic on deployment 09409259-93c1-43e4-a8f7-0e1f2a9c209c (version cc758815-2380-4288-87f9-057865fdf822).",
         "Direct HTTP /health and MCP protocol calls were not verified."
       ],
@@ -60,7 +59,8 @@
       "evidence": [
         "Documentation integration guide describes a separate Next.js/Vercel deployment.",
         "PR #44 records HTTP 403 when attempting to create the Vercel project.",
-        "chatbot-config.js intentionally has no public URL configured."
+        "chatbot-config.js intentionally has no public URL configured.",
+        "Vercel project listing filtered to OCodejs/chatbot returned no connected project on 2026-11-01."
       ],
       "notes": "Do not expose the launcher to a public runtime until a Preview deployment and required dependencies are verified."
     }
