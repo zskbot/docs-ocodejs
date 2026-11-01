@@ -1,0 +1,75 @@
+name: Daily repository health monitor
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: daily-repository-health-monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    name: Audit main workflows
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspect latest main workflow runs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          api="https://api.github.com/repos/${REPOSITORY}/actions/runs?branch=main&per_page=100"
+          runs="$(curl --fail --silent --show-error \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "${api}")"
+
+          echo "## Daily repository health" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Workflow | Latest run | Result |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|---|" >> "$GITHUB_STEP_SUMMARY"
+
+          blocking_failure=0
+          for workflow in "CI" "Documentation validation" "Deploy static content to Pages" "Documentation MCP smoke test"; do
+            row="$(jq -r --arg name "$workflow" '
+              [.workflow_runs[] | select(.name == $name and .head_branch == "main")]
+              | sort_by(.created_at) | last
+              | if . == null then "MISSING|unknown|"
+                else "\(.id)|\(.conclusion // .status)|\(.html_url)"
+                end
+            ' <<< "$runs")"
+            IFS='|' read -r run_id result run_url <<< "$row"
+            if [[ "$result" == "success" ]]; then
+              label="PASS"
+            elif [[ "$workflow" == "Documentation MCP smoke test" && "$result" == "failure" ]]; then
+              label="BLOCKED/FAIL — inspect Access secrets and scoped policy"
+            elif [[ "$result" == "MISSING" ]]; then
+              label="MISSING"
+              blocking_failure=1
+            else
+              label="FAIL — ${result}"
+              blocking_failure=1
+            fi
+            if [[ -n "${run_url:-}" ]]; then
+              echo "| ${workflow} | [#${run_id}](${run_url}) | ${label} |" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "| ${workflow} | — | ${label} |" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
+
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "MCP smoke-test failures are reported separately because Access policy and repository secrets require protected configuration. This monitor never reads secret values, changes Cloudflare policies, modifies Workers, or deploys production." >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ "$blocking_failure" -ne 0 ]]; then
+            echo "::error::One or more core repository workflows are missing or failing."
+            exit 1
+          fi
