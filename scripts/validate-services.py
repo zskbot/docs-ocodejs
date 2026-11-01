@@ -18,7 +18,7 @@ STATUSES = {
     "workflow-passed-not-live-verified",
     "deployment-reported-not-live-verified",
     "deployment-api-verified-http-not-tested",
-    "blocked-by-access-policy",
+    "blocked-by-access-policy",\n    "blocked-http-403",
     "blocked-before-project-creation",
     "preview-pending",
     "runtime-verified",
