@@ -67,8 +67,8 @@
 <script>
 const registryUrl='../ecosystem/services.json';
 const healthUrl='https://ocodejs-docs-mcp.velclaw.workers.dev/health';
-const labelStatus=s=>({ 'workflow-passed-not-live-verified':'Workflow passed · live site not verified','deployment-api-verified-http-not-tested':'Deployment API verified · HTTP not tested','runtime-verified':'HTTP smoke test passed · Pages run #121','blocked-by-access-policy':'Blocked · Cloudflare Access (HTTP 403)','blocked-before-project-creation':'Blocked · Vercel project unavailable' }[s]||s);
-const tone=s=>s==='runtime-verified'?'good':s==='workflow-passed-not-live-verified'||s==='blocked-by-access-policy'?'warn':s==='deployment-api-verified-http-not-tested'?'good':'bad';
+const labelStatus=s=>({ 'workflow-passed-not-live-verified':'Workflow passed · live site not verified','deployment-api-verified-http-not-tested':'Deployment API verified · HTTP not tested','runtime-verified':'HTTP smoke test passed · Pages run #121','blocked-by-access-policy':'Blocked · Cloudflare Access (HTTP 403)','blocked-http-403':'Blocked · HTTP 403 (edge rule unconfirmed)','blocked-before-project-creation':'Blocked · Vercel project unavailable' }[s]||s);
+const tone=s=>s==='runtime-verified'?'good':s==='workflow-passed-not-live-verified'||(s==='blocked-by-access-policy'||s==='blocked-http-403')?'warn':s==='deployment-api-verified-http-not-tested'?'good':'bad';
 function el(tag,cls,txt){const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n}
 async function refresh(){
  const updated=document.getElementById('updated'),grid=document.getElementById('services'),runtime=document.getElementById('runtime');
