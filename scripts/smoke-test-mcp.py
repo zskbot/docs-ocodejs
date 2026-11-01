@@ -36,6 +36,13 @@ def request_json(url: str, payload: dict | None = None) -> tuple[int, dict]:
         except HTTPError as exc:
             last_error = exc
             if exc.code < 500 and exc.code != 429:
+                if exc.code == 403:
+                    server = exc.headers.get("server", "unknown")
+                    ray = exc.headers.get("cf-ray", "not-provided")
+                    raise RuntimeError(
+                        f"{url} returned HTTP 403 (server={server}, cf-ray={ray}); "
+                        "request may be blocked by Cloudflare Access/WAF. No automatic bypass is attempted."
+                    ) from exc
                 raise RuntimeError(f"{url} returned HTTP {exc.code}") from exc
         except (URLError, TimeoutError, json.JSONDecodeError) as exc:
             last_error = exc

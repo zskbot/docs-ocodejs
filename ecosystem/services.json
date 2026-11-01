@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-01",
-  "sourceCommit": "6b970016bdda478099f8702a268f91b8bbf3f468",
+  "sourceCommit": "084a61ebb3f3c3e667c4f589f4e82ec7a62d238f",
   "services": [
     {
       "id": "ocodejs-docs-site",
@@ -18,28 +18,31 @@
       "evidence": [
         "GitHub Pages deployment completed successfully on main commit 6b970016bdda478099f8702a268f91b8bbf3f468 in workflow run 41307329427 (run #121).",
         "Post-deployment smoke test in run #121 successfully fetched /, /infra/, and /ecosystem/services.json; the JSON parser confirmed services is an array.",
+        "On main commit 084a61ebb3f3c3e667c4f589f4e82ec7a62d238f, Pages deployment and all static HTTP checks passed in workflow run 41308066253; the overall job failed only in the separate MCP smoke-test step before that check was isolated.",
         "Verified public URL from the Pages deployment output: https://zskbot.github.io/docs-ocodejs/."
       ],
-      "notes": "Public URL and HTTP smoke test are verified for run #121; revalidate after each main deployment."
+      "notes": "Public URL and static HTTP smoke tests are verified; Pages deployment is now independent of MCP availability and revalidated after each main deployment."
     },
     {
       "id": "ocodejs-docs-mcp",
       "name": "OCode.js Documentation MCP",
       "role": "read-only-documentation-api",
       "platform": "Cloudflare Workers",
-      "status": "deployment-api-verified-http-not-tested",
+      "status": "blocked-http-403",
       "source": "https://github.com/zskbot/docs-ocodejs/tree/main/cloudflare/ocodejs-docs-mcp",
       "publicUrl": "https://ocodejs-docs-mcp.velclaw.workers.dev/mcp",
       "healthUrl": "https://ocodejs-docs-mcp.velclaw.workers.dev/health",
-      "healthSemantics": "The handler returns static Worker metadata; it does not prove GitHub upstream availability.",
+      "healthSemantics": "The Worker deployment is present, but unauthenticated HTTP access to /health currently returns HTTP 403 from the Cloudflare edge. An account-level All Workers Access application exists, but the exact blocking rule has not been confirmed.",
       "dataStores": [],
       "authentication": "Public read-only access to public repository documents; no GitHub write token is used.",
       "evidence": [
         "Worker source and wrangler.toml are present in the repository.",
         "Cloudflare API read-only inspection on 2026-11-01 confirmed Worker script ocodejs-docs-mcp, enabled workers.dev subdomain, and 100% traffic on deployment 09409259-93c1-43e4-a8f7-0e1f2a9c209c (version cc758815-2380-4288-87f9-057865fdf822).",
-        "Direct HTTP /health and MCP protocol calls were not verified."
+        "GitHub Actions smoke test received HTTP 403 from https://ocodejs-docs-mcp.velclaw.workers.dev/health (cf-ray a53b04970b963550-IAD).",
+        "Read-only Cloudflare inventory found an account-level All Workers Access application with an allow condition requiring common_name Velclaw.ai; this is a possible cause, not a confirmed root cause.",
+        "Cloudflare Access authentication log query returned no matching event for the captured Ray ID; inspect edge/Access diagnostics before changing access policy."
       ],
-      "notes": "Keep this service stateless and read-only. Add rate and upstream resource limits before broad public exposure."
+      "notes": "No access policy was changed. Confirm the exact 403 source first. If Cloudflare Access is confirmed and public read-only access is intended, authorize a Worker-level bypass for this Worker only; otherwise configure a scoped Access service token for CI."
     },
     {
       "id": "ocodejs-chatbot",

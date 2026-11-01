@@ -1,17 +1,9 @@
 name: Jekyll build validation
 
+# This imported repository includes API reference Markdown with Liquid-like tags
+# (for example `{% data %}`) that are not valid Jekyll tags. Keep this legacy
+# Jekyll diagnostic manual-only; GitHub Pages is deployed by static.yml.
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "_config.yml"
-      - "content/**"
-      - "files/**"
-      - ".agents/**"
-      - "skills/**"
-      - "canonical/**"
-      - ".github/workflows/jekyll-validation.yml"
   workflow_dispatch:
 
 permissions:

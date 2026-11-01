@@ -7,8 +7,8 @@
 
 | Service | Source of truth | Runtime owner | Current operational note |
 |---|---|---|---|
-| Documentation site | `zskbot/docs-ocodejs` | GitHub Pages workflow | Public URL `https://zskbot.github.io/docs-ocodejs/`; workflow run #121 on `6b970016bdda478099f8702a268f91b8bbf3f468` passed deploy and HTTP checks for `/`, `/infra/`, and `ecosystem/services.json` |
-| Documentation MCP | `cloudflare/ocodejs-docs-mcp` | Cloudflare Worker | Cloudflare API confirms deployment `09409259-93c1-43e4-a8f7-0e1f2a9c209c` at 100% traffic; HTTP `/health`, MCP `initialize`, and `tools/list` smoke tests are now wired into the Pages workflow and await the next deployment run |
+| Documentation site | `zskbot/docs-ocodejs` | GitHub Pages workflow | Public URL `https://zskbot.github.io/docs-ocodejs/`; run #122 on `084a61ebb3f3c3e667c4f589f4e82ec7a62d238f` deployed Pages and passed all static HTTP checks; the combined job later failed only in the MCP step, now isolated |
+| Documentation MCP | `cloudflare/ocodejs-docs-mcp` | Cloudflare Worker | Cloudflare API confirms deployment `09409259-93c1-43e4-a8f7-0e1f2a9c209c` at 100% traffic; GitHub Actions PR #51 received HTTP 403 on `/health`; account-level `All Workers` Access policy is a likely blocker |
 | Chatbot | `OCodejs/chatbot` | Separate Vercel project | Vercel project listing for `OCodejs/chatbot` returned no connected project; earlier create attempt returned HTTP 403; no public URL is configured |
 
 ## Pre-change checklist
@@ -37,9 +37,16 @@
 
 ### Latest verified baseline (2026-11-01)
 
-- Main commit deployed by Pages workflow run #121: `6b970016bdda478099f8702a268f91b8bbf3f468`.
-- GitHub Pages deployment and post-deploy smoke test both PASS: `/`, `/infra/`, and `/ecosystem/services.json` returned successful HTTP responses; registry JSON parsed with a `services` array. Published URL: `https://zskbot.github.io/docs-ocodejs/`.
-- Workflow run #121 emitted a Node.js 20 deprecation warning. This PR migrates maintained workflows and Pages actions to Node.js 24-compatible releases; legacy sample workflows remain manual-only.
+- Main commit deployed by Pages workflow run #122: `084a61ebb3f3c3e667c4f589f4e82ec7a62d238f`.
+- GitHub Pages deployment and static post-deploy checks PASS: `/`, `/infra/`, and `/ecosystem/services.json` returned successful HTTP responses; registry JSON parsed with a `services` array. Published URL: `https://zskbot.github.io/docs-ocodejs/`.
+- The combined workflow run #122 was marked failed only because the separate MCP endpoint check returned HTTP 403. The Pages deploy and static checks themselves passed.
+- Maintained workflows now use Node.js 24-compatible action releases. The legacy Jekyll validation was changed to manual-only after it failed on an imported API reference document containing unsupported Liquid `{% data %}` syntax; it is not the Pages deployment pipeline.
+
+### Access-policy blocker found (2026-11-01)
+
+- PR #51's read-only MCP smoke test received HTTP 403 from `https://ocodejs-docs-mcp.velclaw.workers.dev/health`.
+- Read-only Cloudflare inventory shows an account-level Access application named `All Workers` with an allow condition requiring client certificate common name `Velclaw.ai`. This is a likely cause of the unauthenticated GitHub Actions request being denied; confirm via request logs before changing policy.
+- Do not disable the account-wide policy. If the MCP endpoint is intentionally public and read-only, use a Worker-level bypass scoped only to `ocodejs-docs-mcp`, with explicit approval. Otherwise, use a dedicated Access service token for the CI smoke-test client.
 
 ### Historical baseline findings (2026-11-01)
 
@@ -62,22 +69,18 @@ For a verified Preview or published site:
 - inspect browser console and network failures;
 - record URL, commit SHA and UTC timestamp.
 
-The automated Pages workflow now checks HTTP success for `/` and `/infra/` and validates the JSON service registry after deployment. Visual browser checks (responsive navigation, focus, anchors, code-copy and console errors) remain a separate manual acceptance gate.
+The automated Pages workflow checks HTTP success for `/` and `/infra/` and validates the JSON service registry after deployment. MCP availability is tested by a separate workflow so an Access-policy issue cannot mark a successful Pages deployment as failed. Visual browser checks (responsive navigation, focus, anchors, code-copy and console errors) remain a separate manual acceptance gate.
 
 ## Documentation MCP smoke test
 
-Use the documented endpoint only after confirming it is reachable:
-1. The Pages workflow now GETs `/health` and verifies the service name, `ok` status, and exact four-tool inventory.
-2. It POSTs MCP `initialize` using protocol version `2025-03-26` and verifies the server identity and tools capability.
-3. It calls `tools/list` and verifies the four read-only tools and object input schemas.
-4. The automated checks run after each main Pages deployment; a successful check proves the Worker HTTP/protocol surface, not GitHub upstream availability.
-5. Call `list_ocodejs_docs` with a small limit.
-6. Call `get_ocodejs_document` for `README.md`.
-7. Call `search_ocodejs_docs` with a common term.
-8. Confirm malformed paths are rejected and no write capability is exposed.
-9. Record status codes, response time, Worker deployment version and test timestamp.
+The dedicated `.github/workflows/mcp-smoke-test.yml` runs on relevant pull requests and pushes. It invokes `scripts/smoke-test-mcp.py` and verifies:
+1. GET `/health`: service identity, `ok` status and the four expected read-only tools.
+2. POST MCP `initialize` using protocol version `2025-03-26`.
+3. POST `tools/list`: exact read-only tool inventory and object input schemas.
 
-Do not interpret the present static `/health` response as proof that GitHub's API is healthy.
+Current result: GitHub Actions receives HTTP 403 from `/health`. Cloudflare's read-only account inventory shows an account-level `All Workers` Access application with an allow condition requiring client certificate common name `Velclaw.ai`; this is a likely blocker for unauthenticated CI requests. Do not disable the account-wide policy. If the MCP endpoint is intentionally public, authorize a Worker-level bypass scoped only to `ocodejs-docs-mcp`; otherwise configure a dedicated Access service token for CI.
+
+These protocol checks do not prove GitHub upstream document fetch availability. After access is resolved, manually call `list_ocodejs_docs`, `get_ocodejs_document` for `README.md`, and `search_ocodejs_docs`; also confirm malformed paths are rejected and no write tool is exposed.
 
 ## Chatbot Preview smoke test
 
