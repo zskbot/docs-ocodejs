@@ -7,8 +7,8 @@
 
 | Service | Source of truth | Runtime owner | Current operational note |
 |---|---|---|---|
-| Documentation site | `zskbot/docs-ocodejs` | GitHub Pages workflow | Public URL `https://zskbot.github.io/docs-ocodejs/`; run #122 on `084a61ebb3f3c3e667c4f589f4e82ec7a62d238f` deployed Pages and passed all static HTTP checks; the MCP smoke test is isolated |
-| Documentation MCP | `cloudflare/ocodejs-docs-mcp` | Cloudflare Worker | Deployment `09409259-93c1-43e4-a8f7-0e1f2a9c209c` at 100% traffic; unauthenticated GitHub Actions requests returned HTTP 403; CI is being prepared for scoped Access service-token authentication |
+| Documentation site | `zskbot/docs-ocodejs` | GitHub Pages workflow | Public URL `https://zskbot.github.io/docs-ocodejs/`; Pages workflow run #124 on `e3af9c4e83e03ef965cec8b953f28d414d124ec1` deployed successfully and passed `/`, `/infra/`, and service-registry HTTP checks |
+| Documentation MCP | `cloudflare/ocodejs-docs-mcp` | Cloudflare Worker | Deployment `09409259-93c1-43e4-a8f7-0e1f2a9c209c` at 100% traffic; CI service-token integration is merged, but smoke test remains BLOCKED at secret preflight; no Access service token was present in the read-only inventory |
 | Chatbot | `OCodejs/chatbot` | Separate Vercel project | Vercel project listing for `OCodejs/chatbot` returned no connected project; earlier create attempt returned HTTP 403; no public URL is configured |
 
 ## Pre-change checklist
@@ -33,9 +33,10 @@
 ### Latest verified baseline (2026-11-01)
 
 - PR #52 was merged as `50f464f964d96919d0a5b3e871126e141c12ba41`.
-- Main commit deployed by Pages workflow run #122: `084a61ebb3f3c3e667c4f589f4e82ec7a62d238f`.
-- GitHub Pages deployment and static post-deploy checks PASS: `/`, `/infra/`, and `/ecosystem/services.json` returned successful HTTP responses; registry JSON parsed with a `services` array. Published URL: `https://zskbot.github.io/docs-ocodejs/`.
-- The combined workflow run #122 was marked failed only because the separate MCP endpoint check returned HTTP 403. The Pages deploy and static checks themselves passed.
+- PR #53 (`fix(mcp): prepare private Access service-token CI authentication`) was merged by repository owner `zskbot` at `2026-11-01T13:09:54Z`; merge commit: `e3af9c4e83e03ef965cec8b953f28d414d124ec1`. This merge was observed during the verification session; no merge action was issued by this assistant.
+- GitHub Pages workflow run #124 (`41309926019`) deployed commit `e3af9c4e83e03ef965cec8b953f28d414d124ec1` and passed its deployment and post-deploy HTTP checks for `/`, `/infra/`, and `/ecosystem/services.json`. Published URL: `https://zskbot.github.io/docs-ocodejs/`.
+- CI run #206 (`41309926028`) on the merge commit passed.
+- MCP smoke-test run #12 (`41308763361`) failed at `Verify Cloudflare Access secrets are configured`; the protocol verification step was skipped. This is a missing-configuration preflight failure, not a successful `/health`, `initialize`, or `tools/list` test.
 - Maintained workflows use Node.js 24-compatible action releases. The legacy Jekyll validation is manual-only because imported API reference Markdown contains Liquid-like tags unsupported by Jekyll; it is not the Pages deployment pipeline.
 
 ### Access-policy blocker found (2026-11-01)
@@ -44,6 +45,8 @@
 - Read-only Cloudflare inventory shows an account-level Access application named `All Workers` with an allow condition requiring client certificate common name `Velclaw.ai`. This is a possible cause, not a proven root cause; no matching Access authentication event was found for the captured Ray ID.
 - Do not disable, weaken, or add a service-token rule to the account-wide `All Workers` application. That could unintentionally affect every Worker protected by the application.
 - The chosen CI direction is private authenticated access using a dedicated service token, not public access or an Access bypass.
+- A read-only Cloudflare inventory on 2026-11-01 returned an empty account service-token list. The Access application inventory still contains `All Workers` with its existing client-certificate condition (`common_name: Velclaw.ai`); it was not changed. The inventory did not show a hostname-scoped Access application explicitly bound to `ocodejs-docs-mcp.velclaw.workers.dev`.
+- Do not create or attach a token to `All Workers`. Cloudflare Access scope must first be resolved for the exact MCP hostname; if it overlaps with `All Workers`, stop and redesign the scope without weakening the existing application.
 
 ## Control Center
 
@@ -106,7 +109,7 @@ This setup intentionally keeps the MCP endpoint private. Complete these steps in
    - Re-run the smoke test after rotation; revoke the old token only after the new token passes.
    - If a token is exposed, revoke/rotate it immediately and inspect Access logs. Do not create a public bypass as a workaround.
 
-Until steps 1–3 are complete, the MCP runtime status remains **BLOCKED / NOT VERIFIED**. A code change that merely supports token headers is not proof of successful authentication.
+Until steps 1–3 are complete, the MCP runtime status remains **BLOCKED / NOT VERIFIED**. A code change that merely supports token headers is not proof of successful authentication. The available GitHub connector does not expose a repository Actions-secret write operation, so `CF_ACCESS_CLIENT_ID` and `CF_ACCESS_CLIENT_SECRET` were not created or modified. Do not paste either value into chat.
 
 ## Chatbot Preview smoke test
 
