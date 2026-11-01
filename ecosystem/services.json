@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-01",
-  "sourceCommit": "6b970016bdda478099f8702a268f91b8bbf3f468",
+  "sourceCommit": "084a61ebb3f3c3e667c4f589f4e82ec7a62d238f",
   "services": [
     {
       "id": "ocodejs-docs-site",
@@ -18,9 +18,10 @@
       "evidence": [
         "GitHub Pages deployment completed successfully on main commit 6b970016bdda478099f8702a268f91b8bbf3f468 in workflow run 41307329427 (run #121).",
         "Post-deployment smoke test in run #121 successfully fetched /, /infra/, and /ecosystem/services.json; the JSON parser confirmed services is an array.",
+        "On main commit 084a61ebb3f3c3e667c4f589f4e82ec7a62d238f, Pages deployment and all static HTTP checks passed in workflow run 41308066253; the overall job failed only in the separate MCP smoke-test step before that check was isolated.",
         "Verified public URL from the Pages deployment output: https://zskbot.github.io/docs-ocodejs/."
       ],
-      "notes": "Public URL and HTTP smoke test are verified for run #121; revalidate after each main deployment."
+      "notes": "Public URL and static HTTP smoke tests are verified; Pages deployment is now independent of MCP availability and revalidated after each main deployment."
     },
     {
       "id": "ocodejs-docs-mcp",
