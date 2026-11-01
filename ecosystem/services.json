@@ -27,19 +27,20 @@
       "name": "OCode.js Documentation MCP",
       "role": "read-only-documentation-api",
       "platform": "Cloudflare Workers",
-      "status": "deployment-api-verified-http-not-tested",
+      "status": "blocked-by-access-policy",
       "source": "https://github.com/zskbot/docs-ocodejs/tree/main/cloudflare/ocodejs-docs-mcp",
       "publicUrl": "https://ocodejs-docs-mcp.velclaw.workers.dev/mcp",
       "healthUrl": "https://ocodejs-docs-mcp.velclaw.workers.dev/health",
-      "healthSemantics": "The handler returns static Worker metadata; it does not prove GitHub upstream availability.",
+      "healthSemantics": "The Worker handler is configured to serve health metadata, but unauthenticated HTTP access currently returns 403. Read-only Cloudflare account inventory shows an account-wide All Workers Access application with a client-certificate allow condition; this is a likely access-policy blocker, not yet proven as the sole cause.",
       "dataStores": [],
       "authentication": "Public read-only access to public repository documents; no GitHub write token is used.",
       "evidence": [
         "Worker source and wrangler.toml are present in the repository.",
         "Cloudflare API read-only inspection on 2026-11-01 confirmed Worker script ocodejs-docs-mcp, enabled workers.dev subdomain, and 100% traffic on deployment 09409259-93c1-43e4-a8f7-0e1f2a9c209c (version cc758815-2380-4288-87f9-057865fdf822).",
-        "Direct HTTP /health and MCP protocol calls were not verified."
+        "GitHub Actions PR #51 smoke test received HTTP 403 from https://ocodejs-docs-mcp.velclaw.workers.dev/health.",
+        "Read-only Cloudflare Access inventory found an account-level All Workers application with an allow policy requiring common_name Velclaw.ai; this is a likely cause of the unauthenticated 403 and requires targeted verification."
       ],
-      "notes": "Keep this service stateless and read-only. Add rate and upstream resource limits before broad public exposure."
+      "notes": "Do not disable account-wide Access. If public read-only access is intended, authorize a Worker-level bypass for this Worker only; otherwise configure a scoped Access service token for the smoke-test client."
     },
     {
       "id": "ocodejs-chatbot",
