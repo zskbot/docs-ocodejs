@@ -21,6 +21,10 @@ A standalone documentation hub for OCode.js and selected Velclaw engineering pro
 - **Integration contracts and release gates:** [docs/INTEGRATION-MATRIX.md](docs/INTEGRATION-MATRIX.md)
 - **Phased verification plan:** [docs/VERIFICATION-PLAN.md](docs/VERIFICATION-PLAN.md)
 - **Ecosystem development roadmap:** [docs/ECOSYSTEM-ROADMAP-2026-10.md](docs/ECOSYSTEM-ROADMAP-2026-10.md)
+- **Infrastructure architecture:** [docs/INFRASTRUCTURE-ARCHITECTURE.md](docs/INFRASTRUCTURE-ARCHITECTURE.md) — service boundaries, hosting, identity, data, delivery and phased expansion.
+- **Infrastructure operations:** [docs/INFRASTRUCTURE-OPERATIONS.md](docs/INFRASTRUCTURE-OPERATIONS.md) — CI triage, static-site/MCP/Chatbot smoke tests, incident response and recovery gates.
+- **Machine-readable service registry:** [ecosystem/services.json](ecosystem/services.json) — deployment evidence and verification status for each service.
+- **Service registry validator:** [scripts/validate-services.py](scripts/validate-services.py) — offline schema, URL, duplicate-ID and secret-pattern checks.
 - **Repository index and audit checklist:** [docs/REPOSITORY-INDEX.md](docs/REPOSITORY-INDEX.md)
 - **Ecosystem audit results:** [docs/AUDIT-RUN-2026-10-23.md](docs/AUDIT-RUN-2026-10-23.md)
 - **Source-level implementation findings:** [docs/IMPLEMENTATION-FINDINGS.md](docs/IMPLEMENTATION-FINDINGS.md)
