@@ -1,0 +1,42 @@
+name: Infrastructure control center validation
+
+on:
+  pull_request:
+    paths:
+      - "infra/**"
+      - "ecosystem/**"
+      - "docs/INTEGRATION-CONTRACTS.md"
+      - "docs/CONTROL-CENTER-USER-GUIDE.md"
+      - "scripts/validate-infrastructure.py"
+      - ".github/workflows/infrastructure-validation.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "infra/**"
+      - "ecosystem/**"
+      - "docs/INTEGRATION-CONTRACTS.md"
+      - "docs/CONTROL-CENTER-USER-GUIDE.md"
+      - "scripts/validate-infrastructure.py"
+      - ".github/workflows/infrastructure-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: infrastructure-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate Python syntax
+        run: python3 -m py_compile scripts/validate-infrastructure.py
+      - name: Validate control center and capability inventory
+        run: python3 scripts/validate-infrastructure.py
+      - name: Validate JSON syntax
+        run: python3 -m json.tool ecosystem/services.json >/dev/null && python3 -m json.tool ecosystem/cloudflare-capabilities.json >/dev/null
