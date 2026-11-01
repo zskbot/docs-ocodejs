@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-01",
-  "sourceCommit": "174e4cd1f7495414e7a90569de0599d533d94ff5",
+  "sourceCommit": "32d914c2c4255a3cdd85dff9966134bb3a8dbfe4",
   "services": [
     {
       "id": "ocodejs-docs-site",
@@ -17,8 +17,8 @@
       "authentication": "Public read-only documentation; no user session is required.",
       "evidence": [
         "GitHub Pages workflow succeeded on main commit 174e4cd1f7495414e7a90569de0599d533d94ff5.",
-        "The new Control Center is on PR #48; the PR has green CI but has not yet been deployed to Pages.",
-        "Canonical public URL and browser rendering have not been independently verified."
+        "PR #48 was merged to main as 32d914c2c4255a3cdd85dff9966134bb3a8dbfe4; the post-merge Pages deployment and browser smoke test are not independently verified.",
+        "Canonical public URL and browser rendering have not been independently verified. Repository Pages is enabled, but no live URL is asserted until a deployment URL and HTTP smoke test are captured."
       ],
       "notes": "Do not infer the canonical Pages URL from the repository name."
     },
