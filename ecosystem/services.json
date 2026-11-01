@@ -1,26 +1,26 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-01",
-  "sourceCommit": "32d914c2c4255a3cdd85dff9966134bb3a8dbfe4",
+  "sourceCommit": "6b970016bdda478099f8702a268f91b8bbf3f468",
   "services": [
     {
       "id": "ocodejs-docs-site",
       "name": "OCode.js Documentation Site",
       "role": "public-static-documentation",
       "platform": "GitHub Pages",
-      "status": "workflow-passed-not-live-verified",
+      "status": "runtime-verified",
       "source": "https://github.com/zskbot/docs-ocodejs",
-      "publicUrl": null,
+      "publicUrl": "https://zskbot.github.io/docs-ocodejs/",
       "healthUrl": null,
-      "healthSemantics": "No runtime health endpoint is defined; validate the published page and static assets with a browser smoke test.",
+      "healthSemantics": "Static GitHub Pages site; no application health endpoint. GitHub Actions verifies HTTP responses for / and /infra/ and parses the service registry after deployment.",
       "dataStores": [],
       "authentication": "Public read-only documentation; no user session is required.",
       "evidence": [
-        "GitHub Pages workflow succeeded on main commit 174e4cd1f7495414e7a90569de0599d533d94ff5.",
-        "PR #48 was merged to main as 32d914c2c4255a3cdd85dff9966134bb3a8dbfe4; the post-merge Pages deployment and browser smoke test are not independently verified.",
-        "Canonical public URL and browser rendering have not been independently verified. Repository Pages is enabled, but no live URL is asserted until a deployment URL and HTTP smoke test are captured."
+        "GitHub Pages deployment completed successfully on main commit 6b970016bdda478099f8702a268f91b8bbf3f468 in workflow run 41307329427 (run #121).",
+        "Post-deployment smoke test in run #121 successfully fetched /, /infra/, and /ecosystem/services.json; the JSON parser confirmed services is an array.",
+        "Verified public URL from the Pages deployment output: https://zskbot.github.io/docs-ocodejs/."
       ],
-      "notes": "Do not infer the canonical Pages URL from the repository name."
+      "notes": "Public URL and HTTP smoke test are verified for run #121; revalidate after each main deployment."
     },
     {
       "id": "ocodejs-docs-mcp",
