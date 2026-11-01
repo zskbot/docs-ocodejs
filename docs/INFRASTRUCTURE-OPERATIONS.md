@@ -8,7 +8,7 @@
 | Service | Source of truth | Runtime owner | Current operational note |
 |---|---|---|---|
 | Documentation site | `zskbot/docs-ocodejs` | GitHub Pages workflow | Public URL `https://zskbot.github.io/docs-ocodejs/`; workflow run #121 on `6b970016bdda478099f8702a268f91b8bbf3f468` passed deploy and HTTP checks for `/`, `/infra/`, and `ecosystem/services.json` |
-| Documentation MCP | `cloudflare/ocodejs-docs-mcp` | Cloudflare Worker | Cloudflare API confirms deployment `09409259-93c1-43e4-a8f7-0e1f2a9c209c` at 100% traffic; HTTP `/health`, MCP `initialize`, and `tools/list` smoke tests are now wired into the Pages workflow and await the next deployment run |
+| Documentation MCP | `cloudflare/ocodejs-docs-mcp` | Cloudflare Worker | Cloudflare API confirms deployment `09409259-93c1-43e4-a8f7-0e1f2a9c209c` at 100% traffic; GitHub Actions PR #51 received HTTP 403 on `/health`; account-level `All Workers` Access policy is a likely blocker |
 | Chatbot | `OCodejs/chatbot` | Separate Vercel project | Vercel project listing for `OCodejs/chatbot` returned no connected project; earlier create attempt returned HTTP 403; no public URL is configured |
 
 ## Pre-change checklist
@@ -40,6 +40,12 @@
 - Main commit deployed by Pages workflow run #121: `6b970016bdda478099f8702a268f91b8bbf3f468`.
 - GitHub Pages deployment and post-deploy smoke test both PASS: `/`, `/infra/`, and `/ecosystem/services.json` returned successful HTTP responses; registry JSON parsed with a `services` array. Published URL: `https://zskbot.github.io/docs-ocodejs/`.
 - Workflow run #121 emitted a Node.js 20 deprecation warning. This PR migrates maintained workflows and Pages actions to Node.js 24-compatible releases; legacy sample workflows remain manual-only.
+
+### Access-policy blocker found (2026-11-01)
+
+- PR #51's read-only MCP smoke test received HTTP 403 from `https://ocodejs-docs-mcp.velclaw.workers.dev/health`.
+- Read-only Cloudflare inventory shows an account-level Access application named `All Workers` with an allow condition requiring client certificate common name `Velclaw.ai`. This is a likely cause of the unauthenticated GitHub Actions request being denied; confirm via request logs before changing policy.
+- Do not disable the account-wide policy. If the MCP endpoint is intentionally public and read-only, use a Worker-level bypass scoped only to `ocodejs-docs-mcp`, with explicit approval. Otherwise, use a dedicated Access service token for the CI smoke-test client.
 
 ### Historical baseline findings (2026-11-01)
 
