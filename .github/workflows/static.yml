@@ -29,17 +29,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5 (Node.js 24)
       - name: Setup Pages
-        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6 (Node.js 24)
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5 (Node.js 24-compatible composite action)
         with:
           # Upload entire repository
           path: '.'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5 (Node.js 24)
       - name: Smoke test published Pages
         env:
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
@@ -61,3 +61,58 @@ jobs:
           curl --fail --silent --show-error --location \
             --retry 5 --retry-all-errors --retry-delay 3 --max-time 20 \
             "$registry_url" | python -c 'import json,sys; data=json.load(sys.stdin); assert isinstance(data.get("services"), list)'
+
+      - name: Smoke test read-only Documentation MCP
+        env:
+          MCP_URL: https://ocodejs-docs-mcp.velclaw.workers.dev
+        run: |
+          set -euo pipefail
+          health_file="$RUNNER_TEMP/mcp-health.json"
+          init_file="$RUNNER_TEMP/mcp-initialize.json"
+          tools_file="$RUNNER_TEMP/mcp-tools.json"
+
+          curl --fail --silent --show-error --location \
+            --retry 5 --retry-all-errors --retry-delay 3 --max-time 20 \
+            "$MCP_URL/health" -o "$health_file"
+          python - "$health_file" <<'PY'
+          import json, sys
+          data = json.load(open(sys.argv[1], encoding="utf-8"))
+          expected = {"search_ocodejs_docs", "list_ocodejs_docs", "get_ocodejs_document", "get_ocodejs_project_overview"}
+          assert data.get("name") == "ocodejs-docs-mcp", data
+          assert data.get("status") == "ok", data
+          assert set(data.get("tools", [])) == expected, data.get("tools")
+          print("MCP /health passed; four read-only tools advertised.")
+          PY
+
+          curl --fail --silent --show-error --location \
+            --retry 5 --retry-all-errors --retry-delay 3 --max-time 20 \
+            -H "content-type: application/json" \
+            -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"ocodejs-pages-smoke-test","version":"1.0"}}}' \
+            "$MCP_URL/mcp" -o "$init_file"
+          python - "$init_file" <<'PY'
+          import json, sys
+          data = json.load(open(sys.argv[1], encoding="utf-8"))
+          result = data.get("result", {})
+          assert data.get("jsonrpc") == "2.0" and data.get("id") == 1, data
+          assert result.get("protocolVersion") == "2025-03-26", result
+          assert result.get("serverInfo", {}).get("name") == "ocodejs-docs-mcp", result
+          assert "tools" in result.get("capabilities", {}), result
+          print("MCP initialize passed.")
+          PY
+
+          curl --fail --silent --show-error --location \
+            --retry 5 --retry-all-errors --retry-delay 3 --max-time 20 \
+            -H "content-type: application/json" \
+            -d '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}' \
+            "$MCP_URL/mcp" -o "$tools_file"
+          python - "$tools_file" <<'PY'
+          import json, sys
+          data = json.load(open(sys.argv[1], encoding="utf-8"))
+          tools = data.get("result", {}).get("tools", [])
+          names = {item.get("name") for item in tools}
+          expected = {"search_ocodejs_docs", "list_ocodejs_docs", "get_ocodejs_document", "get_ocodejs_project_overview"}
+          assert data.get("jsonrpc") == "2.0" and data.get("id") == 2, data
+          assert names == expected, names
+          assert all(item.get("inputSchema", {}).get("type") == "object" for item in tools), tools
+          print("MCP tools/list passed; read-only tool inventory matches.")
+          PY
