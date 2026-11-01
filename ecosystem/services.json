@@ -28,20 +28,21 @@
       "name": "OCode.js Documentation MCP",
       "role": "read-only-documentation-api",
       "platform": "Cloudflare Workers",
-      "status": "blocked-by-access-policy",
+      "status": "blocked-http-403",
       "source": "https://github.com/zskbot/docs-ocodejs/tree/main/cloudflare/ocodejs-docs-mcp",
       "publicUrl": "https://ocodejs-docs-mcp.velclaw.workers.dev/mcp",
       "healthUrl": "https://ocodejs-docs-mcp.velclaw.workers.dev/health",
-      "healthSemantics": "The Worker handler is configured to serve health metadata, but unauthenticated HTTP access currently returns 403. Read-only Cloudflare account inventory shows an account-wide All Workers Access application with a client-certificate allow condition; this is a likely access-policy blocker, not yet proven as the sole cause.",
+      "healthSemantics": "The Worker deployment is present, but unauthenticated HTTP access to /health currently returns HTTP 403 from the Cloudflare edge. An account-level All Workers Access application exists, but the exact blocking rule has not been confirmed.",
       "dataStores": [],
       "authentication": "Public read-only access to public repository documents; no GitHub write token is used.",
       "evidence": [
         "Worker source and wrangler.toml are present in the repository.",
         "Cloudflare API read-only inspection on 2026-11-01 confirmed Worker script ocodejs-docs-mcp, enabled workers.dev subdomain, and 100% traffic on deployment 09409259-93c1-43e4-a8f7-0e1f2a9c209c (version cc758815-2380-4288-87f9-057865fdf822).",
-        "GitHub Actions PR #51 smoke test received HTTP 403 from https://ocodejs-docs-mcp.velclaw.workers.dev/health.",
-        "Read-only Cloudflare Access inventory found an account-level All Workers application with an allow policy requiring common_name Velclaw.ai; this is a likely cause of the unauthenticated 403 and requires targeted verification."
+        "GitHub Actions smoke test received HTTP 403 from https://ocodejs-docs-mcp.velclaw.workers.dev/health (cf-ray a53b04970b963550-IAD).",
+        "Read-only Cloudflare inventory found an account-level All Workers Access application with an allow condition requiring common_name Velclaw.ai; this is a possible cause, not a confirmed root cause.",
+        "Cloudflare Access authentication log query returned no matching event for the captured Ray ID; inspect edge/Access diagnostics before changing access policy."
       ],
-      "notes": "Do not disable account-wide Access. If public read-only access is intended, authorize a Worker-level bypass for this Worker only; otherwise configure a scoped Access service token for the smoke-test client."
+      "notes": "No access policy was changed. Confirm the exact 403 source first. If Cloudflare Access is confirmed and public read-only access is intended, authorize a Worker-level bypass for this Worker only; otherwise configure a scoped Access service token for CI."
     },
     {
       "id": "ocodejs-chatbot",
