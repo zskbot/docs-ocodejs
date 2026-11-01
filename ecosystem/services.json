@@ -26,7 +26,7 @@
       "name": "OCode.js Documentation MCP",
       "role": "read-only-documentation-api",
       "platform": "Cloudflare Workers",
-      "status": "deployment-reported-not-live-verified",
+      "status": "deployment-api-verified-http-not-tested",
       "source": "https://github.com/zskbot/docs-ocodejs/tree/main/cloudflare/ocodejs-docs-mcp",
       "publicUrl": "https://ocodejs-docs-mcp.velclaw.workers.dev/mcp",
       "healthUrl": "https://ocodejs-docs-mcp.velclaw.workers.dev/health",
@@ -36,7 +36,9 @@
       "evidence": [
         "Worker source and wrangler.toml are present in the repository.",
         "PR #43 records a successful Worker upload and enabled workers.dev subdomain.",
-        "Live health, MCP handshake and tool-call tests remain outstanding."
+        "Live health, MCP handshake and tool-call tests remain outstanding.",
+        "Cloudflare API read-only inspection on 2026-11-01 confirmed Worker script ocodejs-docs-mcp, enabled workers.dev subdomain, and 100% traffic on deployment 09409259-93c1-43e4-a8f7-0e1f2a9c209c (version cc758815-2380-4288-87f9-057865fdf822).",
+        "Direct HTTP /health and MCP protocol calls were not verified."
       ],
       "notes": "Keep this service stateless and read-only. Add rate and upstream resource limits before broad public exposure."
     },
