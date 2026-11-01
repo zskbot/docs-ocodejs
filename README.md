@@ -68,3 +68,11 @@ Make changes on a branch and submit a pull request. Preserve source links, licen
 - **Machine-readable repository inventory:** [ecosystem/repositories.json](ecosystem/repositories.json)
 - **Inventory validation script:** [scripts/validate-ecosystem.py](scripts/validate-ecosystem.py)
 - **Implementation roadmap:** [docs/ROADMAP.md](docs/ROADMAP.md)
+
+
+## Infrastructure Control Center
+
+- **Control Center:** [infra/](infra/) — read-only service inventory and browser health checks.
+- **Integration contracts:** [docs/INTEGRATION-CONTRACTS.md](docs/INTEGRATION-CONTRACTS.md) — API gateway, identity, webhooks and observability standards.
+- **Control Center guide:** [docs/CONTROL-CENTER-USER-GUIDE.md](docs/CONTROL-CENTER-USER-GUIDE.md) — evidence labels, browser health-check semantics and safety boundaries.
+- **Cloudflare capability snapshot:** [ecosystem/cloudflare-capabilities.json](ecosystem/cloudflare-capabilities.json) — read-only inventory; no resources created or modified.
