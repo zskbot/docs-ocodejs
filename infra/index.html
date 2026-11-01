@@ -26,7 +26,7 @@
 <article class="card"><h2>Chatbot</h2><p>Loading service registry…</p></article>
 </section>
 <section class="section">
-<h2>Runtime checks</h2><p>Health checks được thực hiện từ trình duyệt. CORS hoặc network policy có thể khiến kết quả ở trạng thái chưa xác minh dù Worker đang chạy.</p>
+<h2>Runtime checks</h2><p>Health checks trong trình duyệt có thể bị ảnh hưởng bởi CORS/network. GitHub Actions cũng kiểm tra HTTP cho Pages và MCP initialize/tools/list sau mỗi lần deploy main.</p>
 <div class="rows" id="runtime"><div class="row"><strong>Documentation MCP /health</strong><span>Chờ kiểm tra</span></div></div>
 </section>
 <section class="section">
@@ -54,11 +54,12 @@
 <h2>Delivery gates</h2>
 <div class="rows">
 <div class="row"><strong>1 · Inventory and architecture</strong><span class="status good">Completed in repository</span></div>
-<div class="row"><strong>2 · Read-only Control Center</strong><span class="status warn">Pages deployment verified · automated HTTP smoke test runs on next deployment</span></div>
-<div class="row"><strong>3 · API Gateway contract</strong><span class="status warn">Specification only — no route created</span></div>
-<div class="row"><strong>4 · Shared identity contract</strong><span class="status warn">Specification only — no provider linked</span></div>
-<div class="row"><strong>5 · Monitoring and alerts</strong><span class="status warn">Runbook and checks defined — alert destination not configured</span></div>
-<div class="row"><strong>6 · Production readiness</strong><span class="status bad">Blocked pending staging evidence and explicit approval</span></div>
+<div class="row"><strong>2 · Read-only Control Center</strong><span class="status good">Pages HTTP smoke test passed · run #121</span></div>
+<div class="row"><strong>3 · Documentation MCP protocol</strong><span class="status warn">HTTP health, initialize and tools/list checks added; pending next deployment run</span></div>
+<div class="row"><strong>4 · API Gateway contract</strong><span class="status warn">Specification only — no route created</span></div>
+<div class="row"><strong>5 · Shared identity contract</strong><span class="status warn">Specification only — no provider linked</span></div>
+<div class="row"><strong>6 · Monitoring and alerts</strong><span class="status warn">Automated deployment checks; alert destination not configured</span></div>
+<div class="row"><strong>7 · Production readiness</strong><span class="status bad">Blocked pending staging evidence and explicit approval</span></div>
 </div>
 </section>
 </main>
@@ -66,8 +67,8 @@
 <script>
 const registryUrl='../ecosystem/services.json';
 const healthUrl='https://ocodejs-docs-mcp.velclaw.workers.dev/health';
-const labelStatus=s=>({ 'workflow-passed-not-live-verified':'Workflow passed · live site not verified','deployment-api-verified-http-not-tested':'Deployment API verified · HTTP not tested','blocked-before-project-creation':'Blocked · Vercel project unavailable' }[s]||s);
-const tone=s=>s==='workflow-passed-not-live-verified'?'warn':s==='deployment-api-verified-http-not-tested'?'good':'bad';
+const labelStatus=s=>({ 'workflow-passed-not-live-verified':'Workflow passed · live site not verified','deployment-api-verified-http-not-tested':'Deployment API verified · HTTP not tested','runtime-verified':'HTTP smoke test passed · Pages run #121','blocked-before-project-creation':'Blocked · Vercel project unavailable' }[s]||s);
+const tone=s=>s==='runtime-verified'?'good':s==='workflow-passed-not-live-verified'?'warn':s==='deployment-api-verified-http-not-tested'?'good':'bad';
 function el(tag,cls,txt){const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n}
 async function refresh(){
  const updated=document.getElementById('updated'),grid=document.getElementById('services'),runtime=document.getElementById('runtime');

@@ -7,8 +7,8 @@
 
 | Service | Source of truth | Runtime owner | Current operational note |
 |---|---|---|---|
-| Documentation site | `zskbot/docs-ocodejs` | GitHub Pages workflow | PR #48 merged to main at `32d914c2c4255a3cdd85dff9966134bb3a8dbfe4`; post-merge Pages deployment and browser smoke test remain unverified |
-| Documentation MCP | `cloudflare/ocodejs-docs-mcp` | Cloudflare Worker | Cloudflare API confirms deployment `09409259-93c1-43e4-a8f7-0e1f2a9c209c` at 100% traffic; direct HTTP/MCP verification remains outstanding |
+| Documentation site | `zskbot/docs-ocodejs` | GitHub Pages workflow | Public URL `https://zskbot.github.io/docs-ocodejs/`; workflow run #121 on `6b970016bdda478099f8702a268f91b8bbf3f468` passed deploy and HTTP checks for `/`, `/infra/`, and `ecosystem/services.json` |
+| Documentation MCP | `cloudflare/ocodejs-docs-mcp` | Cloudflare Worker | Cloudflare API confirms deployment `09409259-93c1-43e4-a8f7-0e1f2a9c209c` at 100% traffic; HTTP `/health`, MCP `initialize`, and `tools/list` smoke tests are now wired into the Pages workflow and await the next deployment run |
 | Chatbot | `OCodejs/chatbot` | Separate Vercel project | Vercel project listing for `OCodejs/chatbot` returned no connected project; earlier create attempt returned HTTP 403; no public URL is configured |
 
 ## Pre-change checklist
@@ -35,11 +35,16 @@
 5. Re-run the affected workflow and inspect all required checks on the PR head SHA.
 6. Do not claim success based on a different commit or an unrelated green workflow.
 
-### Known baseline findings (2026-11-01)
+### Latest verified baseline (2026-11-01)
 
-- Current main commit at this review: `32d914c2c4255a3cdd85dff9966134bb3a8dbfe4`.
+- Main commit deployed by Pages workflow run #121: `6b970016bdda478099f8702a268f91b8bbf3f468`.
+- GitHub Pages deployment and post-deploy smoke test both PASS: `/`, `/infra/`, and `/ecosystem/services.json` returned successful HTTP responses; registry JSON parsed with a `services` array. Published URL: `https://zskbot.github.io/docs-ocodejs/`.
+- Workflow run #121 emitted a Node.js 20 deprecation warning. This PR migrates maintained workflows and Pages actions to Node.js 24-compatible releases; legacy sample workflows remain manual-only.
+
+### Historical baseline findings (2026-11-01)
+
+- Earlier main commit at the start of the infrastructure review: `32d914c2c4255a3cdd85dff9966134bb3a8dbfe4`.
 - PR #48 head SHA `1b9effd186d0ee950cafee8da6161a038b1f1a0b`: core `CI`, documentation validation, ecosystem inventory validation, service inventory validation, infrastructure validation and Socket Security checks all PASS.
-- `Deploy static content to Pages`: post-merge run and published URL have not yet been independently verified.
 - `Crystal CI`: FAIL because the workflow runs `shards install` but this repository has no `shard.yml`. The repository is a static documentation hub with Python validation scripts, not a Crystal application. Keep the sample Crystal workflow manually invokable only unless Crystal source and a shard manifest are intentionally introduced.
 - A documentation-validation run on the preceding SHA `e6cbc1b47167395de1ecffb99420d96c9fed741e` failed because the checker treated upstream-root-relative links in vendored documentation snapshots as links inside this repository. Exclude only those imported corpora from first-party link validation; preserve their source files.
 
@@ -57,15 +62,15 @@ For a verified Preview or published site:
 - inspect browser console and network failures;
 - record URL, commit SHA and UTC timestamp.
 
-A successful Pages action alone does not satisfy this checklist.
+The automated Pages workflow now checks HTTP success for `/` and `/infra/` and validates the JSON service registry after deployment. Visual browser checks (responsive navigation, focus, anchors, code-copy and console errors) remain a separate manual acceptance gate.
 
 ## Documentation MCP smoke test
 
 Use the documented endpoint only after confirming it is reachable:
-1. GET `/health`; verify the service name, endpoint and tool inventory.
-2. POST MCP `initialize` with the supported protocol version.
-3. Send `notifications/initialized`.
-4. Call `tools/list`; verify the four read-only tools.
+1. The Pages workflow now GETs `/health` and verifies the service name, `ok` status, and exact four-tool inventory.
+2. It POSTs MCP `initialize` using protocol version `2025-03-26` and verifies the server identity and tools capability.
+3. It calls `tools/list` and verifies the four read-only tools and object input schemas.
+4. The automated checks run after each main Pages deployment; a successful check proves the Worker HTTP/protocol surface, not GitHub upstream availability.
 5. Call `list_ocodejs_docs` with a small limit.
 6. Call `get_ocodejs_document` for `README.md`.
 7. Call `search_ocodejs_docs` with a common term.

@@ -29,17 +29,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5 (Node.js 24)
       - name: Setup Pages
-        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6 (Node.js 24)
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5 (Node.js 24-compatible composite action)
         with:
           # Upload entire repository
           path: '.'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5 (Node.js 24)
       - name: Smoke test published Pages
         env:
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
@@ -61,3 +61,8 @@ jobs:
           curl --fail --silent --show-error --location \
             --retry 5 --retry-all-errors --retry-delay 3 --max-time 20 \
             "$registry_url" | python -c 'import json,sys; data=json.load(sys.stdin); assert isinstance(data.get("services"), list)'
+
+      - name: Smoke test read-only Documentation MCP
+        env:
+          MCP_URL: https://ocodejs-docs-mcp.velclaw.workers.dev
+        run: python3 scripts/smoke-test-mcp.py
