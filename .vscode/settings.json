@@ -1,0 +1,28 @@
+{
+    "editor.formatOnSave": true,
+    "editor.autoIndentOnPaste": true,
+    "workbench.editor.alwaysShowEditorActions": true,
+    "workbench.editor.autoLockGroups": {
+        "default": true,
+        "workbench.editor.chatSession": true,
+        "workbench.editor.chatDebug": true,
+        "workbench.editorinputs.searchEditorInput": true,
+        "imagePreview.previewEditor": true,
+        "vscode.audioPreview": true,
+        "vscode.markdown.editor": true,
+        "workbench.editors.gettingStartedInput": true,
+        "github-issues": true,
+        "drawio-inline-editor.markdownEditor": true,
+        "mainThreadWebview-markdown.preview": true
+    },
+    "workbench.settings.alwaysShowAdvancedSettings": true,
+    "screencastMode.keyboardOptions": {
+        "showCommandGroups": true
+    },
+    "chat.agent.sandbox.enabled": "on",
+    "chat.agent.sandbox.network.allowLocalNetwork": true,
+    "chat.checkpoints.showFileChanges": true,
+    "chat.tools.terminal.ignoreDefaultAutoApproveRules": true,
+    "chat.tools.terminal.outputCompaction": true,
+    "chat.tools.terminal.outputDeltas": true
+}
