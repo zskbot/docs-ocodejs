@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="OCode.js Infrastructure Control Center — read-only service inventory, health checks and operations links.">
+<title>OCode.js Infrastructure Control Center</title>
+<style>
+:root{color-scheme:dark;--bg:#050608;--panel:#0b0e13;--panel2:#10151d;--line:#303744;--fg:#f5f7fb;--muted:#9ba5b5;--blue:#83b4ff;--green:#75d6a2;--amber:#f2c879;--red:#ff9292}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse 70% 360px at 50% -140px,#14223d 0,transparent 75%),var(--bg);color:var(--fg);font:14px/1.65 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}.wrap{width:min(1120px,calc(100% - 36px));margin:auto}header{border-bottom:1px solid var(--line);background:#050608e8;position:sticky;top:0;backdrop-filter:blur(16px);z-index:2}.bar{height:66px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{font-weight:750;letter-spacing:-.04em;color:#fff}.brand span{color:var(--blue)}.links{display:flex;gap:18px;font-size:12px}.hero{padding:56px 0 34px}.eyebrow{font:11px ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}h1{font-size:clamp(34px,6vw,58px);line-height:1.05;letter-spacing:-.06em;margin:12px 0}.lead{max-width:760px;color:var(--muted);font-size:15px}.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:22px}.button{border:1px solid #657084;background:#10151d;color:#fff;padding:9px 13px;cursor:pointer;font:inherit;font-size:12px}.button:hover{border-color:var(--blue)}.meta{font-size:11px;color:#7f8a9b}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 32px}.card{border:1px solid var(--line);background:linear-gradient(145deg,#10141b,#080a0e);padding:18px;min-width:0}.card h2{font-size:16px;letter-spacing:-.02em;margin:0 0 4px}.card p{color:var(--muted);font-size:12px;margin:6px 0}.status{display:inline-flex;align-items:center;gap:7px;border:1px solid #4a5361;padding:3px 8px;font-size:10px;color:#d7deea;margin:10px 0 4px}.status:before{content:"";width:6px;height:6px;border-radius:50%;background:#9aa4b4}.status.good{border-color:#315b46;color:#a6edc5}.status.good:before{background:var(--green)}.status.warn{border-color:#69552e;color:#f6d99e}.status.warn:before{background:var(--amber)}.status.bad{border-color:#693d42;color:#ffb1b1}.status.bad:before{background:var(--red)}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:11px}.section{padding:22px 0;border-top:1px solid #222936}.section h2{font-size:20px;margin:0 0 5px}.section>p{color:var(--muted);font-size:12px;margin:0 0 14px}.rows{display:grid;gap:8px}.row{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;border:1px solid #252d39;background:#090c11;padding:11px 13px;font-size:12px}.row strong{font-weight:600}.row span{color:var(--muted);text-align:right}.notice{border-left:2px solid var(--amber);background:#15120b;padding:13px 15px;color:#c7b994;font-size:12px;margin:14px 0}.notice strong{color:#f4dfae}footer{border-top:1px solid var(--line);margin-top:40px;padding:22px 0;color:#8490a1;font-size:11px}.mono{font:11px ui-monospace,monospace;overflow-wrap:anywhere;color:#cbd7ed}@media(max-width:760px){.grid{grid-template-columns:1fr}.links{gap:10px}.hero{padding-top:38px}.row{flex-direction:column;gap:2px}.row span{text-align:left}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header><div class="wrap bar"><a class="brand" href="../">OCODE<span>.js</span> / INFRA</a><nav class="links"><a href="../">Documentation</a><a href="https://github.com/zskbot/docs-ocodejs">GitHub</a><a href="../docs/INFRASTRUCTURE-OPERATIONS.md">Runbook</a></nav></div></header>
+<main class="wrap">
+<section class="hero">
+<div class="eyebrow">Infrastructure / Control plane / Read-only</div>
+<h1>Infrastructure<br><span style="color:var(--blue)">Control Center.</span></h1>
+<p class="lead">Bảng điều khiển kiểm kê dịch vụ, kiểm tra endpoint công khai và điều hướng tới hệ thống vận hành. Trang này chỉ đọc; không tạo tài nguyên, sửa cấu hình, xoay secrets hay phát hành Production.</p>
+<div class="toolbar"><button class="button" id="refresh" type="button">↻ Refresh status</button><span class="meta" id="updated" aria-live="polite">Đang tải service registry…</span></div>
+</section>
+<section aria-label="Services" class="grid" id="services">
+<article class="card"><h2>Documentation Site</h2><p>Loading service registry…</p></article>
+<article class="card"><h2>Documentation MCP</h2><p>Loading service registry…</p></article>
+<article class="card"><h2>Chatbot</h2><p>Loading service registry…</p></article>
+</section>
+<section class="section">
+<h2>Runtime checks</h2><p>Health checks trong trình duyệt có thể bị ảnh hưởng bởi CORS/network. GitHub Actions cũng kiểm tra HTTP cho Pages và MCP initialize/tools/list sau mỗi lần deploy main.</p>
+<div class="rows" id="runtime"><div class="row"><strong>Documentation MCP /health</strong><span>Chờ kiểm tra</span></div></div>
+</section>
+<section class="section">
+<h2>Infrastructure capability snapshot</h2><p>Đối chiếu Cloudflare API read-only ngày 2026-11-01. Đây là ảnh chụp tài nguyên, không phải quyền bật dịch vụ hoặc phê duyệt chi phí.</p>
+<div class="rows">
+<div class="row"><strong>Cloudflare Workers</strong><span>11 Worker scripts được liệt kê; OCode.js Docs MCP có deployment 100% traffic.</span></div>
+<div class="row"><strong>Workers KV</strong><span>0 namespaces được liệt kê trong account query.</span></div>
+<div class="row"><strong>D1</strong><span>1 database tên autoship; API báo 0 tables. Không được sử dụng hoặc thay đổi trong dự án này.</span></div>
+<div class="row"><strong>R2</strong><span>Chưa bật trên account; API trả mã 10042. Chưa tạo bucket.</span></div>
+<div class="row"><strong>Cloudflare Pages</strong><span>Có project trong account nhưng chưa xác minh liên quan đến repository docs-ocodejs; không gắn vào sản phẩm.</span></div>
+</div>
+<div class="notice"><strong>Ranh giới an toàn:</strong> không tạo KV, D1, R2, domain, route hoặc Worker mới trong giai đoạn này. Các thao tác có thể phát sinh chi phí hoặc ảnh hưởng dịch vụ hiện hữu cần được đánh giá riêng.</div>
+</section>
+<section class="section">
+<h2>Operations & delivery</h2><p>Liên kết tới nguồn sự thật của CI, triển khai và tài liệu vận hành.</p>
+<div class="rows">
+<div class="row"><strong>GitHub Actions</strong><span><a href="https://github.com/zskbot/docs-ocodejs/actions">Mở workflow runs ↗</a></span></div>
+<div class="row"><strong>Service registry</strong><span><a href="../ecosystem/services.json">ecosystem/services.json ↗</a></span></div>
+<div class="row"><strong>Architecture</strong><span><a href="../docs/INFRASTRUCTURE-ARCHITECTURE.md">Infrastructure architecture ↗</a></span></div>
+<div class="row"><strong>Operations runbook</strong><span><a href="../docs/INFRASTRUCTURE-OPERATIONS.md">Operations runbook ↗</a></span></div>
+<div class="row"><strong>Integration contracts</strong><span><a href="../docs/INTEGRATION-CONTRACTS.md">API / identity / events / observability ↗</a></span></div>
+</div>
+</section>
+<section class="section">
+<h2>Delivery gates</h2>
+<div class="rows">
+<div class="row"><strong>1 · Inventory and architecture</strong><span class="status good">Completed in repository</span></div>
+<div class="row"><strong>2 · Read-only Control Center</strong><span class="status good">Pages HTTP smoke test passed · run #121</span></div>
+<div class="row"><strong>3 · Documentation MCP protocol</strong><span class="status warn">Separate MCP smoke-test workflow currently receives HTTP 403; Pages deploy remains independent; targeted Worker access change requires approval</span></div>
+<div class="row"><strong>4 · API Gateway contract</strong><span class="status warn">Specification only — no route created</span></div>
+<div class="row"><strong>5 · Shared identity contract</strong><span class="status warn">Specification only — no provider linked</span></div>
+<div class="row"><strong>6 · Monitoring and alerts</strong><span class="status warn">Automated deployment checks; alert destination not configured</span></div>
+<div class="row"><strong>7 · Production readiness</strong><span class="status bad">Blocked pending staging evidence and explicit approval</span></div>
+</div>
+</section>
+</main>
+<footer><div class="wrap">OCode.js · Velclaw · Read-only control center · No production mutations</div></footer>
+<script>
+const registryUrl='../ecosystem/services.json';
+const healthUrl='https://ocodejs-docs-mcp.velclaw.workers.dev/health';
+const labelStatus=s=>({ 'workflow-passed-not-live-verified':'Workflow passed · live site not verified','deployment-api-verified-http-not-tested':'Deployment API verified · HTTP not tested','runtime-verified':'HTTP smoke test passed · Pages run #121','blocked-by-access-policy':'Blocked · Cloudflare Access (HTTP 403)','blocked-http-403':'Blocked · HTTP 403 (edge rule unconfirmed)','blocked-before-project-creation':'Blocked · Vercel project unavailable' }[s]||s);
+const tone=s=>s==='runtime-verified'?'good':s==='workflow-passed-not-live-verified'||(s==='blocked-by-access-policy'||s==='blocked-http-403')?'warn':s==='deployment-api-verified-http-not-tested'?'good':'bad';
+function el(tag,cls,txt){const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n}
+async function refresh(){
+ const updated=document.getElementById('updated'),grid=document.getElementById('services'),runtime=document.getElementById('runtime');
+ updated.textContent='Đang tải registry…';grid.replaceChildren();runtime.replaceChildren();
+ try{
+  const response=await fetch(registryUrl,{cache:'no-store'});if(!response.ok)throw new Error('Registry HTTP '+response.status);
+  const data=await response.json();
+  for(const service of data.services||[]){
+   const card=el('article','card');card.append(el('h2','',service.name));card.append(el('p','',service.platform+' · '+service.role));
+   card.append(el('span','status '+tone(service.status),labelStatus(service.status)));
+   card.append(el('p','',service.notes||''));
+   const links=el('div','actions');if(service.source){const a=el('a','', 'Source ↗');a.href=service.source;a.target='_blank';a.rel='noopener noreferrer';links.append(a)}
+   if(service.publicUrl){const a=el('a','', 'Endpoint ↗');a.href=service.publicUrl;a.target='_blank';a.rel='noopener noreferrer';links.append(a)}
+   if(service.healthUrl){const a=el('a','', 'Health ↗');a.href=service.healthUrl;a.target='_blank';a.rel='noopener noreferrer';links.append(a)}
+   card.append(links);grid.append(card);
+  }
+  updated.textContent='Registry loaded · '+new Date().toLocaleString();
+ }catch(error){grid.append(el('article','card','Không tải được service registry: '+error.message));updated.textContent='Registry unavailable'}
+ const row=el('div','row');row.append(el('strong','','Documentation MCP /health'));
+ const result=el('span','','Đang kiểm tra…');row.append(result);runtime.append(row);
+ const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),5000);
+ try{
+  const response=await fetch(healthUrl,{method:'GET',mode:'cors',cache:'no-store',signal:controller.signal});
+  result.textContent='HTTP '+response.status+(response.ok?' · endpoint responded':' · response error');result.className=response.ok?'status good':'status bad';
+ }catch(error){result.textContent='Không xác minh được từ browser ('+(error.name==='AbortError'?'timeout':'CORS/network')+')';result.className='status warn'}
+ finally{clearTimeout(timeout)}
+}
+document.getElementById('refresh').addEventListener('click',refresh);refresh();
+</script>
+</body>
+</html>

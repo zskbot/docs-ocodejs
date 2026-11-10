@@ -1,0 +1,45 @@
+name: Documentation MCP smoke test
+
+on:
+  pull_request:
+    paths:
+      - "scripts/smoke-test-mcp.py"
+      - "cloudflare/ocodejs-docs-mcp/**"
+      - ".github/workflows/mcp-smoke-test.yml"
+      - ".github/workflows/static.yml"
+      - "docs/INFRASTRUCTURE-OPERATIONS.md"
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mcp-smoke-test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5 (Node.js 24)
+      - name: Verify Cloudflare Access secrets are configured
+        env:
+          CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+        run: |
+          if [ -z "$CF_ACCESS_CLIENT_ID" ] || [ -z "$CF_ACCESS_CLIENT_SECRET" ]; then
+            echo "::error::Missing CF_ACCESS_CLIENT_ID or CF_ACCESS_CLIENT_SECRET repository secret."
+            echo "Create a scoped Cloudflare Access service token and add both values as GitHub Actions secrets."
+            exit 1
+          fi
+      - name: Verify read-only MCP HTTP and protocol
+        env:
+          MCP_URL: https://ocodejs-docs-mcp.velclaw.workers.dev
+          REQUIRE_ACCESS_TOKEN: "true"
+          CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+        run: python3 scripts/smoke-test-mcp.py

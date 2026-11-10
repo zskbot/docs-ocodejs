@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-01",
+  "sourceCommit": "488bab237f54d28ef8e967195830cdb8782535b3",
+  "services": [
+    {
+      "id": "ocodejs-docs-site",
+      "name": "OCode.js Documentation Site",
+      "role": "public-static-documentation",
+      "platform": "GitHub Pages",
+      "status": "runtime-verified",
+      "source": "https://github.com/zskbot/docs-ocodejs",
+      "publicUrl": "https://zskbot.github.io/docs-ocodejs/",
+      "healthUrl": null,
+      "healthSemantics": "Static GitHub Pages site; no application health endpoint. GitHub Actions verifies HTTP responses for / and /infra/ and parses the service registry after deployment.",
+      "dataStores": [],
+      "authentication": "Public read-only documentation; no user session is required.",
+      "evidence": [
+        "GitHub Pages deployment completed successfully on main commit 6b970016bdda478099f8702a268f91b8bbf3f468 in workflow run 41307329427 (run #121).",
+        "Post-deployment smoke test in run #121 successfully fetched /, /infra/, and /ecosystem/services.json; the JSON parser confirmed services is an array.",
+        "On main commit 084a61ebb3f3c3e667c4f589f4e82ec7a62d238f, Pages deployment and all static HTTP checks passed in workflow run 41308066253; the overall job failed only in the separate MCP smoke-test step before that check was isolated.",
+        "Verified public URL from the Pages deployment output: https://zskbot.github.io/docs-ocodejs/."
+      ],
+      "notes": "Public URL and static HTTP smoke tests are verified; Pages deployment is now independent of MCP availability and revalidated after each main deployment."
+    },
+    {
+      "id": "ocodejs-docs-mcp",
+      "name": "OCode.js Documentation MCP",
+      "role": "read-only-documentation-api",
+      "platform": "Cloudflare Workers",
+      "status": "runtime-verified",
+      "source": "https://github.com/zskbot/docs-ocodejs/tree/main/cloudflare/ocodejs-docs-mcp",
+      "publicUrl": "https://ocodejs-docs-mcp.velclaw.workers.dev/mcp",
+      "healthUrl": "https://ocodejs-docs-mcp.velclaw.workers.dev/health",
+      "healthSemantics": "The Worker deployment is present, but unauthenticated HTTP access to /health currently returns HTTP 403 from the Cloudflare edge. An account-level All Workers Access application exists, but the exact blocking rule has not been confirmed.",
+      "dataStores": [],
+      "authentication": "Cloudflare Access Service Token is required for automated CI access; the public documentation API is read-only and does not use a GitHub write token.",
+      "evidence": [
+        "Worker source and wrangler.toml are present in the repository.",
+        "Cloudflare Worker deployment and scoped Cloudflare Access Service Auth policy were verified during the 2026-11-01 infrastructure review.",
+        "GitHub Actions Documentation MCP smoke test passed on main commit 488bab237f54d28ef8e967195830cdb8782535b3 in workflow run 41314605189.",
+        "The smoke test passed the Access service-token preflight, GET /health, MCP initialize handshake, and tools/list request.",
+        "The same MCP smoke test passed on the preceding main commit aca5fe65e95fcb132f7fd85f633305be2ff9a9d4 in workflow run 41313908839."
+      ],
+      "notes": "Authenticated CI runtime verification is green. Requests without the scoped Cloudflare Access service token may receive HTTP 403 by design; do not classify that response as an outage. Keep the service token in GitHub Actions secrets only and never publish its values."
+    },
+    {
+      "id": "ocodejs-chatbot",
+      "name": "OCode.js Chatbot",
+      "role": "interactive-ai-chat-application",
+      "platform": "Vercel",
+      "status": "blocked-before-project-creation",
+      "source": "https://github.com/OCodejs/chatbot",
+      "publicUrl": null,
+      "healthUrl": null,
+      "healthSemantics": "No verified deployment or health endpoint is available.",
+      "dataStores": [
+        "PostgreSQL (documented requirement; provisioning not verified)",
+        "Redis (documented requirement; provisioning not verified)"
+      ],
+      "authentication": "Application authentication is documented; provider configuration and end-to-end login are not verified.",
+      "evidence": [
+        "Documentation integration guide describes a separate Next.js/Vercel deployment.",
+        "PR #44 records HTTP 403 when attempting to create the Vercel project.",
+        "chatbot-config.js intentionally has no public URL configured.",
+        "Vercel project listing filtered to OCodejs/chatbot returned no connected project on 2026-11-01."
+      ],
+      "notes": "Do not expose the launcher to a public runtime until a Preview deployment and required dependencies are verified."
+    }
+  ]
+}
