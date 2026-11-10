@@ -5,16 +5,22 @@ on:
     paths:
       - "**.md"
       - "**.mdx"
+      - "index.html"
+      - "scripts/check-doc-html.py"
       - "scripts/check-doc-links.py"
-      - ".github/workflows/docs-validation.yml"
+      - "scripts/audit-ecosystem.py"
+      - ".github/workflows/**"
   push:
     branches:
       - main
     paths:
       - "**.md"
       - "**.mdx"
+      - "index.html"
+      - "scripts/check-doc-html.py"
       - "scripts/check-doc-links.py"
-      - ".github/workflows/docs-validation.yml"
+      - "scripts/audit-ecosystem.py"
+      - ".github/workflows/**"
   workflow_dispatch:
 
 permissions:
@@ -35,3 +41,5 @@ jobs:
         run: python3 -m py_compile scripts/check-doc-links.py scripts/audit-ecosystem.py
       - name: Validate local Markdown links
         run: python3 scripts/check-doc-links.py
+      - name: Validate homepage HTML structure
+        run: python3 scripts/check-doc-html.py

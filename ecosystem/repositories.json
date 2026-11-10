@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-24",
+  "repositories": [
+    {
+      "name": "docs-ocodejs",
+      "url": "https://github.com/zskbot/docs-ocodejs",
+      "role": "documentation-hub",
+      "criticality": "high",
+      "runtime": "static-documentation",
+      "deployment": "GitHub Pages or configured static host",
+      "healthCheck": "documentation link validation and static build",
+      "secretPolicy": "GitHub Actions secrets only; never store token values in this inventory"
+    },
+    {
+      "name": "X-BO",
+      "url": "https://github.com/zskbot/X-BO",
+      "role": "AI-agent-application",
+      "criticality": "high",
+      "runtime": "Node.js and Vite",
+      "deployment": "Vercel and optional standalone Node server",
+      "healthCheck": "unit tests, frontend build, and /health endpoint",
+      "secretPolicy": "provider credentials must remain server-side environment variables"
+    },
+    {
+      "name": "pages_logo",
+      "url": "https://github.com/zskbot/pages_logo",
+      "role": "brand-assets",
+      "criticality": "medium",
+      "runtime": "static-assets",
+      "deployment": "GitHub Pages",
+      "healthCheck": "asset-reference validation and static-site build",
+      "secretPolicy": "public assets only; no credentials or private user data"
+    }
+  ]
+}

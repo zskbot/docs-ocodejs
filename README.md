@@ -1,25 +1,67 @@
-# OCode.js Documentation Hub
+<p align="center">
+  <img src="https://raw.githubusercontent.com/zskbot/pages_logo/main/OCode.js/ocode-js-logo-animated.gif?v=3" alt="OCode.js animated primary logo" width="420">
+</p>
 
-Central index for OCode.js documentation and the related Velclaw engineering ecosystem.
+<h1 align="center">OCode.js Documentation Hub</h1>
 
-- **Ecosystem architecture:** [docs/ECOSYSTEM.md](docs/ECOSYSTEM.md)
-- **Source inventory and targeted findings:** [docs/SOURCE-AUDIT.md](docs/SOURCE-AUDIT.md)
-- **Content-level review of all 11 root READMEs:** [docs/CONTENT-REVIEW.md](docs/CONTENT-REVIEW.md)
-- **Canonical alignment and remediation plan:** [docs/CANONICAL-ALIGNMENT-PLAN.md](docs/CANONICAL-ALIGNMENT-PLAN.md)
+<p align="center">Small tools. Solid foundations.</p>
+
+A standalone documentation hub for OCode.js and selected Velclaw engineering projects. This repository organizes documentation, design references, source audits, and implementation plans; it does not merge application codebases or automatically write to other repositories.
+
+## Start here
+
+- **Project overview and architecture:** [docs/ECOSYSTEM.md](docs/ECOSYSTEM.md)
+- **OCode.js implementation roadmap:** [docs/ROADMAP.md](docs/ROADMAP.md)
+- **Agent Skills Directory:** [docs/AGENT-SKILLS-DIRECTORY.md](docs/AGENT-SKILLS-DIRECTORY.md) — curated skill categories, installation command, platform notes, and safety checklist.
+- **Plugin development for ChatGPT and Codex:** [docs/OPENAI-PLUGIN-DEVELOPMENT.md](docs/OPENAI-PLUGIN-DEVELOPMENT.md) — plugin architecture, Skills, MCP, authentication, testing, publishing, metadata, UI, and security.
+- **x-bo by OCODE.js product/design blueprint:** [docs/X-BO-BY-OCODEJS-BLUEPRINT.md](docs/X-BO-BY-OCODEJS-BLUEPRINT.md) — target architecture, UX workflow, design system, GitHub/release gates, security, and staged implementation.
+- **Source inventory and audit findings:** [docs/SOURCE-AUDIT.md](docs/SOURCE-AUDIT.md)
+- **Content review:** [docs/CONTENT-REVIEW.md](docs/CONTENT-REVIEW.md)
+- **Canonical alignment plan:** [docs/CANONICAL-ALIGNMENT-PLAN.md](docs/CANONICAL-ALIGNMENT-PLAN.md)
 - **Integration contracts and release gates:** [docs/INTEGRATION-MATRIX.md](docs/INTEGRATION-MATRIX.md)
-- **Phased verification plan:** [docs/VERIFICATION-PLAN.md](docs/VERIFICATION-PLAN.md)
-- **Repository index and audit checklist:** [docs/REPOSITORY-INDEX.md](docs/REPOSITORY-INDEX.md)
-- **Brand/rebrand source document:** [OCodejs-by-Velclaw-Full-Rebrand.pdf](OCodejs-by-Velclaw-Full-Rebrand.pdf)
-- **OCode.js logo assets:** [SVG](ocodejs-logo.svg) · [Animated logo](ocodejs-animated-logo.gif) · [Black logo](ocode-logo-black.gif)
+- **Verification plan:** [docs/VERIFICATION-PLAN.md](docs/VERIFICATION-PLAN.md)
+- **Repository index:** [docs/REPOSITORY-INDEX.md](docs/REPOSITORY-INDEX.md)
+- **Implementation findings:** [docs/IMPLEMENTATION-FINDINGS.md](docs/IMPLEMENTATION-FINDINGS.md)
+- **Operations and release gates:** [docs/OPERATIONS-AND-RELEASE-GATES.md](docs/OPERATIONS-AND-RELEASE-GATES.md)
+- **Documentation quality gates:** [docs/DOCUMENTATION-AND-QUALITY-GATES.md](docs/DOCUMENTATION-AND-QUALITY-GATES.md)
+- **Design system:** [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)
+- **Brand/rebrand reference:** [OCodejs-by-Velclaw-Full-Rebrand.pdf](OCodejs-by-Velclaw-Full-Rebrand.pdf)
 
-## Source projects
+## Brand assets
 
-This hub indexes the following projects without merging their codebases: [VelCli](https://github.com/Velclaw/VelCli), [X-BO](https://github.com/zskbot/X-BO), [OCodejs/OCodejs](https://github.com/OCodejs/OCodejs), [Velclaw/OCodejs](https://github.com/Velclaw/OCodejs), [VelclawHost](https://github.com/Velclaw/VelclawHost), [velclaw-deploy](https://github.com/Velclaw/velclaw-deploy), [Oauth](https://github.com/Velclaw/Oauth), [TechDocs](https://github.com/Velclaw/docs.velclaw.ai), [VELCLAW](https://github.com/Velclaw/VELCLAW), [Docs UI Reference](https://github.com/Velclaw/Velclaw-velclaw-docs-ui-reference), and [Velclaw-OCodejs](https://github.com/Velclaw/Velclaw-OCodejs).
+- [OCode.js SVG logo](ocodejs-logo.svg)
+- [Primary animated logo (original GIF)](https://raw.githubusercontent.com/zskbot/pages_logo/main/OCode.js/ocode-js-logo-animated.gif?v=3)
+- [Repository copy of animated logo](ocodejs-animated-logo.gif)
+- [Black logo](ocode-logo-black.gif)
 
-## Status
+## Indexed source projects
 
-The recursive inventory and targeted source findings are documented in [SOURCE-AUDIT.md](docs/SOURCE-AUDIT.md). The content-level review and alignment plan identify product naming, runtime, domain, licensing and verification gaps that must be resolved before any documentation is treated as authoritative. This does **not** mean every file's contents have been read or every repository archive extracted. No production deployment, merge, secret migration, or database modification is performed by this change.
+This hub links to projects for reference and audit purposes only. They remain independent repositories:
+
+- [OCodejs/OCodejs](https://github.com/OCodejs/OCodejs)
+- [Velclaw/OCodejs](https://github.com/Velclaw/OCodejs)
+- [VelCli](https://github.com/Velclaw/VelCli)
+- [X-BO](https://github.com/zskbot/X-BO)
+- [VelclawHost](https://github.com/Velclaw/VelclawHost)
+- [velclaw-deploy](https://github.com/Velclaw/velclaw-deploy)
+- [OAuth](https://github.com/Velclaw/Oauth)
+- [TechDocs](https://github.com/Velclaw/docs.velclaw.ai)
+- [VELCLAW](https://github.com/Velclaw/VELCLAW)
+- [Docs UI Reference](https://github.com/Velclaw/Velclaw-velclaw-docs-ui-reference)
+- [Velclaw-OCodejs](https://github.com/Velclaw/Velclaw-OCodejs)
+
+Repository links are references, not evidence that every source file has been inspected or that a project is production-ready. Product claims must be supported by source code, tests, or an explicit architecture decision.
+
+## Development status
+
+The current priority is to improve this repository itself: navigation, link integrity, mobile usability, accessibility, content accuracy, and repeatable documentation checks. Cross-repository synchronization has been discontinued; this project will not push documentation snapshots into other repositories.
+
+No production deployment, secret migration, or database modification is part of this documentation work.
 
 ## Contributing
 
-Make documentation changes on a branch and submit a pull request. Preserve source links, licensing, and attribution; never commit credentials or populated environment files.
+Make changes on a branch and submit a pull request. Preserve source links, licensing, and attribution. Never commit credentials, populated environment files, or secrets.
+
+- **Machine-readable repository inventory:** [ecosystem/repositories.json](ecosystem/repositories.json)
+- **Inventory validation script:** [scripts/validate-ecosystem.py](scripts/validate-ecosystem.py)
+- **Implementation roadmap:** [docs/ROADMAP.md](docs/ROADMAP.md)

@@ -1,0 +1,33 @@
+name: Ecosystem inventory validation
+
+on:
+  pull_request:
+    paths:
+      - "ecosystem/**"
+      - "scripts/validate-ecosystem.py"
+      - ".github/workflows/ecosystem-validation.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "ecosystem/**"
+      - "scripts/validate-ecosystem.py"
+      - ".github/workflows/ecosystem-validation.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ecosystem-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Validate Python syntax
+        run: python -m py_compile scripts/validate-ecosystem.py
+      - name: Validate ecosystem inventory
+        run: python scripts/validate-ecosystem.py
