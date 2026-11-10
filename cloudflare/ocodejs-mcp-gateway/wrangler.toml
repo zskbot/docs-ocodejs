@@ -1,0 +1,13 @@
+name = "ocodejs-mcp-gateway"
+main = "src/index.js"
+compatibility_date = "2026-11-10"
+workers_dev = true
+preview_urls = true
+
+[[kv_namespaces]]
+binding = "OAUTH_KV"
+id = "b44d8598f08e4e549d41ff68e75cc5fe"
+
+[vars]
+AUTH_ISSUER = "https://auth.ocodejs.dev"
+MCP_RESOURCE = "https://mcp.ocodejs.dev/mcp"
