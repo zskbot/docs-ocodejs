@@ -5,6 +5,7 @@ Central index for OCode.js documentation and the related Velclaw engineering eco
 - **Ecosystem architecture:** [docs/ECOSYSTEM.md](docs/ECOSYSTEM.md)
 - **Source inventory and targeted findings:** [docs/SOURCE-AUDIT.md](docs/SOURCE-AUDIT.md)
 - **Content-level review of all 11 root READMEs:** [docs/CONTENT-REVIEW.md](docs/CONTENT-REVIEW.md)
+- **Canonical alignment and remediation plan:** [docs/CANONICAL-ALIGNMENT-PLAN.md](docs/CANONICAL-ALIGNMENT-PLAN.md)
 - **Integration contracts and release gates:** [docs/INTEGRATION-MATRIX.md](docs/INTEGRATION-MATRIX.md)
 - **Phased verification plan:** [docs/VERIFICATION-PLAN.md](docs/VERIFICATION-PLAN.md)
 - **Repository index and audit checklist:** [docs/REPOSITORY-INDEX.md](docs/REPOSITORY-INDEX.md)
@@ -17,7 +18,7 @@ This hub indexes the following projects without merging their codebases: [VelCli
 
 ## Status
 
-The recursive inventory and targeted source findings are documented in [SOURCE-AUDIT.md](docs/SOURCE-AUDIT.md). This does **not** mean every file's contents have been read or every repository archive extracted. No production deployment, merge, secret migration, or database modification is performed by this change.
+The recursive inventory and targeted source findings are documented in [SOURCE-AUDIT.md](docs/SOURCE-AUDIT.md). The content-level review and alignment plan identify product naming, runtime, domain, licensing and verification gaps that must be resolved before any documentation is treated as authoritative. This does **not** mean every file's contents have been read or every repository archive extracted. No production deployment, merge, secret migration, or database modification is performed by this change.
 
 ## Contributing
 
