@@ -18,6 +18,7 @@ A standalone documentation hub for OCode.js and selected Velclaw engineering pro
 - **Source inventory and audit findings:** [docs/SOURCE-AUDIT.md](docs/SOURCE-AUDIT.md)
 - **Content review:** [docs/CONTENT-REVIEW.md](docs/CONTENT-REVIEW.md)
 - **Canonical alignment plan:** [docs/CANONICAL-ALIGNMENT-PLAN.md](docs/CANONICAL-ALIGNMENT-PLAN.md)
+- **OCodeJS brand standardization audit (2026-11-12):** [docs/BRAND-STANDARDIZATION-2026-11-12.md](docs/BRAND-STANDARDIZATION-2026-11-12.md) — repository inventory evidence, product boundaries, first-party candidates, slug migration gates, and execution sequence.
 - **Integration contracts and release gates:** [docs/INTEGRATION-MATRIX.md](docs/INTEGRATION-MATRIX.md)
 - **Phased verification plan:** [docs/VERIFICATION-PLAN.md](docs/VERIFICATION-PLAN.md)
 - **Ecosystem development roadmap:** [docs/ECOSYSTEM-ROADMAP-2026-10.md](docs/ECOSYSTEM-ROADMAP-2026-10.md)
