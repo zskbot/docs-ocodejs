@@ -3,6 +3,7 @@
 # part of the rendered hub. Exclude them from Jekyll's content pipeline.
 exclude:
   - content
+  - docs/content
   - files
   - .agents
   - skills
